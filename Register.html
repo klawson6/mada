@@ -12,27 +12,29 @@
     <link rel="apple-touch-icon" href="img/icon.png" />
     <link rel="shortcut icon" href="img/icon.png" type="image/x-icon" />
 
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="Normalize.css"/>
     <link rel="stylesheet" type="text/css" href="StyleSheet.css"/>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
 </head>
-    <h1>Register</h1>  <div id = "sign_up" class="form-group" >
+<body>
+    <video autoplay muted loop id="introVideo">
+        <source src="img/video2.mp4" type="video/mp4">
+    </video>
+
+   <div id = "sign_up" class="form-group" >
         <form id = "sign_up_form" class="form-group" action="Home.html">
             <h1>Register</h1>
             <br>
-           <label>Name:     <input id="name_input"  type="text" tclass="form-control" placeholder="Name"></label>
+           <label>Name:<input id="name_input"  type="text" class="form-control" placeholder="Name"></label>
             <br>
-            <label>E-Mail:  <input id="email_input"  type="email" class="form-control" placeholder="example@mail.com"></label>
+            <label>E-Mail:<input id="email_input"  type="email" class="form-control" placeholder="example@mail.com"></label>
             <br>
-            <label>Password: <input id="password_input"  type="password" class="form-control" placeholder="Password"></label>
-            <br>
-            <button id="create_account_button" class="btn btn-lg btn-inverse btn-block" type="submit"><br>
-                Create An Account
-            </button>
+            <label>Password:<input id="password_input"  type="password" class="form-control" placeholder="Password"></label>
+            <br><br>
+            <button id="create_account_button" class="btn btn-lg btn-inverse btn-block" type="submit">Create An Account</button>
         </form>
     </div>
-<body>
 </body>
 
 <footer>

@@ -12,16 +12,19 @@
     <link rel="apple-touch-icon" href="img/icon.png" />
     <link rel="shortcut icon" href="img/icon.png" type="image/x-icon" />
 
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="Normalize.css"/>
     <link rel="stylesheet" type="text/css" href="StyleSheet.css"/>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
 </head>
 <body>
-    <!--<H1>HELLO AND WELCOME TO *INSERT NAME*</H1>-->
-        <div id = "sign_up" class="form-group" >
+    <video autoplay muted loop id="introVideo">
+        <source src="img/video2.mp4" type="video/mp4">
+    </video>
+
+    <div id = "sign_up" class="form-group" >
             <form id = "sign_up_form" class="form-group" action="Home.html">
-            <h1>Please Sign In</h1><br>
+            <h1>Sign In</h1><br>
             <input id="email_input"  type="email" class="form-control" placeholder="Email Address">
             <input id="password_input"  type="password" class="form-control" placeholder="Password">
             <br>
