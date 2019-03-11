@@ -1,9 +1,9 @@
 *{
     align-content: center;
     text-align: center;
-    font-size: medium;
+    font-size: small;
 
-    font-family: "Bahnschrift";
+    font-family: "Lucida Console", Monaco, monospace;
     margin: 0;
     padding: 0;
 
@@ -12,4 +12,30 @@
     -khtml-user-select: none;
     -moz-user-select: -moz-none;
     -o-user-select: none;
+}
+
+body{
+    align-content: center;
+    text-align: center;
+    font-size: medium;
+}
+
+#sign_up > h1{
+    font-size: x-large;
+}
+
+#sign_up > button{
+    font-size: x-large;
+    background-color: rgb(44, 56, 76);
+    color: azure;
+}
+#sign_up{
+    background-color: rgb(58, 72, 96);
+    font-size: small;
+    color: azure;
+    width: 70%;
+    align-content: center;
+    text-align: center;
+    padding: 15px;
+    margin: auto;
 }
