@@ -18,33 +18,60 @@
 
 </head>
 
-<nav class="navbar navbar-expand-md nav_bar"  id="my_navbar">
-    <nav class="navbar justify-content-between" id="left_nav">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item active links">
-                <a href="#" class="nav-link"><span class="glyphicon glyphicon-search"></span>
-                </a>
-            </li>
-        </ul>
+<nav id="my_navbar" class="nav_buttons">
+    <div id="nav_container">
+        <button id = "nav_left"  class="borderlessButtons">
+            <span class="glyphicon glyphicon-search icon_style"></span>
+        </button>
 
-        <ul class="navbar-nav">
-            <li class="nav-item active links">
-                Drivers
-            </li>
-        </ul>
+        <label id = "nav_center">*NAME OF APP*</label>
 
-        <ul class="navbar-nav ml-auto">
-            <li class="nav-item active links left">
-                <a href="#" class="nav-link"><span class="glyphicon glyphicon glyphicon-user"> </span>
-                    </span></a>
-
-            </li>
-        </ul>
+        <button id = "nav_right"  class="borderlessButtons">
+            <span class="glyphicon  glyphicon-user icon_style"></span>
+        </button>
     </div>
 </nav>
-
-
 <body class="home">
+<br><br>
+    <img src="img/man1.jpeg" alt="Happy Man" id = "image"><br><br>
+    <label id = "image_label" for = "image">David Smith | 27</label>
+<br><br>
+<div id ="status_bar">
+    <table id = "wrapper_table">
+    <div id="status_bar_container">
+        <tr>
+            <td>
+                <div id = "cirlce_yes" class="circle">
+                    <button id = "status_bar_yes"  class="borderlessButtons">
+                        <span class=" glyphicon glyphicon-thumbs-up icon_style"></span>
+                    </button>
+                </div>
+            </td>
+            <td></td>
+            <td>
+                    <div id = "cirlce_no" class="circle">
+                        <button id = "status_bar_no" class="borderlessButtons">
+                            <span class="glyphicon glyphicon-thumbs-down icon_style"></span>
+                        </button>
+                    </div>
+            </td>
+        </tr>
+
+    </div>
+        <tr>
+            <td></td>
+            <td>
+            <div id = "cirlce_redo"  class="circle">
+                <button id = "status_bar_back" class="borderlessButtons">
+                     <span class="glyphicon glyphicon-repeat icon_style"></span>
+                </button>
+            </div>
+         </td>
+            <td></td>
+        </tr>
+    </table>
+</div>
+
 </body>
 
 <footer>
