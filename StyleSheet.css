@@ -25,8 +25,8 @@ input, input:before, input:after {
 }
 body{
      background-color: rgb(31, 39, 52);
-
 }
+
 /*----------------------------------------------------------------------------------------------------------------*/
 /*                                                 login + register  pages                                        */
 
@@ -50,6 +50,14 @@ body{
     bottom: 0;
     min-width: 100%;
     min-height: 100%;
+}
+
+.back_button{
+    font-size: 70%;
+    background-color:rgb(58, 72, 96);
+    color: azure;
+    width: 70%;
+    margin: 0 auto;
 }
 
 /*                                                    FORM STYLING                                                     */
@@ -114,11 +122,13 @@ input{
     text-align:center;
     background-color: transparent;
 }
+
 #nav_center{
     display: inline-block;
     margin:0 auto;
 
 }
+
 #nav_left{
     float:left;
     padding: 1em;
@@ -142,7 +152,8 @@ input{
     max-width: 90%;
     background-color: rgb(15, 19, 26);
     border-radius: 25px;
-    padding: 1em;
+    padding: 1em;;
+
 
 }
 
@@ -184,4 +195,122 @@ input{
 #wrapper_table{
     margin: 0 auto;
     align-content: center;
+}
+
+/*----------------------------------------------------------------------------------------------------------------*/
+/*                                                edit profile styling                                            */
+
+.body{
+    align-content: center;
+    margin: 0 auto;
+    color: azure;
+}
+
+.body > h1,label,p,h2,h3{
+    color: azure;
+}
+
+.editProfileWrapper{
+    width: 70%;
+    margin: 0 auto;
+}
+
+#address_list{
+    overflow-x: scroll;
+    height:10em;
+    width: 70%;
+    margin: 0 auto;
+    padding: 1em;
+}
+
+.address_button{
+    font-size: 60%;
+    background-color: rgb(103, 131, 178);
+    color: azure;
+}
+
+#add_address{
+    width: 70%;
+    font-size: 70%;
+    background-color: rgb(83, 105, 143);
+    color: azure;
+    margin: 0 auto;
+}
+
+#addressWrapper{
+    background-color: rgb(36, 45, 60);
+    border-radius: 25px;
+}
+
+#img_container{
+    margin: 0 auto;
+    padding: 1em;
+    overflow-x: scroll;
+    max-height: 20em;
+}
+
+.profile_img{
+    width: 15em;
+    height: 15em;
+    padding: 1em;
+}
+.pop_up{
+    display: none;
+    position: fixed;
+    width: 80%;
+    margin: 0 auto;
+    background-color: #d95512;
+    padding: 1em;
+    border-radius: 2em;
+    align-content: center;
+    left:0;
+    right:0;
+    text-align:center;
+}
+
+.pop_up> button{
+    background-color: #b74d12;
+    color: #802e0c;
+}
+
+/*----------------------------------------------------------------------------------------------------------------*/
+/*                                                "find car" styling                                              */
+
+#co_rider_form{
+    margin: 0 auto;
+    padding: 1em;
+    overflow-x: scroll;
+    max-height: 50em;
+}
+
+.co_riderimg{
+    width: 10em;
+    height: 10em;
+    padding: 1em;
+    border-radius: 50%;
+}
+
+.co_riders{
+    width: 80%;
+    background-color: #8fb3ef;
+    margin: 0 auto;
+    border-radius: 25px;
+}
+
+#co-rider_pop_up{
+    display: none;
+    position: fixed;
+    width: 80%;
+    margin: 0 auto;
+    background-color: #d95512;
+    padding: 1em;
+    border-radius: 2em;
+    align-content: center;
+    left:0;
+    right:0;
+    text-align:center;
+}
+#co-rider_pop_up> button{
+    background-color: #b74d12;
+    color: #802e0c;
 }

@@ -6,7 +6,7 @@
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
 
-    <title>Travel App</title>
+    <title>Co-Rider</title>
 
     <link rel="icon" sizes="192x192" href="img/car.png" />
     <link rel="apple-touch-icon" href="img/car.png" />
@@ -20,15 +20,19 @@
 
 <nav id="my_navbar" class="nav_buttons">
     <div id="nav_container">
-        <button id = "nav_left"  class="borderlessButtons">
-            <span class="glyphicon glyphicon-search icon_style"></span>
-        </button>
-
-        <label id = "nav_center">*NAME OF APP*</label>
-
-        <button id = "nav_right"  class="borderlessButtons">
-            <span class="glyphicon  glyphicon-user icon_style"></span>
-        </button>
+        <table>
+        <form action="FindRider.html">
+            <button id = "nav_left"  class="borderlessButtons">
+                <span class="glyphicon glyphicon-search icon_style"></span>
+            </button>
+        </form>
+            <label id = "nav_center"><h3>Select a buddy</h3></label>
+        <form action="EditProfile.html">
+            <button id = "nav_right"  class="borderlessButtons">
+                <span class="glyphicon  glyphicon-user icon_style"></span>
+            </button>
+        </form>
+        </table>
     </div>
 </nav>
 <body class="home">
@@ -71,7 +75,6 @@
         </tr>
     </table>
 </div>
-
 </body>
 
 <footer>
