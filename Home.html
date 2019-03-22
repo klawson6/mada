@@ -37,8 +37,9 @@
 </nav>
 <body class="home">
 <br><br>
-    <img src="http://alexmcarthur.co.uk/biggie.png" alt="Happy Man" id = "image"><br><br>
-    <label id = "image_label" for = "image">David Smith | 27</label>
+<div id = "root">
+</div>
+
 <br><br>
 <div id ="status_bar">
     <table id = "wrapper_table">
@@ -78,12 +79,18 @@
 </body>
 
 <footer>
+
+    <!-- Our own Plugins -->
+    <script type="text/babel" src="Home.jsx"></script>
     <!-- JQuery Plugins -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
-    <!-- Our own Plugins -->
-    <script src="Controller.js"></script>
+    <!--React Plugins-->
+    <script src= "https://unpkg.com/react@16/umd/react.production.min.js"></script>
+    <script src= "https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+
 </footer>
 </html>
