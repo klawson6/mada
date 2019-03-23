@@ -316,6 +316,42 @@ input{
 }
 
 /*----------------------------------------------------------------------------------------------------------------*/
+/*                                                "find car" styling                                              */
+html{
+    /*Needed as the map will not automatically occupy space.*/
+    height: 100%;
+}
+
+#map_my_navbar{
+    height: 10%;
+    width: 100%;
+}
+
+#map_home{
+    height: 80%;
+    min-height: 80%;
+    width: 100%;
+}
+
+#map_parent{
+    height: 100%;
+    /*min-height: 80%;*/
+    width: 100%;
+}
+
+#map_container{
+    height: 90%;
+    /*min-height: 80%;*/
+    width: auto;
+    margin: 5% 5%;
+    border-radius: 2em;
+}
+
+
+
+
+
+/*----------------------------------------------------------------------------------------------------------------*/
 /*                                                review style                                                    */
 
 

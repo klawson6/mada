@@ -16,65 +16,33 @@
     <link rel="stylesheet" type="text/css" href="Normalize.css"/>
     <link rel="stylesheet" type="text/css" href="StyleSheet.css"/>
 
+    <style>
+
+
+    </style>
 </head>
 
-<nav id="my_navbar" class="nav_buttons">
+<nav id="map_my_navbar" class="nav_buttons">
     <div id="nav_container">
         <table>
-        <form action="SearchMap.html">
-            <button id = "nav_left"  class="borderlessButtons">
-                <span class="glyphicon glyphicon-search icon_style"></span>
-            </button>
-        </form>
-            <label id = "nav_center"><h3>Select a buddy</h3></label>
-        <form action="EditProfile.html">
-            <button id = "nav_right"  class="borderlessButtons">
-                <span class="glyphicon  glyphicon-user icon_style"></span>
-            </button>
-        </form>
+            <form action="Home.html">
+                <button id = "nav_left"  class="borderlessButtons">
+                    <span class="glyphicon glyphicon-home icon_style"></span>
+                </button>
+            </form>
+            <label id = "nav_center"><h3>Find a Driver</h3></label>
+            <form action="EditProfile.html">
+                <button id = "nav_right"  class="borderlessButtons">
+                    <span class="glyphicon  glyphicon-user icon_style"></span>
+                </button>
+            </form>
         </table>
     </div>
 </nav>
-<body class="home">
-<br><br>
-<div id = "root">
-</div>
 
-<br><br>
-<div id ="status_bar">
-    <table id = "wrapper_table">
-    <div id="status_bar_container">
-        <tr>
-            <td>
-                <div id = "cirlce_yes" class="circle">
-                    <button id = "status_bar_yes"  class="borderlessButtons">
-                        <span class=" glyphicon glyphicon-thumbs-up icon_style"></span>
-                    </button>
-                </div>
-            </td>
-            <td></td>
-            <td>
-                    <div id = "cirlce_no" class="circle">
-                        <button id = "status_bar_no" class="borderlessButtons">
-                            <span class="glyphicon glyphicon-thumbs-down icon_style"></span>
-                        </button>
-                    </div>
-            </td>
-        </tr>
-
-    </div>
-        <tr>
-            <td></td>
-            <td>
-            <div id = "cirlce_redo"  class="circle">
-                <button id = "status_bar_back" class="borderlessButtons">
-                     <span class="glyphicon glyphicon-repeat icon_style"></span>
-                </button>
-            </div>
-         </td>
-            <td></td>
-        </tr>
-    </table>
+<body id="map_home" class="home">
+<div id="map_parent">
+    <div id="map_container"></div>
 </div>
 </body>
 
@@ -82,6 +50,8 @@
 
     <!-- Our own Plugins -->
     <script type="text/babel" src="Home.jsx"></script>
+    <script src="SearchMap.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBlQsPmRWWEbCLqHpdoseu58mWjODqeIaQ&callback=initMap" async defer></script>
     <!-- JQuery Plugins -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
@@ -91,6 +61,7 @@
     <script src= "https://unpkg.com/react@16/umd/react.production.min.js"></script>
     <script src= "https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+
 
 </footer>
 </html>
