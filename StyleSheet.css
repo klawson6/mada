@@ -25,12 +25,16 @@ input, input:before, input:after {
     -moz-user-select: -moz-none;
     -ms-overflow-style: none;
     -o-user-select: none;
+    overscroll-behavior: contain;
 }
 
 body{
      background-color: rgb(31, 39, 52);
-     overflow-x: hidden;
-     overflow-y: hidden;
+     height: 100%;
+     overflow: hidden !important;
+     width: 100%;
+     position: fixed;
+     margin: auto 0;
 }
 
 /*----------------------------------------------------------------------------------------------------------------*/
@@ -63,7 +67,8 @@ body{
     width: 70%;
     margin: 0 auto;
 }
-
+z
+/*----------------------------------------------------------------------------------------------------------------*/
 /*                                                    FORM STYLING                                                     */
 #sign_up > h1{
     font-size: x-large;
@@ -198,10 +203,19 @@ input{
 
 /*----------------------------------------------------------------------------------------------------------------*/
 /*                                                 swiping stuff                                                  */
+body.modal-open {
+    overflow: hidden;
+    position: fixed;
+}
+
+ body.viewport-lg {
+    position: absolute;
+}
 
 #root{
     margin: 0 auto;
     overflow: hidden;
+    object-fit: contain;
 }
 
 .user_profile{
@@ -211,6 +225,8 @@ input{
     background-color: rgb(44, 55, 74);
     box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.2);
     transition : transform 0.3s;
+    overflow: hidden;
+    object-fit: contain;
 }
 
 .card_reject{
@@ -230,6 +246,9 @@ input{
     background-position: right top;
     background-image: url("img/reject.png");
     background-repeat: no-repeat;
+
+    overflow: hidden;
+    object-fit: contain;
 }
 
 .card_accept{
@@ -248,6 +267,9 @@ input{
     background-position: left top;
     background-image: url("img/accept.png");
     background-repeat: no-repeat;
+
+    overflow: hidden;
+    object-fit: contain;
 }
 
 #image_label{
@@ -256,6 +278,8 @@ input{
     background-color: rgb(60, 76, 102);
     border-radius: 25px;
     padding: 1em;
+    overflow: hidden;
+    object-fit: contain;
 }
 
 #image{
@@ -263,6 +287,7 @@ input{
     width: 21em;
     height:21em;
     border-radius: 25px;
+    object-fit: cover;
 }
 
 /*----------------------------------------------------------------------------------------------------------------*/
@@ -392,5 +417,3 @@ input{
 
 /*----------------------------------------------------------------------------------------------------------------*/
 /*                                                review style                                                    */
-
-

@@ -1,6 +1,5 @@
 /*------------------------------------------------------------------------------------------------------------------------------------------------------*/
 /*                                                                                  Swiping*/
-
 let xFirst, yFirst;
 let frontCard = document.getElementById("frontCard");
 let acceptCard = document.getElementById("card_accept");
@@ -124,27 +123,78 @@ class UserProfilePage extends React.Component {
 /*------------------------------------------------------------------------------------------------------------------------------------------------------*/
 /*                                                         Action Listeners*/
 
+let yes_button = document.getElementById("cirlce_yes");
+let no_button = document.getElementById("cirlce_no");
+let redo_button = document.getElementById("cirlce_redo");
+
 document.addEventListener("load",function () {
     updateData("frontCard");
     document.body.scroll = "no";
    // statusCard.style.backgroundImage="url('img/accept.png')";
     //statusCard.style.backgroundPosition= "left top";
-
 })
 
 document.addEventListener("touchstart", startTouchEvent, false);
+
 document.addEventListener("touchmove", getTouchOrientation, false);
+
 document.addEventListener("touchend",function () {
     if (!transform) return; /*Quick Touch*/
     if(!choice)return;
     /*display choice*/
-
-    frontCard.style.backgroundPosition = "right top;";
-    frontCard.style.backgroundImage = "url('img/reject.png')";
-    frontCard.style.backgroundRepeat= "no-repeat";
 
     snapBack();
     transform=null;
     animating = false;
     choice = null;
 },false);
+
+yes_button.addEventListener("click", function () {
+    animating = true;
+
+    acceptCard.style.backgroundColor = "transparent";
+    acceptCard.style.opacity = 0.8;
+
+    let i = 0;
+    let c = setInterval(function () {
+        if(i!=30){
+            clearInterval(c);
+            snapBack();
+            transform=null;
+            animating = false;
+            choice = null;
+
+            acceptCard.style.backgroundColor = "rgb(26, 95, 16)";
+        }
+    },200)
+
+})
+
+no_button.addEventListener("click", function () {
+    animating = true;
+
+    rejectCard.style.backgroundColor = "transparent";
+    rejectCard.style.opacity = 0.8;
+
+    let i = 0;
+    let c = setInterval(function () {
+        if(i!=30){
+            clearInterval(c);
+            snapBack();
+            transform=null;
+            animating = false;
+            choice = null;
+
+            rejectCard.style.backgroundColor = "rgb(131, 3, 12)";
+        }
+    },200)
+
+
+})
+
+redo_button.addEventListener("click", function () {
+
+})
+
+
+
