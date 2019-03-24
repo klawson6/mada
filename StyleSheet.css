@@ -13,6 +13,7 @@ input, input:before, input:after {
 }
 
 *{
+    overflow: hidden;
     align-content: center;
     text-align: center;
     font-size: small;
@@ -22,11 +23,14 @@ input, input:before, input:after {
     -webkit-user-select: none;
     -khtml-user-select: none;
     -moz-user-select: -moz-none;
+    -ms-overflow-style: none;
     -o-user-select: none;
 }
 
 body{
      background-color: rgb(31, 39, 52);
+     overflow-x: hidden;
+     overflow-y: hidden;
 }
 
 /*----------------------------------------------------------------------------------------------------------------*/
@@ -189,9 +193,12 @@ input{
 
 /*----------------------------------------------------------------------------------------------------------------*/
 /*                                                 swiping stuff                                                  */
+
 #root{
     margin: 0 auto;
+    overflow: hidden;
 }
+
 .user_profile{
     border-radius: 25px;
     padding: 1em;
@@ -200,8 +207,11 @@ input{
     box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.2);
     transition : transform 0.3s;
 }
+
 .card_reject{
-    background-color: rgb(185, 4, 16);
+    color: whitesmoke;
+    float: left;
+    background-color: rgb(131, 3, 12);
     position:absolute;
     z-index:100;
     margin-top: 7.3em;
@@ -214,7 +224,8 @@ input{
 }
 
 .card_accept{
-    background-color: rgb(39, 142, 24);
+    color: whitesmoke;
+    background-color: rgb(26, 95, 16);
     position:absolute;
     z-index:100;
     margin-top: 7.3em;
@@ -226,11 +237,6 @@ input{
     opacity: 0;
 }
 
-.card_drag{
-    border-radius: 25px;
-    padding: 1em;
-    display: none;
-}
 #image_label{
     min-width:67%;
     max-width: 90%;
@@ -244,6 +250,14 @@ input{
     width: 25em;
     height:25em;
     border-radius: 25px;
+}
+
+.card_status{
+    width: 400px;
+    height: 400px;
+    background-position: left top;
+    background-image: url("img/accept.png");
+    background-repeat: no-repeat;
 }
 
 /*----------------------------------------------------------------------------------------------------------------*/
@@ -263,6 +277,7 @@ input{
     width: 70%;
     margin: 0 auto;
 }
+
 .editProfileWrapper{
     width: 70%;
     margin: 0 auto;

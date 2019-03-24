@@ -3,11 +3,12 @@
 
 let xFirst, yFirst;
 let frontCard = document.getElementById("frontCard");
-let backCard =   document.getElementById("backCard");
 let acceptCard = document.getElementById("card_accept");
 let rejectCard = document.getElementById("card_reject");
+let statusCard = document.getElementById("card_status");
+let transform = null;
+let choice = null;
 
-let transform = 0;
 
 /* get first touch location*/
 function startTouchEvent(evt){
@@ -27,19 +28,15 @@ function getTouchOrientation(evt) {
     const xSwipe = xFirst - xSecond, ySwipe = yFirst - ySecond;
 
     if(Math.abs(xSwipe)>Math.abs(ySwipe)) {
-       // if (!animating) {
-            if (xSwipe > 0) { /* left swipe */
-                animating = true;
-                console.log("left");
-                transform=transform+ySwipe;
-                animate(false,ySwipe);
-            } else { /* right swipe */
-                animating = true;
-                console.log("right");
-                transform=transform-ySwipe;
-                animate(true,-ySwipe);
-            }
-       // }
+        if (xSwipe > 0) { /* left swipe */
+            animating = true;
+            transform=transform+ySwipe;
+            animate(false,ySwipe);
+        } else { /* right swipe */
+            animating = true;
+            transform=transform-ySwipe;
+            animate(true,-ySwipe);
+        }
     }
 };
 /*------------------------------------------------------------------------------------------------------------------------------------------------------*/
@@ -60,9 +57,11 @@ function animate(movingLeft, pullDelta){
     if(!movingLeft){
         rejectCard.style.transform ="translateX("+ pullDelta +"px) rotate("+ degree +"deg)";
         rejectCard.style.opacity =  rejectOpacity + "";
+        choice="accept";
     }else {
         acceptCard.style.transform ="translateX("+ pullDelta +"px) rotate("+ degree +"deg)";
         acceptCard.style.opacity =  likeOpacity + "";
+        choice="reject";
     }
 }
 
@@ -70,7 +69,9 @@ function snapBack(){
     rejectCard.style.opacity = 0 + "";
     acceptCard.style.opacity = 0 + "";
     frontCard.style.transform = "translate(.3rem) rotate(0deg)";
-    updateData()
+    acceptCard.style.transform = "translate(.3rem) rotate(0deg)";
+    rejectCard.style.transform = "translate(.3rem) rotate(0deg)";
+    updateData();
 }
 
 function updateData() {
@@ -114,6 +115,9 @@ class UserProfilePage extends React.Component {
     );
     }
 }
+
+
+
     ReactDOM.render(
         <UserProfilePage link = {link} alt = {alt} data = {data} />,
         document.getElementById('frontCard')
@@ -124,8 +128,21 @@ class UserProfilePage extends React.Component {
 
 document.addEventListener("load",function () {
     updateData("frontCard");
+    document.body.scroll = "no";
+   // statusCard.style.backgroundImage="url('img/accept.png')";
+    //statusCard.style.backgroundPosition= "left top";
+
 })
 
 document.addEventListener("touchstart", startTouchEvent, false);
 document.addEventListener("touchmove", getTouchOrientation, false);
-document.addEventListener("touchend",snapBack,false);
+document.addEventListener("touchend",function () {
+    if (!transform) return; /*Quick Touch*/
+    if(!choice)return;
+    /*display choice*/
+
+    snapBack();
+    transform=null;
+    animating = false;
+    choice = null;
+},false);
