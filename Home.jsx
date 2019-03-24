@@ -116,8 +116,6 @@ class UserProfilePage extends React.Component {
     }
 }
 
-
-
     ReactDOM.render(
         <UserProfilePage link = {link} alt = {alt} data = {data} />,
         document.getElementById('frontCard')
@@ -140,6 +138,10 @@ document.addEventListener("touchend",function () {
     if (!transform) return; /*Quick Touch*/
     if(!choice)return;
     /*display choice*/
+
+    frontCard.style.backgroundPosition = "right top;";
+    frontCard.style.backgroundImage = "url('img/reject.png')";
+    frontCard.style.backgroundRepeat= "no-repeat";
 
     snapBack();
     transform=null;
