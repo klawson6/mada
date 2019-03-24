@@ -1,5 +1,3 @@
-
-
 /*----------------------------------------------------------------------------------------------------------------*/
 /*                                                 general styling                                              */
 
@@ -9,6 +7,9 @@ input, input:before, input:after {
     -moz-user-select: initial;
     -ms-user-select: initial;
     user-select: initial;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 *{
@@ -23,6 +24,7 @@ input, input:before, input:after {
     -moz-user-select: -moz-none;
     -o-user-select: none;
 }
+
 body{
      background-color: rgb(31, 39, 52);
 }
@@ -44,6 +46,7 @@ body{
     padding-top: 6em;
     padding-bottom: 6em;
 }
+
 #introVideo {
     position: fixed;
     right: 0;
@@ -64,21 +67,25 @@ body{
 #sign_up > h1{
     font-size: x-large;
 }
+
 #sign_up_button{
     font-size: 70%;
     background-color: rgb(44, 56, 76);
     color: azure;
 }
+
 #register_button{
     font-size: 70%;
     background-color:rgb(58, 72, 96);
     color: azure;
 }
+
 #create_account_button{
     font-size: 70%;
     background-color: rgb(44, 56, 76);
     color: azure;
 }
+
 #sign_up{
     background-color: rgb(31, 39, 52);
     font-size: small;
@@ -105,6 +112,7 @@ input{
 
 .home{
     color: azure;
+    overflow: hidden;
 }
 
 .icon_style{
@@ -137,24 +145,6 @@ input{
 #nav_right{
     float:right;
     padding: 1em;
-}
-
-#image{
-    min-width:5em;
-    max-width: 90%;
-    min-height: 15em;
-    max-height: 45em;
-    border-radius: 25px;
-}
-
-#image_label{
-    min-width:67%;
-    max-width: 90%;
-    background-color: rgb(15, 19, 26);
-    border-radius: 25px;
-    padding: 1em;;
-
-
 }
 
 #status_bar{
@@ -198,6 +188,65 @@ input{
 }
 
 /*----------------------------------------------------------------------------------------------------------------*/
+/*                                                 swiping stuff                                                  */
+#root{
+    margin: 0 auto;
+}
+.user_profile{
+    border-radius: 25px;
+    padding: 1em;
+    height: 42rem;
+    background-color: rgb(44, 55, 74);
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.2);
+    transition : transform 0.3s;
+}
+.card_reject{
+    background-color: rgb(185, 4, 16);
+    position:absolute;
+    z-index:100;
+    margin-top: 7.3em;
+    padding: 1em;
+    width: 100%;
+    top:0;
+    border-radius: 25px;
+    height: 42rem;
+    opacity: 0;
+}
+
+.card_accept{
+    background-color: rgb(39, 142, 24);
+    position:absolute;
+    z-index:100;
+    margin-top: 7.3em;
+    padding: 1em;
+    width: 100%;
+    top:0;
+    border-radius: 25px;
+    height: 42rem;
+    opacity: 0;
+}
+
+.card_drag{
+    border-radius: 25px;
+    padding: 1em;
+    display: none;
+}
+#image_label{
+    min-width:67%;
+    max-width: 90%;
+    background-color: rgb(60, 76, 102);
+    border-radius: 25px;
+    padding: 1em;
+}
+
+#image{
+    overflow: hidden;
+    width: 25em;
+    height:25em;
+    border-radius: 25px;
+}
+
+/*----------------------------------------------------------------------------------------------------------------*/
 /*                                                edit profile styling                                            */
 
 .body{
@@ -210,6 +259,10 @@ input{
     color: azure;
 }
 
+.editProfileWrapper{
+    width: 70%;
+    margin: 0 auto;
+}
 .editProfileWrapper{
     width: 70%;
     margin: 0 auto;
@@ -254,6 +307,7 @@ input{
     height: 15em;
     padding: 1em;
 }
+
 .pop_up{
     display: none;
     position: fixed;
@@ -310,6 +364,7 @@ input{
     right:0;
     text-align:center;
 }
+
 #co-rider_pop_up> button{
     background-color: #b74d12;
     color: #802e0c;
