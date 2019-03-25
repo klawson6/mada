@@ -25,7 +25,7 @@
 <nav id="my_navbar" class="nav_buttons">
     <div id="nav_container">
         <table>
-        <form action="SearchMap.html">
+        <form action="FindRider.html">
             <button id = "nav_left"  class="borderlessButtons">
                 <span class="glyphicon glyphicon-search icon_style"></span>
             </button>
