@@ -25,16 +25,11 @@ input, input:before, input:after {
     -moz-user-select: -moz-none;
     -ms-overflow-style: none;
     -o-user-select: none;
-    overscroll-behavior: contain;
 }
 
 body{
      background-color: rgb(31, 39, 52);
      height: 100%;
-     overflow: hidden !important;
-     width: 100%;
-     position: fixed;
-     margin: auto 0;
 }
 
 /*----------------------------------------------------------------------------------------------------------------*/
@@ -127,6 +122,11 @@ input{
 .home{
     color: azure;
     overflow: hidden;
+    overscroll-behavior: contain;
+    overflow: hidden !important;
+    width: 100%;
+    position: fixed;
+    margin: auto 0;
 }
 
 .icon_style{
@@ -288,6 +288,18 @@ body.modal-open {
     height:21em;
     border-radius: 25px;
     object-fit: cover;
+}
+
+#card_moreDetails{
+    position: sticky;
+    display: none;
+    border-radius: 25px;
+    padding: 1em;
+    height: 90%;
+    background-color: rgb(44, 55, 74);
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.2);
+    //overscroll-behavior: ;
+    overflow: scroll !important;
 }
 
 /*----------------------------------------------------------------------------------------------------------------*/

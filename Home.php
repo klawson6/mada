@@ -1,3 +1,7 @@
+<?php
+    include "utilities.php";
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,10 +40,12 @@
     </div>
 </nav>
 <body class="home">
+<div id = "card_moreDetails"></div>
 <div id = "card_status"></div>
 <div id = "frontCard"></div>
 <div id = "card_reject" class = "card_reject"></div>
 <div id = "card_accept" class ="card_accept"></div>
+
 
 <div id ="status_bar">
     <table id = "wrapper_table">
