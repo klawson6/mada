@@ -33,7 +33,7 @@ function swipe(evt) {
           ySwipe = yFirst - ySecond;
 
 
-    if(ySwipe >= 0 && ySwipe <= 3 && xSwipe >= 0 && xSwipe <= 3  && currTime >= 100){
+    if(ySwipe >= 0 && ySwipe <= 6 && xSwipe >= 0 && xSwipe <= 6  && currTime >= 100){
          /*we are holding */
         alert("holding")
       //  revertChanges();
@@ -151,29 +151,57 @@ class DetailedUserProfile extends React.Component {
                 <h1>
                     <label id="image_label" htmlFor="image">{this.props.data}</label>
                 </h1>
-                <div className="editProfileWrapper">
-                <div className={"jdj"}>
-                    <div id="img_container">
-                        <img className="profile_img" src="img/free_img.png" alt="Image 1"></img>
-                        <img className="profile_img" src="img/free_img.png" alt="Image 2"></img>
-                        <img className="profile_img" src="img/free_img.png" alt="Image 3"></img>
-                        <img className="profile_img" src="img/free_img.png" alt="Image 4"></img>
-                        <img className="profile_img" src="img/free_img.png" alt="Image 5"></img>
-                    </div>
-
+                <div id="profileImages" class="profileImages" >
+                    <img className="profile_img" src="img/free_img.png" alt="Image 1"></img>
+                    <img className="profile_img" src="img/free_img.png" alt="Image 2"></img>
+                    <img className="profile_img" src="img/free_img.png" alt="Image 3"></img>
+                    <img className="profile_img" src="img/free_img.png" alt="Image 4"></img>
+                    <img className="profile_img" src="img/free_img.png" alt="Image 5"></img>
                 </div>
-                </div>
-
-                <div className="moreDetails">
+                <div class="moreDetails">
                     <h1>About ME</h1>
-                    <div className="aboutMe">
+                    <div class="aboutMe">
                         <p>I am a friendly person</p>
                         <p>I like long walks on the beach and etc</p>
                     </div>
-                    <div className="revies">
+                    <div class="reviewGroup">
                         <h1>Reviews</h1>
+                        <div className="reviews">
+                            <h4>Cleanliness</h4>
+                            <img className="star" src="img/star.png" alt="emptyStar"></img>
+                            <img className="star" src="img/star_empty.png" alt="emptyStar"></img>
+                            <img className="star" src="img/star_empty.png" alt="emptyStar"></img>
+                            <img className="star" src="img/star_empty.png" alt="emptyStar"></img>
+                            <img className="star" src="img/star_empty.png" alt="emptyStar"></img>
+                        </div>
+                        <div className="reviews">
+                            <h4>Politeness</h4>
+                            <img className="star" src="img/star.png" alt="emptyStar"></img>
+                            <img className="star" src="img/star.png" alt="emptyStar"></img>
+                            <img className="star" src="img/star.png" alt="emptyStar"></img>
+                            <img className="star" src="img/star_empty.png" alt="emptyStar"></img>
+                            <img className="star" src="img/star_empty.png" alt="emptyStar"></img>
+                        </div>
+                        <div className="reviews">
+                            <h4>Ability To Drive</h4>
+                            <img className="star" src="img/star.png" alt="emptyStar"></img>
+                            <img className="star" src="img/star.png" alt="emptyStar"></img>
+                            <img className="star" src="img/star.png" alt="emptyStar"></img>
+                            <img className="star" src="img/star_half.png" alt="emptyStar"></img>
+                            <img className="star" src="img/star_empty.png" alt="emptyStar"></img>
+                        </div>
+                        <div className="reviews">
+                            <h4>Not A Dickhead</h4>
+                            <img className="star" src="img/star.png" alt="emptyStar"></img>
+                            <img className="star" src="img/star.png" alt="emptyStar"></img>
+                            <img className="star" src="img/star.png" alt="emptyStar"></img>
+                            <img className="star" src="img/star.png" alt="emptyStar"></img>
+                            <img className="star" src="img/star.png" alt="emptyStar"></img>
+                        </div>
                     </div>
                 </div>
+                <br></br>
+                <button id="close" className="closeButton" onClick={closePopUp}>Close</button>
             </div>
         );
     }
@@ -187,6 +215,14 @@ class DetailedUserProfile extends React.Component {
 
 /*------------------------------------------------------------------------------------------------------------------------------------------------------*/
 /*                                                         Action Listeners*/
+
+
+function closePopUp(){
+    moreDetailsCard.style.display = "none";
+    frontCard.style.display = "block";
+    acceptCard.style.display = "block";
+    rejectCard.style.display = "block";
+}
 
 let yes_button = document.getElementById("cirlce_yes");
 let no_button = document.getElementById("cirlce_no");
@@ -219,6 +255,8 @@ yes_button.addEventListener("click", function () {
     animating = true;
 
     acceptCard.style.backgroundColor = "transparent";
+    acceptCard.style.backgroundImage="url('img/accept_colour.png')";
+    // background-image: url("img/reject.png");
     acceptCard.style.opacity = 0.8;
 
     let i = 0;
@@ -230,6 +268,7 @@ yes_button.addEventListener("click", function () {
             choice = null;
 
             acceptCard.style.backgroundColor = "rgb(26, 95, 16)";
+            acceptCard.style.backgroundImage= "url('img/accept.png')";
         }
     },200)
 
@@ -239,6 +278,7 @@ no_button.addEventListener("click", function () {
     animating = true;
 
     rejectCard.style.backgroundColor = "transparent";
+    rejectCard.style.backgroundImage="url('img/reject_colour.png')";
     rejectCard.style.opacity = 0.8;
 
     let i = 0;
@@ -250,6 +290,7 @@ no_button.addEventListener("click", function () {
             choice = null;
 
             rejectCard.style.backgroundColor = "rgb(131, 3, 12)";
+            rejectCard.style.backgroundImage="url('img/reject.png')";
         }
     },200)
 
