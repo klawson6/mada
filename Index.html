@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="Normalize.css"/>
     <link rel="stylesheet" type="text/css" href="StyleSheet.css"/>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v3.2&appId=359676834643812&autoLogAppEvents=1"></script>
 
 </head>
 <body class="intro_styling_login">
@@ -23,7 +24,7 @@
     </video>
 
     <div id = "sign_up">
-        <form id = "sign_up_form" class="form-horizontal" action="Home.html">
+        <form id = "sign_up_form" class="form-horizontal" action="Home.php">
                 <h1>Sign In</h1><br>
                 <div class="col-xs-12 col-sm-12">
                     <div class="form-group string required">
@@ -35,11 +36,9 @@
                     <input id="password_input"  type="password" class="form-control" placeholder="Password">
                 </div></div>
                 <br>
-
             <div id = "sign_up_RememberME">
                 <label>Remember Me <input type="checkbox" value="remember_me"></label>
             </div>
-
             <button id="sign_up_button" class="btn btn-lg btn-inverse btn-block" value="LOGIN"  type="submit">
                 Sign In
             </button>
@@ -49,6 +48,15 @@
                 Register
             </button>
             </form>
+        <table>
+            <col />
+            <col span="2" />
+            <tr>
+                <div class="fb-login-button" data-size="medium" data-button-type="login_with" data-auto-logout-link="false" data-use-continue-as="true"></div>
+                <div class="fb-login-button" data-size="medium" data-button-type="login_with" data-auto-logout-link="false" data-use-continue-as="true"></div>
+
+            </tr>
+        </table>
     </div>
 </body>
 

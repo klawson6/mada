@@ -1,3 +1,7 @@
+<?php
+    include "utilities.php";
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,11 +40,13 @@
     </div>
 </nav>
 <body class="home">
-<br><br>
-<div id = "root">
-</div>
+<div id = "card_moreDetails"></div>
+<div id = "card_status"></div>
+<div id = "frontCard"></div>
+<div id = "card_reject" class = "card_reject"></div>
+<div id = "card_accept" class ="card_accept"></div>
 
-<br><br>
+
 <div id ="status_bar">
     <table id = "wrapper_table">
     <div id="status_bar_container">
@@ -61,7 +67,6 @@
                     </div>
             </td>
         </tr>
-
     </div>
         <tr>
             <td></td>
@@ -79,7 +84,6 @@
 </body>
 
 <footer>
-
     <!-- Our own Plugins -->
     <script type="text/babel" src="Home.jsx"></script>
     <!-- JQuery Plugins -->
