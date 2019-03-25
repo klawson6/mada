@@ -10,11 +10,12 @@ function SearchMap() {
         // Dark rider
         // icon: "https://i.imgur.com/Z8kt5nw.png"
         // Light rider
-        icon: "https://i.imgur.com/VWIWNii.png"
+        icon: "https://i.imgur.com/VWIWNii.png",
         // Dark driver
         // icon: "https://i.imgur.com/BlCcQC8.png"
         // Light Driver
         // icon: "https://i.imgur.com/LgWloAM.png"
+        searchRadius: null
     };
 
     var map,
@@ -22,11 +23,8 @@ function SearchMap() {
 
     this.initRider = function () {
         this.setPosDevice(rider);
-        rider.marker = new google.maps.Marker({
-            position: {lat: rider.position.lat, lng: rider.position.lng},
-            map: map,
-            icon: {url: rider.icon, scaledSize: new google.maps.Size(45, 45)}
-        });
+        view.addMarker(rider);
+        this.refreshRadius();
     };
 
     this.init = function () {
@@ -34,6 +32,7 @@ function SearchMap() {
             this.startMap();
             this.initRider();
             this.beginMapUpdater();
+            document.getElementById("sliderVal").innerHTML = view.logSlider(document.getElementById("radiusSlider").value).toFixed(2).toString() + "m";
         } else {
             window.console.log("Geolocation is not supported by this browser.");
         }
@@ -44,15 +43,58 @@ function SearchMap() {
             // Remove rider from map
             rider.marker.setMap(null);
             // Update rider position
-            //view.setPos(rider);
+            //view.setPosDevice(rider);
 
             // Dummy rider movement
             rider.position.lat = rider.position.lat + 0.0001;
             rider.position.lng = rider.position.lng + 0.0001;
-
-            // Add rider back to map
+            // Add the new rider marker to the map
             view.addMarker(rider);
+            // Refresh the search radius to center the rider
+            view.refreshRadius();
         }, 500);
+        document.getElementById("radiusSlider").onchange = function () {
+            document.getElementById("sliderVal").innerHTML = view.logSlider(document.getElementById("radiusSlider").value).toFixed(2).toString() + "m";
+            view.refreshRadius();
+        };
+    };
+
+    this.logSlider = function (value) {
+        // Position on scale will be between 0 and 100
+        var minp = 0;
+        var maxp = 100;
+
+        // The result should be between 500 an 5000
+        var minv = Math.log(500);
+        var maxv = Math.log(5000);
+
+        // Adjustment factor
+        var scale = (maxv - minv) / (maxp - minp);
+
+        return Math.exp(minv + scale * (value - minp));
+
+    };
+
+    this.refreshRadius = function () {
+        if (rider.searchRadius === null) {
+            rider.searchRadius = new google.maps.Circle({
+                map: map,
+                radius: 1000,
+                fillColor: '#4ca7aa',
+                strokeWeight: 1
+            });
+            rider.searchRadius.bindTo('center', rider.marker, 'position');
+        } else {
+            rider.searchRadius.setMap(null);
+            rider.searchRadius = new google.maps.Circle({
+                map: map,
+                radius: this.logSlider(parseInt(document.getElementById("radiusSlider").value)),
+                fillColor: '#4ca7aa',
+                strokeWeight: 1
+            });
+            rider.searchRadius.bindTo('center', rider.marker, 'position');
+        }
+
     };
 
     this.addMarker = function (marker) {
