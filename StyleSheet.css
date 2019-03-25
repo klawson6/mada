@@ -451,3 +451,15 @@ body.modal-open {
 
 /*----------------------------------------------------------------------------------------------------------------*/
 /*                                                review style                                                    */
+
+#reviewBody{
+    text-align: center;
+}
+
+#reviewInput{
+    width: 80%;
+    max-height: 50%;
+    resize: none;
+    border: thick white;
+    padding: 0.3rem;
+}
