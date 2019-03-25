@@ -35,8 +35,8 @@ body{
 /*----------------------------------------------------------------------------------------------------------------*/
 /*                                                 login + register  pages                                        */
 
-.intro_styling_login{
-    width:100%;
+.intro_styling_login {
+    width: 100%;
     height: 100%;
     padding: 15%;
 }
@@ -55,9 +55,9 @@ body{
     bottom: 0;
 }
 
-.back_button{
+.back_button {
     font-size: 70%;
-    background-color:rgb(58, 72, 96);
+    background-color: rgb(58, 72, 96);
     color: azure;
     width: 70%;
     margin: 0 auto;
@@ -65,7 +65,7 @@ body{
 z
 /*----------------------------------------------------------------------------------------------------------------*/
 /*                                                    FORM STYLING                                                     */
-#sign_up > h1{
+#sign_up > h1 {
     font-size: x-large;
 }
 
@@ -77,7 +77,7 @@ z
 
 #register_button{
     font-size: 70%;
-    background-color:rgb(58, 72, 96);
+    background-color: rgb(58, 72, 96);
     color: azure;
 }
 
@@ -102,7 +102,7 @@ z
     border-radius: 25px;
 }
 
-.inputWrapper{
+.inputWrapper {
     padding-left: 5%;
     padding-right: 5%;
     height: 60vh;
@@ -113,13 +113,14 @@ z
     display: none;
 }
 
-input{
+input {
     z-index: 1;
 }
+
 /*----------------------------------------------------------------------------------------------------------------*/
 /*                                                home page styling                                               */
 
-.home{
+.home {
     color: azure;
     overflow: hidden;
     overscroll-behavior: contain;
@@ -129,35 +130,35 @@ input{
     margin: auto 0;
 }
 
-.icon_style{
+.icon_style {
     font-size: 2.5em;
 }
 
-.borderlessButtons{
+.borderlessButtons {
     padding: 0;
     border: none;
     background-color: transparent;
 }
 
-#nav_container{
+#nav_container {
     width: 100%;
-    text-align:center;
+    text-align: center;
     background-color: transparent;
 }
 
-#nav_center{
+#nav_center {
     display: inline-block;
-    margin:0 auto;
+    margin: 0 auto;
 
 }
 
-#nav_left{
-    float:left;
+#nav_left {
+    float: left;
     padding: 1em;
 }
 
-#nav_right{
-    float:right;
+#nav_right {
+    float: right;
     padding: 1em;
 }
 
@@ -176,27 +177,27 @@ input{
     justify-content: center;
 }
 
-.circle{
-    border-radius:50%;
+.circle {
+    border-radius: 50%;
     background-color: #610c0f;
     width: 5em;
     height: 5em;
     padding: 1em;
 }
 
-#cirlce_no{
+#cirlce_no {
     background-color: rgb(185, 4, 16);
- }
+}
 
-#cirlce_yes{
+#cirlce_yes {
     background-color: rgb(39, 142, 24);
 }
 
-#cirlce_redo{
+#cirlce_redo {
     background-color: rgb(47, 49, 228);
 }
 
-#wrapper_table{
+#wrapper_table {
     margin: 0 auto;
     align-content: center;
 }
@@ -327,17 +328,17 @@ body.modal-open {
 /*----------------------------------------------------------------------------------------------------------------*/
 /*                                                edit profile styling                                            */
 
-.body{
+.body {
     align-content: center;
     margin: 0 auto;
     color: azure;
 }
 
-.body > h1,label,p,h2,h3{
+.body > h1, label, p, h2, h3 {
     color: azure;
 }
 
-.editProfileWrapper{
+.editProfileWrapper {
     width: 70%;
     margin: 0 auto;
 }
@@ -349,19 +350,19 @@ body.modal-open {
 
 #address_list{
     overflow-x: scroll;
-    height:10em;
+    height: 10em;
     width: 70%;
     margin: 0 auto;
     padding: 1em;
 }
 
-.address_button{
+.address_button {
     font-size: 60%;
     background-color: rgb(103, 131, 178);
     color: azure;
 }
 
-#add_address{
+#add_address {
     width: 70%;
     font-size: 70%;
     background-color: rgb(83, 105, 143);
@@ -369,19 +370,19 @@ body.modal-open {
     margin: 0 auto;
 }
 
-#addressWrapper{
+#addressWrapper {
     background-color: rgb(36, 45, 60);
     border-radius: 25px;
 }
 
-#img_container{
+#img_container {
     margin: 0 auto;
     padding: 1em;
     overflow-x: scroll;
     max-height: 20em;
 }
 
-.profile_img{
+.profile_img {
     width: 15em;
     height: 15em;
     padding: 1em;
@@ -396,12 +397,12 @@ body.modal-open {
     padding: 1em;
     border-radius: 2em;
     align-content: center;
-    left:0;
-    right:0;
-    text-align:center;
+    left: 0;
+    right: 0;
+    text-align: center;
 }
 
-.pop_up> button{
+.pop_up > button {
     background-color: #b74d12;
     color: #802e0c;
 }
@@ -409,28 +410,28 @@ body.modal-open {
 /*----------------------------------------------------------------------------------------------------------------*/
 /*                                                "find car" styling                                              */
 
-#co_rider_form{
+#co_rider_form {
     margin: 0 auto;
     padding: 1em;
     overflow-x: scroll;
     max-height: 50em;
 }
 
-.co_riderimg{
+.co_riderimg {
     width: 10em;
     height: 10em;
     padding: 1em;
     border-radius: 50%;
 }
 
-.co_riders{
+.co_riders {
     width: 80%;
     background-color: #8fb3ef;
     margin: 0 auto;
     border-radius: 25px;
 }
 
-#co-rider_pop_up{
+#co-rider_pop_up {
     display: none;
     position: fixed;
     width: 80%;
@@ -439,14 +440,119 @@ body.modal-open {
     padding: 1em;
     border-radius: 2em;
     align-content: center;
-    left:0;
-    right:0;
-    text-align:center;
+    left: 0;
+    right: 0;
+    text-align: center;
 }
 
 #co-rider_pop_up> button{
     background-color: #b74d12;
     color: #802e0c;
+}
+
+/*----------------------------------------------------------------------------------------------------------------*/
+/*                                                "find car" styling                                              */
+html {
+    /*Needed as the map will not automatically occupy space.*/
+    height: 100%;
+}
+
+#map_my_navbar {
+    height: 10%;
+    width: 100%;
+}
+
+#map_home {
+    height: 80%;
+    min-height: 80%;
+    width: 100%;
+}
+
+#map_parent {
+    height: 80%;
+    /*min-height: 80%;*/
+    width: 100%;
+}
+
+#map_container {
+    height: 90%;
+    /*min-height: 80%;*/
+    width: auto;
+    margin: 5% 5%;
+    border-radius: 2em;
+}
+
+#sliderVal {
+    height: 5%;
+    width: 75%;
+    margin: 0 12.5%;
+}
+
+#radiusSliderDiv {
+    height: 5%;
+    width: 75%;
+    margin: 0 12.5%;
+    text-align: center;
+}
+
+#searchDiv {
+    height: 10%;
+    width: 30%;
+    margin: 0 35%
+}
+
+#searchButton {
+    width: 100%;
+    height: 100%;
+    border-radius: 2em;
+    opacity: 0.7;
+    background: #4ca7aa;
+    border-style: solid;
+}
+
+#searchButton:focus{
+    outline: 0;
+}
+
+#searchButton:active{
+    background: #77aaa9;
+}
+
+#radiusSlider {
+    -webkit-appearance: none;
+    height: 50%;
+    width: 70%;
+    border-radius: 5px;
+    background: #d3d3d3;
+    outline: none;
+    opacity: 0.7;
+    display: inline-block;
+}
+
+.sliderLims {
+    width: 7.5%;
+    margin: 0 2%;
+    display: inline-block;
+}
+
+/*Slider icon for webkit browsers*/
+#radiusSlider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: #4ca7aa;
+    cursor: pointer;
+}
+
+/*Slider icon for firefox boooo firefox*/
+#radiusSlider::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: #4ca7aa;
+    cursor: pointer;
 }
 
 /*----------------------------------------------------------------------------------------------------------------*/
