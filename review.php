@@ -11,14 +11,6 @@ if (isset($_SESSION['email'])){
     $userEmail = $_SESSION['email'];
 }
 
-if (isset($_SESSION['rider'])){
-    $rider = true;
-    $driver = false;
-} elseif (isset($_SESSION['driver'])){
-    $driver = true;
-    $rider = false;
-}
-
 $dbconn = dbconn();
 
 ?>
@@ -41,54 +33,15 @@ $dbconn = dbconn();
     <link rel="stylesheet" type="text/css" href="StyleSheet.css"/>
 
 </head>
-<body id="reviewBody">
+<body>
 <b>Review</b>
-<form method="post" name="review">
-<!--
 <textarea id="reviewInput" name="reviewInput" placeholder="<?php echo $loggedIn ? "Write your review here..." : "Sign in to leave a review..."?>" style="height:200px" <?php echo $loggedIn ? "" : "disabled"?>></textarea>
--->
-<p>
-</p>
-
-<div id="stars">
-
-</div>
-    <input class="btn btn-outline-dark" type="submit" name="submit" <?php //echo $loggedIn ? "" : "disabled"?>>
-</form>
 
 <div class="form-group">
-
-<?php
-    if (isset($_POST['submit']) && isset($_SESSION['email'])){
-    $repeatReviewSQL = $dbconn->prepare("SELECT * FROM Reviews WHERE email = ?");
-    $repeatReviewSQL->bind_param("s", $_SESSION['email']);
-    $repeatReviewSQL->execute();
-    $repeatCheck = $repeatReviewSQL->get_result();
-        if(mysqli_num_rows($repeatCheck) === 0){
-        $inputReview = trim($_POST['reviewInput']);
-        $stars = $_POST['stars'];
-        $id = null;
-        if ($driver){
-            $reviewInsert = $dbconn->prepare("INSERT INTO reviewsAboutRiders(Reviews.review_id, Reviews.email, Reviews.review, Reviews.star, Reviews.company_id) VALUES (?,?,?,?,?)");
-            $reviewInsert->bind_param("issii", $id, $userEmail, $inputReview, $stars, $compID);
-            $reviewInsert->execute();
-        } elseif ($rider) {
-            $reviewInsert = $dbconn->prepare("INSERT INTO reviewsAboutDrivers(Reviews.review_id, Reviews.email, Reviews.review, Reviews.star, Reviews.company_id) VALUES (?,?,?,?,?)");
-            $reviewInsert->bind_param("issii", $id, $userEmail, $inputReview, $stars, $compID);
-            $reviewInsert->execute();
-        }
-    }
-    } else { ?>
-        <?php
-    }
-?>
 
 </body>
 
 <footer>
-
-    <!-- Our own Plugins -->
-    <script type="text/babel" src="review.jsx"></script>
 
     <!-- JQuery Plugins -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
