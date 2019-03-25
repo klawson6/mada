@@ -1,0 +1,169 @@
+html {
+    /*Needed as the map will not automatically occupy space.*/
+    height: 100%;
+}
+
+#map_my_navbar {
+    height: 10%;
+    width: 100%;
+}
+
+#map_home {
+    height: 80%;
+    min-height: 80%;
+    width: 100%;
+    color: white;
+    text-align: center;
+    align-content: center;
+}
+
+#map_parent {
+    height: 80%;
+    /*min-height: 80%;*/
+    width: 100%;
+}
+
+#map_container {
+    height: 90%;
+    /*min-height: 80%;*/
+    width: auto;
+    margin: 5% 5%;
+    border-radius: 2em;
+}
+
+#sliderVal {
+    height: 5%;
+    width: 75%;
+    margin: 0 12.5%;
+
+}
+
+#radiusSliderDiv {
+    height: 5%;
+    width: 75%;
+    margin: 0 12.5%;
+    text-align: center;
+}
+
+#searchDiv {
+    height: 10%;
+    width: 30%;
+    margin: 0 35%
+}
+
+#searchButton {
+    width: 100%;
+    height: 100%;
+    border-radius: 2em;
+    opacity: 0.7;
+    background: #4ca7aa;
+    border-style: solid;
+}
+
+#searchButton:focus{
+    outline: 0;
+}
+
+#searchButton:active{
+    background: #77aaa9;
+}
+
+#radiusSlider {
+    -webkit-appearance: none;
+    height: 50%;
+    width: 70%;
+    border-radius: 5px;
+    background: #d3d3d3;
+    outline: none;
+    opacity: 0.7;
+    display: inline-block;
+}
+
+.sliderLims {
+    width: 7.5%;
+    margin: 0 2%;
+    display: inline-block;
+}
+
+/*Slider icon for webkit browsers*/
+#radiusSlider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: #4ca7aa;
+    cursor: pointer;
+}
+
+/*Slider icon for firefox boooo firefox*/
+#radiusSlider::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: #4ca7aa;
+    cursor: pointer;
+}
+
+/*----------------------------------------------------------------------------------------------------------------*/
+/*                                                 general styling                                              */
+
+*{
+    font-family: "Lucida Console", Monaco, monospace;
+    user-select: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: -moz-none;
+    -ms-overflow-style: none;
+    -o-user-select: none;
+}
+
+body{
+    background-color: rgb(31, 39, 52);
+}
+
+.icon_style{
+    font-size: 2.5em;
+}
+
+.borderlessButtons{
+    padding: 0;
+    border: none;
+    background-color: transparent;
+}
+
+#nav_container{
+    width: 100%;
+    text-align:center;
+    background-color: transparent;
+}
+
+#nav_center{
+    display: inline-block;
+    margin:0 auto;
+
+}
+
+#nav_left{
+    float:left;
+    padding: 1em;
+}
+
+#nav_right{
+    float:right;
+    padding: 1em;
+}
+
+#status_bar{
+    /* background-color: rgb(52, 64, 87);*/
+    min-width:10em;
+    max-width: 80%;
+    align-content: center;
+    margin: 0 auto;
+    border-radius: 25px;
+    padding: 1em;
+
+    padding-top: 2em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
