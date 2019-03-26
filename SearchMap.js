@@ -4,6 +4,47 @@
 var view = null;
 
 function SearchMap() {
+    var contentString = '<div id="testProfile">'+
+        '<div id="profilePicTest">'+
+        '<img id="profilePicTestPic" src="img/woman.jpeg"/>'+
+        '</div>'+
+        '<div id="profileInfoTest">'+
+        '<span id="nameTest"></span>'+
+        '<div class="ratings" id="rating1">'+
+        '<span class= "ratingText" id="rating1text">Personality</span>'+
+        '</div>'+
+        '<div>'+
+        '<img class="ratingPic" src="img/star.png"/>'+
+        '<img class="ratingPic" src="img/star.png"/>'+
+        '<img class="ratingPic" src="img/star.png"/>'+
+        '<img class="ratingPic" src="img/star.png"/>'+
+        '<img class="ratingPic" src="img/star.png"/>'+
+        '</div>'+
+        '<div class="ratings" id="rating2">'+
+        '<span class= "ratingText" id="rating2text">Driving Ability</span>'+
+        '</div>'+
+        '<div>'+
+        '<img class="ratingPic" src="img/star.png"/>'+
+        '<img class="ratingPic" src="img/star.png"/>'+
+        '<img class="ratingPic" src="img/star.png"/>'+
+        '<img class="ratingPic" src="img/star.png"/>'+
+        '<img class="ratingPic" src="img/star.png"/>'+
+        '</div>'+
+        '<div class="ratings" id="rating3">'+
+        '<span class= "ratingText" id="rating3text">Cleanliness</span>'+
+        '</div>'+
+        '<div>'+
+        '<img class="ratingPic" src="img/star.png"/>'+
+        '<img class="ratingPic" src="img/star.png"/>'+
+        '<img class="ratingPic" src="img/star.png"/>'+
+        '<img class="ratingPic" src="img/star.png"/>'+
+        '<img class="ratingPic" src="img/star.png"/>'+
+        '</div>'+
+        '</div>'+
+        '</div>';
+
+    var infowindow = null;
+
     var rider = {
         marker: null,
         position: {lat: 0, lng: 0},
@@ -47,7 +88,7 @@ function SearchMap() {
             email: "nellzy2@gmail.com",
             marker: null,
             icon: "https://i.imgur.com/LgWloAM.png",
-            position: {lat: 55.860234, lng: -4.239542}
+            position: {lat: 55.852034, lng: -4.239542}
         },
         {
             email: "chrstph@yahoo.got",
@@ -62,7 +103,7 @@ function SearchMap() {
 
     this.initRider = function () {
         this.setPosDevice(rider);
-        view.addMarker(rider, 35, 35);
+        view.addMarker(rider, 35, 35, false);
         this.refreshRadius();
     };
 
@@ -83,6 +124,10 @@ function SearchMap() {
             document.getElementById("searchDiv").removeChild(document.getElementById("searchButton"));
             view.getDrivers();
         });
+        infowindow = new google.maps.InfoWindow({
+            content: contentString,
+            maxWidth: 150
+        });
     };
 
     this.getDrivers = function () {
@@ -93,7 +138,7 @@ function SearchMap() {
             if (xmlhttp.readyState === 4) {
                 if (xmlhttp.status === 200) {
                     load(xmlhttp.responseText);
-                    // window.console.log(xmlhttp.responseText);
+                    window.console.log(xmlhttp.responseText);
                 } else {
                     window.console.log("Error " + xmlhttp.status);
                 }
@@ -103,21 +148,32 @@ function SearchMap() {
     };
 
     this.loadDrivers = function (json) {
+        // window.console.log(json);
         var emailArray = JSON.parse(json);
-        // view.addMarker(exampleDrivers[0], 35, 20);
-        // view.addMarker(exampleDrivers[1], 35, 20);
-        // view.addMarker(exampleDrivers[2], 35, 20);
-        // view.addMarker(exampleDrivers[3], 35, 20);
-        // view.addMarker(exampleDrivers[4], 35, 20);
-        // view.addMarker(exampleDrivers[5], 35, 20);
+        // view.addMarker(exampleDrivers[0], 35, 20, true);
+        // view.addMarker(exampleDrivers[1], 35, 20, true);
+        // view.addMarker(exampleDrivers[2], 35, 20, true);
+        // view.addMarker(exampleDrivers[3], 35, 20, true);
+        // view.addMarker(exampleDrivers[4], 35, 20, true);
+        // view.addMarker(exampleDrivers[5], 35, 20, true);
         for (var i = 0; i < emailArray.length; i++) {
             for (var j = 0; j < exampleDrivers.length; j++) {
                 if (emailArray[i] === exampleDrivers[j].email) {
-                    view.addMarker(exampleDrivers[j], 35, 20);
+                    if (view.checkDriverLoc(exampleDrivers[j])) {
+                        view.addMarker(exampleDrivers[j], 35, 20, true);
+                    }
                 }
             }
         }
         view.doneLoad();
+    };
+
+    this.checkDriverLoc = function (driver) {
+        var ky = 40000 / 360;
+        var kx = Math.cos(Math.PI * rider.position.lat / 180.0) * ky;
+        var dx = Math.abs(rider.position.lng - driver.position.lng) * kx;
+        var dy = Math.abs(rider.position.lat - driver.position.lat) * ky;
+        return Math.sqrt(dx * dx + dy * dy) <= rider.searchRadius.radius/1000;
     };
 
     this.doneLoad = function () {
@@ -147,7 +203,7 @@ function SearchMap() {
             //rider.position.lat = rider.position.lat + 0.0001;
             //rider.position.lng = rider.position.lng + 0.0001;
             // Add the new rider marker to the map
-            view.addMarker(rider, 35, 35);
+            view.addMarker(rider, 35, 35, false);
             // Refresh the search radius to center the rider
             view.refreshRadius();
         }, 500);
@@ -195,12 +251,24 @@ function SearchMap() {
 
     };
 
-    this.addMarker = function (marker, size1, size2) {
+    this.addMarker = function (marker, size1, size2, driver) {
         marker.marker = new google.maps.Marker({
             position: {lat: marker.position.lat, lng: marker.position.lng},
             map: map,
             icon: {url: marker.icon, scaledSize: new google.maps.Size(size1, size2)}
         });
+        if (driver){
+            marker.marker.addListener('click', function () {
+                // var profile = document.createElement("img");
+                // img.setAttribute("id", "loading");
+                // img.setAttribute("src", "https://www.hotelnumberfour.com/wp-content/uploads/2017/09/loading.gif")
+                // document.getElementById("searchDiv").appendChild(img);
+                // document.getElementById("searchDiv").removeChild(document.getElementById("searchButton"));
+                // view.getDrivers();
+                infowindow.open(map, marker.marker);
+
+            });
+        }
     };
 
     this.setPosDevice = function (marker) {

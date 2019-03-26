@@ -108,6 +108,36 @@ html {
     cursor: pointer;
 }
 
+/*#testProfile{*/
+    /*background: #4ca7aa;*/
+/*}*/
+/*#testProfile{*/
+    /*width: 25%;*/
+    /*height: 25%;*/
+    /*!*margin: 5%;*!*/
+    /*background: #4ca7aa;*/
+    /*border-radius: 2em;*/
+/*}*/
+
+/*#profilePicTest{*/
+    /*width: 100%;*/
+    /*height: 25%;*/
+/*}*/
+
+#profilePicTestPic{
+    width: 100%;
+    border-radius: 50%;
+}
+
+.ratingPic{
+    width: 20%;
+}
+
+.ratingText{
+    color: black;
+    width: 100%;
+}
+
 /*----------------------------------------------------------------------------------------------------------------*/
 /*                                                 general styling                                              */
 
