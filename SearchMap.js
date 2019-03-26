@@ -93,7 +93,7 @@ function SearchMap() {
             if (xmlhttp.readyState === 4) {
                 if (xmlhttp.status === 200) {
                     load(xmlhttp.responseText);
-                    // window.console.log(xmlhttp.responseText);
+                    window.console.log(xmlhttp.responseText);
                 } else {
                     window.console.log("Error " + xmlhttp.status);
                 }
@@ -103,6 +103,7 @@ function SearchMap() {
     };
 
     this.loadDrivers = function (json) {
+       // window.console.log(json);
         var emailArray = JSON.parse(json);
         // view.addMarker(exampleDrivers[0], 35, 20);
         // view.addMarker(exampleDrivers[1], 35, 20);
