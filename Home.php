@@ -1,5 +1,48 @@
 <?php
     include "utilities.php";
+
+    class User{
+        public $email;
+        public $name;
+        public $age;
+        public $coverImg;
+        public $photo1;
+        public $photo2;
+        public $photo3;
+        public $photo4;
+        public $bio;
+    };
+
+    function getAllUsers(){
+        $dbconn = dbconn();
+
+        $result = $dbconn->query("SELECT * FROM UserInfo");
+
+        $users = array();
+        $user = new User();
+        if($result->num_rows > 0){
+            while($row = $result->fetch_assoc()) {
+                $user->name = $row["forename"]." ".$row["surname"];
+                $user->bio = $row["bio"];
+                $user->age = 18; //todo add proper age calculator
+                $user->email =  $row["email"];
+                array_push($users,$user);
+            }
+        }
+        $dbconn->close();
+
+        return $users;
+    }
+
+    function selectUser(){
+        header('Content-Type: application/json');
+        $users = getAllUsers();
+        $index = floor(rand(0,sizeof($users)));
+        $selected = $users[$index];
+
+        $_POST( json_encode($selected));
+        return $selected;
+    }
 ?>
 
 <!DOCTYPE html>
@@ -87,7 +130,7 @@
     <!-- Our own Plugins -->
     <script type="text/babel" src="Home.jsx"></script>
     <!-- JQuery Plugins -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 

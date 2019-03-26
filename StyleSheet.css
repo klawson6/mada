@@ -306,6 +306,14 @@ body.modal-open {
     overflow-x: scroll;
     width: 100%;
     height: 20em;
+    display: inline-block;
+    white-space: nowrap;
+}
+
+.profileI{
+    width: 20em;
+    height: 20em;
+    padding: 1em;
 }
 
 .star{
@@ -323,7 +331,6 @@ body.modal-open {
     border-radius: 25px;
     height: 2em;
 }
-
 /*----------------------------------------------------------------------------------------------------------------*/
 /*                                                edit profile styling                                            */
 

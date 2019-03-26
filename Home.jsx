@@ -104,20 +104,20 @@ function revertChanges(){
 
 function updateData() {
     if (animating) {
-        let a, b, c;
-        if (!change) {
-            a = "img/woman.jpeg";
-            b = "Happy Lady";
-            c = "Anna McD | 20";
-        } else {
-            a = "img/man1.jpeg";
-            b = "Man";
-            c = "Kenny McKennelstoun| 24";
-        }
-        link = a;
-        alt = b;
-        data = c;
-        change = !change;
+        jQuery.ajax(
+            {
+                type:"GET",
+                url: "Home.php",
+                dataType: 'json',
+                data: {action: 'selectUser'},
+                success: function (obj) {
+                    let user = obj.result;
+                    data = user.name + " | " + user.age;
+
+                }
+            });
+
+
 
         ReactDOM.render(
             <UserProfilePage link={link} alt={alt} data={data} />,
@@ -152,11 +152,13 @@ class DetailedUserProfile extends React.Component {
                     <label id="image_label" htmlFor="image">{this.props.data}</label>
                 </h1>
                 <div id="profileImages" class="profileImages" >
-                    <img className="profile_img" src="img/free_img.png" alt="Image 1"></img>
-                    <img className="profile_img" src="img/free_img.png" alt="Image 2"></img>
-                    <img className="profile_img" src="img/free_img.png" alt="Image 3"></img>
-                    <img className="profile_img" src="img/free_img.png" alt="Image 4"></img>
-                    <img className="profile_img" src="img/free_img.png" alt="Image 5"></img>
+
+                    <img className="profileI" src="img/man1.jpeg" alt="Image 1"></img>
+                    <img className="profileI" src="img/free_img.png" alt="Image 2"></img>
+                    <img className="profileI" src="img/free_img.png" alt="Image 3"></img>
+                    <img className="profileI" src="img/free_img.png" alt="Image 4"></img>
+                    <img className="profileI" src="img/free_img.png" alt="Image 5"></img>
+
                 </div>
                 <div class="moreDetails">
                     <h1>About ME</h1>
@@ -189,14 +191,6 @@ class DetailedUserProfile extends React.Component {
                             <img className="star" src="img/star.png" alt="emptyStar"></img>
                             <img className="star" src="img/star_half.png" alt="emptyStar"></img>
                             <img className="star" src="img/star_empty.png" alt="emptyStar"></img>
-                        </div>
-                        <div className="reviews">
-                            <h4>Not A Dickhead</h4>
-                            <img className="star" src="img/star.png" alt="emptyStar"></img>
-                            <img className="star" src="img/star.png" alt="emptyStar"></img>
-                            <img className="star" src="img/star.png" alt="emptyStar"></img>
-                            <img className="star" src="img/star.png" alt="emptyStar"></img>
-                            <img className="star" src="img/star.png" alt="emptyStar"></img>
                         </div>
                     </div>
                 </div>
@@ -231,8 +225,6 @@ let redo_button = document.getElementById("cirlce_redo");
 document.addEventListener("load",function () {
     updateData("frontCard");
     document.body.scroll = "no";
-   // statusCard.style.backgroundImage="url('img/accept.png')";
-    //statusCard.style.backgroundPosition= "left top";
 })
 
 document.addEventListener("touchstart", startTouchEvent, false);
