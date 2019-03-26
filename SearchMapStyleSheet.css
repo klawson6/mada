@@ -79,6 +79,10 @@ html {
     display: inline-block;
 }
 
+#loading{
+    max-height: 100%;
+}
+
 .sliderLims {
     width: 7.5%;
     margin: 0 2%;
