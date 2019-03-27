@@ -26,16 +26,8 @@ class ReviewAdding extends React.Component {
                             <img className="star" src="img/star.png" alt="emptyStar"></img>
                             <img className="star" src="img/star_half.png" alt="emptyStar"></img>
                             <img className="star" src="img/star_empty.png" alt="emptyStar"></img>
+                        </div>g className="star" src="img/star.png" alt="emptyStar"></img>
                         </div>
-                        <div className="reviews">
-                            <h4>Not A Dickhead</h4>
-                            <img className="star" src="img/star.png" alt="emptyStar"></img>
-                            <img className="star" src="img/star.png" alt="emptyStar"></img>
-                            <img className="star" src="img/star.png" alt="emptyStar"></img>
-                            <img className="star" src="img/star.png" alt="emptyStar"></img>
-                            <img className="star" src="img/star.png" alt="emptyStar"></img>
-                        </div>
-                    </div>
         );
     }
 }
