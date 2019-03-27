@@ -33,11 +33,8 @@ function swipe(evt) {
           ySwipe = yFirst - ySecond;
 
 
-    if(ySwipe >= 0 && ySwipe <= 6 && xSwipe >= 0 && xSwipe <= 6  && currTime >= 100){
+    if(ySwipe >= 0 && ySwipe <= 100 && xSwipe >= 0 && xSwipe <= 100  && currTime >= 100){
          /*we are holding */
-        alert("holding")
-      //  revertChanges();
-// display: none;
 
         ReactDOM.render(
             <DetailedUserProfile link = {link} alt = {alt} data = {data} />,
@@ -104,25 +101,33 @@ function revertChanges(){
 
 function updateData() {
     if (animating) {
+
         jQuery.ajax(
             {
-                type:"GET",
-                url: "Home.php",
+                type:"post",
+                url: "HomeUtilities.php",
                 dataType: 'json',
-                data: {action: 'selectUser'},
-                success: function (obj) {
-                    let user = obj.result;
-                    data = user.name + " | " + user.age;
+                data: {"update":"1"},
+                success: function (response) {
 
+                    console.log(response);
+                    let user = response;
+                    data = user.name + " | " + user.age;
+                    alt = user.name;
+
+
+                    ReactDOM.render(
+                        <UserProfilePage link={link} alt={alt} data={data} />,
+                        document.getElementById("frontCard")
+                    );
+                },
+                error: function(e){
+                    console.log('error');
+                    console.log(e);
                 }
             });
 
 
-
-        ReactDOM.render(
-            <UserProfilePage link={link} alt={alt} data={data} />,
-            document.getElementById("frontCard")
-        );
     }
 };
 
@@ -223,7 +228,31 @@ let no_button = document.getElementById("cirlce_no");
 let redo_button = document.getElementById("cirlce_redo");
 
 document.addEventListener("load",function () {
-    updateData("frontCard");
+    jQuery.ajax(
+        {
+            type:"post",
+            url: "HomeUtilities.php",
+            dataType: 'json',
+            data: {"update":"1"},
+            success: function (response) {
+                console.log(response);
+                let user = response;
+                data = user.name + " | " + user.age;
+                alt = user.name;
+
+            },
+            error: function(e){
+                console.log('error');
+                console.log(e);
+            }
+        });
+
+    ReactDOM.render(
+        <UserProfilePage link={link} alt={alt} data={data} />,
+        document.getElementById("frontCard")
+    );
+
+
     document.body.scroll = "no";
 })
 
