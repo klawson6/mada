@@ -5,8 +5,10 @@ let frontCard = document.getElementById("frontCard");
 let acceptCard = document.getElementById("card_accept");
 let rejectCard = document.getElementById("card_reject");
 let moreDetailsCard = document.getElementById("card_moreDetails");
+let slider = document.getElementById("slider_container");
 let choice = null;
 let startTime = null;
+
 
 
 /* get first touch location*/
@@ -111,7 +113,7 @@ function getData() {
                 data: {"update": "1"},
                 success: function (response) {
 
-                    console.log(response);
+                   // console.log(response);
                     let user = response;
                     data = user.name + " | " + user.age;
                     alt = user.name;
@@ -256,15 +258,24 @@ function closePopUp(){
     popUP = false;
 }
 
+function postChange(change){
+    jQuery.ajax(
+        {
+            type: "post",
+            url: "HomeUtilities.php",
+            dataType: 'json',
+            data: {"change": change}
+        });
+}
+
+
 let yes_button = document.getElementById("cirlce_yes");
 let no_button = document.getElementById("cirlce_no");
 let redo_button = document.getElementById("cirlce_redo");
 
 document.addEventListener("load",function () {
-
     getData();
     document.body.scroll = "no";
-
 })
 
 document.addEventListener("touchstart", startTouchEvent, false);
@@ -282,6 +293,42 @@ document.addEventListener("touchend",function () {
         yFirst = null;
     }
 },false);
+
+slider.addEventListener("click", function () {
+
+    let button = document.getElementById("isDriverSlider");
+    let title = document.getElementById("headder");
+
+    if(button.style.cssFloat == "left"){
+        button.style.cssFloat = "right";
+
+        button.style.backgroundColor = "rgb(131, 12, 127)";
+        slider.style.backgroundColor = "rgb(98, 9, 95)";
+        button.style.borderColor = "rgb(106, 10, 103)";
+        title.innerText = "Select a Driver"
+
+        postChange("driver");
+
+    }else{
+        button.style.cssFloat = "left";
+
+        /*green*/
+        button.style.backgroundColor = "rgb(31, 138, 82)";
+        slider.style.backgroundColor = "rgb(14, 70, 45)";
+        button.style.borderColor = "rgb(25, 112, 66)";
+        title.innerText = "Select a Rider"
+
+        postChange("rider");
+
+    }
+
+    getData();
+    ReactDOM.render(
+        <UserProfilePage link={coverImg} alt={alt} data={data}/>,
+        document.getElementById('frontCard')
+    );
+
+});
 
 yes_button.addEventListener("click", function () {
     animating = true;

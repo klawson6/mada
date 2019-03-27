@@ -8,9 +8,18 @@
 
 include "utilities.php";
 
-if(isset($_POST['update'])){
+$choice = "rider";
 
-    echo selectUser();
+if(isset($_POST['update'])){
+    echo selectUser($choice);
+}
+
+if(isset($_POST['change'])){
+    if($_POST['change'] == "driver"){
+        $choice = "driver";
+    }else{
+        $choice = "rider";
+    }
 }
 
 
@@ -29,10 +38,20 @@ class User{
 $current = new User();
 $previousUser =$current;
 
-function getAllUsers(){
+function getAllUsers($choice){
     $dbconn = dbconn();
 
-    $result = $dbconn->query("SELECT * FROM UserInfo");
+
+
+    $sql = "SELECT * FROM UserInfo WHERE Rider = 1";
+
+    if($choice == "driver"){
+        $sql = "SELECT * FROM UserInfo  WHERE Driver = 1";
+    }
+
+
+
+    $result = $dbconn->query($sql);
     $users = array();
     $user = new User();
     if($result->num_rows > 0){
@@ -46,8 +65,10 @@ function getAllUsers(){
             $user->email =  $row["email"];
 
             $conn = dbconn();
+
             $photoStmt = $conn->query("SELECT * FROM Photo WHERE email = '".$row['email']."'");
             $loop = 0;
+
             if($photoStmt->num_rows > 0) {
                 while ($photoRow = $photoStmt->fetch_assoc()) {
                     if($loop == 0){
@@ -101,9 +122,9 @@ function getAllUsers(){
 }
 
 
-function selectUser(){
+function selectUser($choice){
     header('Content-Type: application/json');
-    $users = getAllUsers();
+    $users = getAllUsers($choice);
     $index = floor(rand(0,sizeof($users)-1));
 
     $current = $users[$index];
