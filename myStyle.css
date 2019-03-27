@@ -1,0 +1,173 @@
+
+*{
+    align-content: center;
+    font-size: small;
+    text-align: center;
+    font-family: "Lucida Console", Monaco, monospace;
+    user-select: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: -moz-none;
+    -o-user-select: none;
+}
+
+#sign_up > h1{
+    font-size: x-large;
+}
+
+.intro_styling_regi{
+    width: 100%;
+    height: 100%;
+    padding: 2em 15% 3em 15%;
+    text-align: center;
+}
+
+.styling_edit{
+    width: 100%;
+    height: 100%;
+    padding: 0.5em 15% 0.5em 15%;
+    text-align: center;
+    margin: 0 auto;
+    background-color: rgb(31, 39, 52);
+    color: azure;
+}
+
+#introVideo {
+    position: fixed;
+    min-height: 100%;
+    min-width: 100%;
+    right: 0;
+    bottom: 0;
+}
+
+#sign_up {
+    background-color: rgb(31, 39, 52);
+    font-size: small;
+    color: azure;
+    padding: 20px;
+    width:  70%;
+    height: 92vh;
+    display: block;
+    text-align: center;
+    position: fixed;
+    border-radius: 25px;
+
+}
+
+.inputWrapper {
+    padding-left: 5%;
+    padding-right: 5%;
+    height: 49vh;
+    overflow-y: scroll;
+}
+
+.inputWrapper::-webkit-scrollbar {
+    display: none;
+}
+
+.back_button{
+    font-size: 70%;
+    background-color:rgb(58, 72, 96);
+    color: azure;
+    width: 90%;
+    margin: 0 auto;
+}
+
+.login_button{
+    font-size: 70%;
+    background-color:rgb(58, 72, 96);
+    color: azure;
+    width: 90%;
+    margin: 0 auto;
+}
+
+.create_account_button{
+    font-size: 70%;
+    background-color: rgb(44, 56, 76);
+    color: azure;
+    width: 90%;
+    margin: 0 auto;
+}
+
+#agreeTerms {
+    height: 2.5vh;
+    width: 2.5vw;
+    display: inline;
+    top: -10px;
+}
+
+.pop_up {
+    display: none;
+    position: fixed;
+    width: 80%;
+    margin: 0 auto;
+    background-color: slategrey;
+    padding: 1em;
+    border-radius: 25px;
+    align-content: center;
+    left: 0;
+    right: 0;
+    text-align: center;
+}
+
+#editAddress {
+    height: 73%;
+}
+
+#changePassword{
+    height: 42%;
+}
+
+.pop_up_button{
+    font-size: 70%;
+    background-color: darkslateblue;
+    color: azure;
+    width: 90%;
+    margin: 0 auto;
+}
+
+#address_input_wrapper{
+    height: 38vh;
+}
+
+#password_input_wrapper{
+    height: 16vh;
+    overflow-y: auto;
+}
+
+.editProfileWrapper{
+    width: 70%;
+    margin: 0 auto;
+}
+
+.profile_img{
+    width: 25vw;
+    height: 25vw;
+    padding: 2.5vw;
+    display: inline-block;
+}
+
+.profileImages {
+    margin: 0 auto;
+    float: left;
+    display: table;
+    text-align: center;
+}
+
+#addressesWrapper {
+    background-color: rgb(36, 45, 60);
+    border-radius: 25px;
+    padding: auto;
+}
+
+#address_list {
+    overflow-y: scroll;
+    height: 20vh;
+    width: 70%;
+    margin: 0 auto;
+    padding: 1em;
+}
+
+#address_list::-webkit-scrollbar {
+    display: none;
+}

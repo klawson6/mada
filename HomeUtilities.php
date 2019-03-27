@@ -10,8 +10,19 @@ include "utilities.php";
 
 $choice = "rider";
 
+
+if(!loggedIn()){
+    header("Location: Index.html", true, 301);
+    exit();
+}
+
 if(isset($_POST['update'])){
     echo selectUser($choice);
+}
+
+if(isset($_POST['liked'])){
+
+
 }
 
 if(isset($_POST['change'])){
@@ -21,7 +32,6 @@ if(isset($_POST['change'])){
         $choice = "rider";
     }
 }
-
 
 class User{
     public $email;
@@ -37,18 +47,21 @@ class User{
 
 $current = new User();
 $previousUser =$current;
+$current = $_COOKIE[''];
+
+function addLinkedUser($user){
+
+}
+
 
 function getAllUsers($choice){
     $dbconn = dbconn();
 
-
-
-    $sql = "SELECT * FROM UserInfo WHERE Rider = 1";
+    $sql = "SELECT * FROM UserInfo WHERE Rider = 1 ";
 
     if($choice == "driver"){
         $sql = "SELECT * FROM UserInfo  WHERE Driver = 1";
     }
-
 
 
     $result = $dbconn->query($sql);
