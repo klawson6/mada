@@ -33,11 +33,12 @@ function swipe(evt) {
           ySwipe = yFirst - ySecond;
 
 
-    if(ySwipe >= 0 && ySwipe <= 100 && xSwipe >= 0 && xSwipe <= 100  && currTime >= 100){
+    if(ySwipe >= 0 && ySwipe <= 100 && xSwipe >= 0 && xSwipe <= 100  && currTime >= 200){
          /*we are holding */
 
+        popUP = true;
         ReactDOM.render(
-            <DetailedUserProfile link = {link} alt = {alt} data = {data} />,
+            <DetailedUserProfile coverImg = {coverImg} alt = {alt} data = {data} bio = {bio} photo1 = {photo1} photo2 = {photo2} photo3 = {photo3} photo4 = {photo4}  />,
             document.getElementById('card_moreDetails')
         );
 
@@ -56,7 +57,6 @@ function swipe(evt) {
                 choice = "reject"
             }
         }
-
         animate(-xSwipe);
     }
 };
@@ -64,7 +64,8 @@ function swipe(evt) {
 /*                                                               Animations*/
 
 let animating = false;
-let link = "img/man1.jpeg",alt = "Biggie Smalls", data = "Biggie S | Swag";
+let popUP = false;
+let coverImg = "",alt = "", data = "",bio = "",  photo1 = "" , photo2 = "" , photo3 = "" , photo4 = "" ;
 let change = false;
 
 function animate(pullDelta){
@@ -99,40 +100,52 @@ function revertChanges(){
     updateData();
 };
 
-function updateData() {
-    if (animating) {
 
+function getData() {
+    if(!popUP) {
         jQuery.ajax(
             {
-                type:"post",
+                type: "post",
                 url: "HomeUtilities.php",
                 dataType: 'json',
-                data: {"update":"1"},
+                data: {"update": "1"},
                 success: function (response) {
 
                     console.log(response);
                     let user = response;
                     data = user.name + " | " + user.age;
                     alt = user.name;
-
+                    coverImg = user.coverImg;
+                    bio = user.bio;
+                    photo1 = user.photo1;
+                    photo2 = user.photo2;
+                    photo3 = user.photo3;
+                    photo4 = user.photo4;
 
                     ReactDOM.render(
-                        <UserProfilePage link={link} alt={alt} data={data} />,
+                        <UserProfilePage link={coverImg} alt={alt} data={data}/>,
                         document.getElementById("frontCard")
                     );
                 },
-                error: function(e){
+                error: function (e) {
                     console.log('error');
                     console.log(e);
                 }
             });
+    }
 
+}
 
+function updateData() {
+    if (animating) {
+        getData();
     }
 };
 
 /*------------------------------------------------------------------------------------------------------------------------------------------------------*/
 /*                                                          React Components*/
+let detailedRef ;
+
 class UserProfilePage extends React.Component {
     render() {
         return(
@@ -149,27 +162,45 @@ class UserProfilePage extends React.Component {
     }
 }
 
+/*{this.photo2 != null ? <img id = "photo3" className="profileI" src={this.props.photo2} alt="Image 3"></img>  : null }
+                  {this.photo3 != null ? <img id = "photo3" className="profileI" src={this.props.photo2} alt="Image 3"></img>  : null }
+                  {this.photo4 != null ? <img id = "photo4" className="profileI" src={this.props.photo3} alt="Image 4"></img>  : null }*/
 class DetailedUserProfile extends React.Component {
+    constructor(props){
+        super(props);
+        this.detailedRef  = React.createRef();
+    }
+
     render() {
         return(
-            <div class = "moreDetailedUserProfile">
+            <div class = "moreDetailedUserProfile" ref = {this.detailedRef}>
                 <h1>
                     <label id="image_label" htmlFor="image">{this.props.data}</label>
                 </h1>
                 <div id="profileImages" class="profileImages" >
-
-                    <img className="profileI" src="img/man1.jpeg" alt="Image 1"></img>
-                    <img className="profileI" src="img/free_img.png" alt="Image 2"></img>
-                    <img className="profileI" src="img/free_img.png" alt="Image 3"></img>
-                    <img className="profileI" src="img/free_img.png" alt="Image 4"></img>
-                    <img className="profileI" src="img/free_img.png" alt="Image 5"></img>
+                    <img id = "photo1" className="profileI" src={this.props.coverImg} alt="Image 1"></img>
+                    {
+                        (this.props.photo1) == null ?
+                            (null)
+                            :  (<img id = "photo2" className="profileI" src={this.props.photo1}  alt="Image 2"></img> )}
+                    {
+                        (this.props.photo2) == null ?
+                            (null)
+                            :  (<img id = "photo2" className="profileI" src={this.props.photo2}  alt="Image 3"></img> )}
+                    {
+                        (this.props.photo3) == null ?
+                            (null)
+                            :  (<img id = "photo2" className="profileI" src={this.props.photo3}  alt="Image 4"></img> )}
+                    {
+                        (this.props.photo4) == null ?
+                            (null)
+                            :  (<img id = "photo2" className="profileI" src={this.props.photo4}  alt="Image 5"></img> )}
 
                 </div>
                 <div class="moreDetails">
                     <h1>About ME</h1>
                     <div class="aboutMe">
-                        <p>I am a friendly person</p>
-                        <p>I like long walks on the beach and etc</p>
+                        {this.props.bio}
                     </div>
                     <div class="reviewGroup">
                         <h1>Reviews</h1>
@@ -205,12 +236,13 @@ class DetailedUserProfile extends React.Component {
         );
     }
 }
-
-
+getData();
+if(!popUP) {
     ReactDOM.render(
-        <UserProfilePage link = {link} alt = {alt} data = {data} />,
+        <UserProfilePage link={coverImg} alt={alt} data={data}/>,
         document.getElementById('frontCard')
-);
+    );
+}
 
 /*------------------------------------------------------------------------------------------------------------------------------------------------------*/
 /*                                                         Action Listeners*/
@@ -221,6 +253,7 @@ function closePopUp(){
     frontCard.style.display = "block";
     acceptCard.style.display = "block";
     rejectCard.style.display = "block";
+    popUP = false;
 }
 
 let yes_button = document.getElementById("cirlce_yes");
@@ -228,32 +261,10 @@ let no_button = document.getElementById("cirlce_no");
 let redo_button = document.getElementById("cirlce_redo");
 
 document.addEventListener("load",function () {
-    jQuery.ajax(
-        {
-            type:"post",
-            url: "HomeUtilities.php",
-            dataType: 'json',
-            data: {"update":"1"},
-            success: function (response) {
-                console.log(response);
-                let user = response;
-                data = user.name + " | " + user.age;
-                alt = user.name;
 
-            },
-            error: function(e){
-                console.log('error');
-                console.log(e);
-            }
-        });
-
-    ReactDOM.render(
-        <UserProfilePage link={link} alt={alt} data={data} />,
-        document.getElementById("frontCard")
-    );
-
-
+    getData();
     document.body.scroll = "no";
+
 })
 
 document.addEventListener("touchstart", startTouchEvent, false);
