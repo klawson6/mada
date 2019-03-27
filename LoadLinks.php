@@ -48,7 +48,7 @@ if ($result->num_rows > 0) {
                     }
                 }
             }
-        } else if ($row["Email2"] == $email) { // bi directional link
+        } else if ($row["Email2"] == $email) { // bi directional coverImg
             if (!in_array($row["Email1"], $links)) {// If the associated other email in this row is not already in the links array
                 $temp = $row["Email1"];
                 $stmt = $conn->prepare("SELECT * FROM `UserTypes` WHERE Email = ?"); // Request user rider/driver status of bi-directionally liked user

@@ -1,48 +1,5 @@
 <?php
-    include "utilities.php";
-
-    class User{
-        public $email;
-        public $name;
-        public $age;
-        public $coverImg;
-        public $photo1;
-        public $photo2;
-        public $photo3;
-        public $photo4;
-        public $bio;
-    };
-
-    function getAllUsers(){
-        $dbconn = dbconn();
-
-        $result = $dbconn->query("SELECT * FROM UserInfo");
-
-        $users = array();
-        $user = new User();
-        if($result->num_rows > 0){
-            while($row = $result->fetch_assoc()) {
-                $user->name = $row["forename"]." ".$row["surname"];
-                $user->bio = $row["bio"];
-                $user->age = 18; //todo add proper age calculator
-                $user->email =  $row["email"];
-                array_push($users,$user);
-            }
-        }
-        $dbconn->close();
-
-        return $users;
-    }
-
-    function selectUser(){
-        header('Content-Type: application/json');
-        $users = getAllUsers();
-        $index = floor(rand(0,sizeof($users)));
-        $selected = $users[$index];
-
-        $_POST( json_encode($selected));
-        return $selected;
-    }
+include "HomeUtilities.php"
 ?>
 
 <!DOCTYPE html>
@@ -73,7 +30,7 @@
                 <span class="glyphicon glyphicon-search icon_style"></span>
             </button>
         </form>
-            <label id = "nav_center"><h3>Select a buddy</h3></label>
+            <label id = "nav_center"><h3 id = "headder">Select a Rider</h3></label>
         <form action="EditProfile.html">
             <button id = "nav_right"  class="borderlessButtons">
                 <span class="glyphicon  glyphicon-user icon_style"></span>
@@ -82,12 +39,22 @@
         </table>
     </div>
 </nav>
-<body class="home">
+
 <div id = "card_moreDetails"></div>
+<table>
+<h5>Change Mode:</h5>
+<div id = "slider_container">
+    <button id="isDriverSlider">  </button>
+</div>
+</table>
+<br>
+
 <div id = "card_status"></div>
 <div id = "frontCard"></div>
 <div id = "card_reject" class = "card_reject"></div>
 <div id = "card_accept" class ="card_accept"></div>
+
+
 
 
 <div id ="status_bar">

@@ -7,21 +7,56 @@
  */
 include "utilities.php";
 
-if (isset($_SESSION['email'])){
-    $userEmail = $_SESSION['email'];
+if (isset($_COOKIE['email'])){
+    $userEmail = $_COOKIE['email'];
 }
 
 if (isset($_SESSION['rider'])){
     $rider = true;
     $driver = false;
+
 } elseif (isset($_SESSION['driver'])){
     $driver = true;
     $rider = false;
 }
 
+$driver =false;
+$rider = true;
+
 $dbconn = dbconn();
 
+
+if (isset($_POST['submit'])){
+    $userEmail = "michaeldavie182@gmail.com";
+    $revieweeEmail = "biggie@gmail.com";
+    $id = null;
+
+    if ($driver) {
+        $riderPersonality = $_POST['p'];
+        $riderCleanliness = $_POST['c'];
+        $riderTimeliness = $_POST['t'];
+        $reviewInsert = $dbconn->prepare("INSERT INTO reviewsAboutRiders(reviewsAboutRiders.reviewID, reviewsAboutRiders.reviewerEmail, reviewsAboutRiders.revieweeEmail, reviewsAboutRiders.personality, reviewsAboutRiders.cleanliness, reviewsAboutRiders.timeliness) VALUES (?,?,?,?,?,?)");
+        $reviewInsert->bind_param("issiii", $id, $userEmail, $revieweeEmail, $riderPersonality, $riderCleanliness, $riderTimeliness);
+        $reviewInsert->execute();
+    } elseif ($rider) {
+        $driverPersonality = $_POST['p'];
+        $driverCleanliness = $_POST['c'];
+        $driverAbility = $_POST['d'];
+        $driverTimeliness = $_POST['t'];
+        echo nl2br($driverPersonality);
+        echo nl2br($driverCleanliness);
+        echo nl2br($driverAbility);
+        echo nl2br($driverTimeliness);
+        $reviewInsert = $dbconn->prepare("INSERT INTO reviewsAboutDrivers(reviewsAboutDrivers.reviewID, reviewsAboutDrivers.reviewerEmail, reviewsAboutDrivers.revieweeEmail, reviewsAboutDrivers.cleanliness, reviewsAboutDrivers.personality, reviewsAboutDrivers.drivingAbility, reviewsAboutDrivers.timeliness) VALUES (?,?,?,?,?,?,?)");
+        $reviewInsert->bind_param("issiiii", $id, $userEmail, $revieweeEmail, $driverCleanliness, $driverPersonality, $driverAbility, $driverTimeliness);
+        $reviewInsert->execute();
+    }
+
+    die();
+
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -42,58 +77,166 @@ $dbconn = dbconn();
 
 </head>
 <body id="reviewBody">
-<b>Review</b>
-<form method="post" name="review">
-<!--
-<textarea id="reviewInput" name="reviewInput" placeholder="<?php echo $loggedIn ? "Write your review here..." : "Sign in to leave a review..."?>" style="height:200px" <?php echo $loggedIn ? "" : "disabled"?>></textarea>
--->
-<p>
-</p>
+<form id="reviewForm" method="post" name="review">
+<div id="stars" style="text-align: center">
 
-<div id="stars">
+    <script>
+        var cleanliness = 3;
+        var driving = 3;
+        var personality = 3;
+        var timeliness = 3;
+
+        function setStar(value, cat) {
+            console.log('Star ' , value);
+            console.log('Category ', cat);
+            if (cat === 'c'){
+                cleanliness = value;
+            }
+            if (cat === 'd'){
+                driving = value;
+            }
+            if (cat === 'p'){
+                personality = value;
+            }
+            if (cat === 't'){
+                timeliness = value;
+            }
+            for (let i = 5; i > 0; i--){
+                let id = cat + i;
+                if (i > value){
+                    document.getElementById(id).src = "img/star_empty.png"
+                } else {
+                    document.getElementById(id).src = "img/star.png"
+                }
+            }
+        }
+    </script>
+
+
+    <div class="starGroup">
+        <h1>Review your experience</h1>
+        <div className="allReviews">
+            <?php if($rider){?>
+            <div className="reviews">
+                <h4>Cleanliness</h4>
+                <img id="c1" class="starRate" src="img/star.png" alt="emptyStar" onClick="setStar(1, 'c')">
+                <img id="c2" class="starRate" src="img/star.png" alt="emptyStar" onClick="setStar(2, 'c')">
+                <img id="c3" class="starRate" src="img/star.png" alt="emptyStar" onClick="setStar(3, 'c')">
+                <img id="c4" class="starRate" src="img/star_empty.png" alt="emptyStar" onClick="setStar(4, 'c')">
+                <img id="c5" class="starRate" src="img/star_empty.png" alt="emptyStar" onClick="setStar(5, 'c')">
+            </div>
+            <div className="reviews">
+                <h4>Personality</h4>
+                <img id="p1" class="starRate" src="img/star.png" alt="emptyStar" onClick="setStar(1, 'p')">
+                <img id="p2" class="starRate" src="img/star.png" alt="emptyStar" onClick="setStar(2, 'p')">
+                <img id="p3" class="starRate" src="img/star.png" alt="emptyStar" onClick="setStar(3, 'p')">
+                <img id="p4" class="starRate" src="img/star_empty.png" alt="emptyStar" onClick="setStar(4, 'p')">
+                <img id="p5" class="starRate" src="img/star_empty.png" alt="emptyStar" onClick="setStar(5, 'p')">
+            </div>
+            <div className="reviews">
+                <h4>Driving Ability</h4>
+                <img id="d1" class="starRate" src="img/star.png" alt="emptyStar" onClick="setStar(1, 'd')">
+                <img id="d2" class="starRate" src="img/star.png" alt="emptyStar" onClick="setStar(2, 'd')">
+                <img id="d3" class="starRate" src="img/star.png" alt="emptyStar" onClick="setStar(3, 'd')">
+                <img id="d4" class="starRate" src="img/star_empty.png" alt="emptyStar" onClick="setStar(4, 'd')">
+                <img id="d5" class="starRate" src="img/star_empty.png" alt="emptyStar" onClick="setStar(5, 'd')">
+            </div>
+                <div className="reviews">
+                    <h4>Timeliness</h4>
+                    <img id="t1" class="starRate" src="img/star.png" alt="emptyStar" onClick="setStar(1, 't')">
+                    <img id="t2" class="starRate" src="img/star.png" alt="emptyStar" onClick="setStar(2, 't')">
+                    <img id="t3" class="starRate" src="img/star.png" alt="emptyStar" onClick="setStar(3, 't')">
+                    <img id="t4" class="starRate" src="img/star_empty.png" alt="emptyStar" onClick="setStar(4, 't')">
+                    <img id="t5" class="starRate" src="img/star_empty.png" alt="emptyStar" onClick="setStar(5, 't')">
+                </div>
+            <?php } elseif($driver){
+                ?>
+            <div className="reviews">
+                <h4>Cleanliness</h4>
+                <img id="c1" class="starRate" src="img/star.png" alt="emptyStar" onClick="setStar(1, 'c')">
+                <img id="c2" class="starRate" src="img/star.png" alt="emptyStar" onClick="setStar(2, 'c')">
+                <img id="c3" class="starRate" src="img/star.png" alt="emptyStar" onClick="setStar(3, 'c')">
+                <img id="c4" class="starRate" src="img/star_empty.png" alt="emptyStar" onClick="setStar(4, 'c')">
+                <img id="c5" class="starRate" src="img/star_empty.png" alt="emptyStar" onClick="setStar(5, 'c')">
+            </div>
+            <div className="reviews">
+                <h4>Personality</h4>
+                <img id="p1" class="starRate" src="img/star.png" alt="emptyStar" onClick="setStar(1, 'p')">
+                <img id="p2" class="starRate" src="img/star.png" alt="emptyStar" onClick="setStar(2, 'p')">
+                <img id="p3" class="starRate" src="img/star.png" alt="emptyStar" onClick="setStar(3, 'p')">
+                <img id="p4" class="starRate" src="img/star_empty.png" alt="emptyStar" onClick="setStar(4, 'p')">
+                <img id="p5" class="starRate" src="img/star_empty.png" alt="emptyStar" onClick="setStar(5, 'p')">
+            </div>
+            <div className="reviews">
+                <h4>Timeliness</h4>
+                <img id="t1" class="starRate" src="img/star.png" alt="emptyStar" onClick="setStar(1, 't')">
+                <img id="t2" class="starRate" src="img/star.png" alt="emptyStar" onClick="setStar(2, 't')">
+                <img id="t3" class="starRate" src="img/star.png" alt="emptyStar" onClick="setStar(3, 't')">
+                <img id="t4" class="starRate" src="img/star_empty.png" alt="emptyStar" onClick="setStar(4, 't')">
+                <img id="t5" class="starRate" src="img/star_empty.png" alt="emptyStar" onClick="setStar(5, 't')">
+            </div>
+            <?php }?>
+        </div>
+    </div>
 
 </div>
-    <input class="btn btn-outline-dark" type="submit" name="submit" <?php //echo $loggedIn ? "" : "disabled"?>>
+    <p>
+    <input class="btn btn-outline-dark" type="submit" name="submit">
+    <input class="btn btn-outline-dark" type="button" value="Skip">
+    </p>
 </form>
-
-<div class="form-group">
-
-<?php
-    if (isset($_POST['submit']) && isset($_SESSION['email'])){
-    $repeatReviewSQL = $dbconn->prepare("SELECT * FROM Reviews WHERE email = ?");
-    $repeatReviewSQL->bind_param("s", $_SESSION['email']);
-    $repeatReviewSQL->execute();
-    $repeatCheck = $repeatReviewSQL->get_result();
-        if(mysqli_num_rows($repeatCheck) === 0){
-        $inputReview = trim($_POST['reviewInput']);
-        $stars = $_POST['stars'];
-        $id = null;
-        if ($driver){
-            $reviewInsert = $dbconn->prepare("INSERT INTO reviewsAboutRiders(Reviews.review_id, Reviews.email, Reviews.review, Reviews.star, Reviews.company_id) VALUES (?,?,?,?,?)");
-            $reviewInsert->bind_param("issii", $id, $userEmail, $inputReview, $stars, $compID);
-            $reviewInsert->execute();
-        } elseif ($rider) {
-            $reviewInsert = $dbconn->prepare("INSERT INTO reviewsAboutDrivers(Reviews.review_id, Reviews.email, Reviews.review, Reviews.star, Reviews.company_id) VALUES (?,?,?,?,?)");
-            $reviewInsert->bind_param("issii", $id, $userEmail, $inputReview, $stars, $compID);
-            $reviewInsert->execute();
-        }
-    }
-    } else { ?>
-        <?php
-    }
-?>
 
 </body>
 
 <footer>
-
-    <!-- Our own Plugins -->
-    <script type="text/babel" src="review.jsx"></script>
-
     <!-- JQuery Plugins -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
+
+    <!--React Plugins-->
+    <script src= "https://unpkg.com/react@16/umd/react.production.min.js"></script>
+    <script src= "https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <?php if($rider){ ?>
+    <script>
+    $(document).ready(function(){
+    $( "form" ).on( "submit", function( event ) {
+    event.preventDefault();
+    var xhttp = new XMLHttpRequest();
+
+    xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        console.log(this.responseText);
+        console.log(JSON.parse(this.responseText));
+    }
+    };
+    xhttp.open("POST", "review.php", true);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.send("submit=true&c=" + cleanliness + "&d=" + driving + "&p=" + personality + "&t=" + timeliness);
+    });
+    });
+    </script>
+    <?php } elseif($driver){ ?>
+    <script>
+        $(document).ready(function(){
+            $( "form" ).on( "submit", function( event ) {
+                event.preventDefault();
+                var xhttp = new XMLHttpRequest();
+
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        console.log(this.responseText);
+                        console.log(JSON.parse(this.responseText));
+                    }
+                };
+                xhttp.open("POST", "review.php", true);
+                xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xhttp.send("submit=true&c=" + cleanliness + "&p=" + personality + "&t=" + timeliness);
+            });
+        });
+    </script>
+    <?php } ?>
 </footer>
 </html>
