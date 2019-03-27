@@ -12,7 +12,7 @@ $choice = "rider";
 
 
 if(!loggedIn()){
-    header("Location: Index.html", true, 301);
+    header("Location: Index.php", true, 301);
     exit();
 }
 
