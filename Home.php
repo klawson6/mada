@@ -40,11 +40,17 @@ include "HomeUtilities.php"
     </div>
 </nav>
 <body class="home">
+<div id = "clickySlider">
+    <input type="range" min="1" max="2" value="1" class="slider" id="myRange">
+</div>
+<br>
 <div id = "card_moreDetails"></div>
 <div id = "card_status"></div>
 <div id = "frontCard"></div>
 <div id = "card_reject" class = "card_reject"></div>
 <div id = "card_accept" class ="card_accept"></div>
+
+
 
 
 <div id ="status_bar">

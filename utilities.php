@@ -15,6 +15,7 @@ die("Connection failed: " . $conn->connect_error);
 }
 return $conn;
 }
+
 function loggedIn()
 {
     if (!isset($_SESSION["email"]) && isset($_COOKIE["email"])) {
