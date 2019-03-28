@@ -17,6 +17,10 @@ var town;
 var country;
 var postcode;
 
+document.body.onload = function(){
+    document.getElementById("editInfo").style.display = "block";
+};
+
     $("#editInfo").on("submit", function (event) {
         event.preventDefault();
         if (validateUpdateInfoData()) {
