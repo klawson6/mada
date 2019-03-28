@@ -7,8 +7,8 @@
  */
 include "utilities.php";
 
-if (isset($_COOKIE['email'])){
-    $userEmail = $_COOKIE['email'];
+if(loggedIn()){
+    $userEmail = $_SESSION["email"];
 }
 
 if (isset($_SESSION['rider'])){
@@ -28,7 +28,7 @@ $dbconn = dbconn();
 
 if (isset($_POST['submit'])){
     $userEmail = "michaeldavie182@gmail.com";
-    $revieweeEmail = "biggie@gmail.com";
+    $revieweeEmail = "bsdbh";
     $id = null;
 
     if ($driver) {
@@ -43,10 +43,6 @@ if (isset($_POST['submit'])){
         $driverCleanliness = $_POST['c'];
         $driverAbility = $_POST['d'];
         $driverTimeliness = $_POST['t'];
-        echo nl2br($driverPersonality);
-        echo nl2br($driverCleanliness);
-        echo nl2br($driverAbility);
-        echo nl2br($driverTimeliness);
         $reviewInsert = $dbconn->prepare("INSERT INTO reviewsAboutDrivers(reviewsAboutDrivers.reviewID, reviewsAboutDrivers.reviewerEmail, reviewsAboutDrivers.revieweeEmail, reviewsAboutDrivers.cleanliness, reviewsAboutDrivers.personality, reviewsAboutDrivers.drivingAbility, reviewsAboutDrivers.timeliness) VALUES (?,?,?,?,?,?,?)");
         $reviewInsert->bind_param("issiiii", $id, $userEmail, $revieweeEmail, $driverCleanliness, $driverPersonality, $driverAbility, $driverTimeliness);
         $reviewInsert->execute();
@@ -77,7 +73,7 @@ if (isset($_POST['submit'])){
 
 </head>
 <body id="reviewBody">
-<form id="reviewForm" method="post" name="review">
+<form id="reviewForm" method="post" name="review" >
 <div id="stars" style="text-align: center">
 
     <script>
@@ -181,8 +177,8 @@ if (isset($_POST['submit'])){
 
 </div>
     <p>
-    <input class="btn btn-outline-dark" type="submit" name="submit">
-    <input class="btn btn-outline-dark" type="button" value="Skip">
+        <input class="btn btn-outline-dark" type="submit" name="submit">
+        <input class="btn btn-outline-dark" type="button" value="Skip" onclick="location.href = 'Home.php';">
     </p>
 </form>
 
@@ -210,6 +206,7 @@ if (isset($_POST['submit'])){
     if (this.readyState == 4 && this.status == 200) {
         console.log(this.responseText);
         console.log(JSON.parse(this.responseText));
+        window.location.replace("Home.php");
     }
     };
     xhttp.open("POST", "review.php", true);
@@ -229,6 +226,7 @@ if (isset($_POST['submit'])){
                     if (this.readyState == 4 && this.status == 200) {
                         console.log(this.responseText);
                         console.log(JSON.parse(this.responseText));
+                        window.location.replace("Home.php");
                     }
                 };
                 xhttp.open("POST", "review.php", true);
