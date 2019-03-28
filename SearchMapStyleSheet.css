@@ -3,18 +3,33 @@ html {
     height: 100%;
 }
 
+#daddyDiv {
+    z-index: 0;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    color: white;
+    text-align: center;
+}
+
+/*#navDiv{*/
+/*max-height: 10%;*/
+/*width: 100%;*/
+/*}*/
+
+#nonNav {
+    height: 90%;
+    width: 100%;
+}
+
 #map_my_navbar {
     height: 10%;
     width: 100%;
 }
 
 #map_home {
-    height: 80%;
-    min-height: 80%;
+    height: 100%;
     width: 100%;
-    color: white;
-    text-align: center;
-    align-content: center;
 }
 
 #map_parent {
@@ -27,7 +42,7 @@ html {
     height: 90%;
     /*min-height: 80%;*/
     width: auto;
-    margin: 5% 5%;
+    margin: 0 5%;
     border-radius: 2em;
 }
 
@@ -60,11 +75,11 @@ html {
     border-style: solid;
 }
 
-#searchButton:focus{
+#searchButton:focus {
     outline: 0;
 }
 
-#searchButton:active{
+#searchButton:active {
     background: #77aaa9;
 }
 
@@ -79,7 +94,7 @@ html {
     display: inline-block;
 }
 
-#loading{
+#loading {
     max-height: 100%;
 }
 
@@ -108,32 +123,110 @@ html {
     cursor: pointer;
 }
 
+#driverList {
+    z-index: 1000;
+    position: absolute;
+    width: 80%;
+    height: 80%;
+    margin-top: 10%;
+    margin-right: 10%;
+    margin-left: 10%;
+    margin-bottom: 0;
+    overflow: scroll;
+    overflow-x: hidden;
+    border-radius: 2em;
+    background: #3A4860;
+    border-style: solid;
+    border-color: #4ca7aa;
+    border-width: 0.5em;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+.driverDiv {
+    width: 90%;
+    height: 20%;
+    margin: 1% auto;
+    color: white;
+    text-align: center;
+}
+
+.driverName{
+    height: 10%;
+    width: 100%;
+}
+
+.driverPicDiv {
+    height: 90%;
+    width: 30%;
+    margin: 0;
+    float: left;
+    /*display: inline-block;*/
+}
+
+.driverPic {
+    max-height: 100%;
+    max-width: 100%;
+    border-radius: 50%;
+}
+
+.ratingsDiv {
+    height: 90%;
+    width: 70%;
+    margin: 0;
+    float: left;
+    /*display: inline-block;*/
+}
+
+.ratingsDivInner{
+    height: 15%;
+    width: 100%;
+    margin: 0;
+    color: white;
+    text-align: center;
+}
+
+.ratingPicDiv{
+    height: 100%;
+    width: 20%;
+    margin: 0;
+    display: inline-block;
+    text-align: center;
+}
+
+.ratingPic{
+    max-height: 100%;
+    max-width: 100%;
+}
+
 /*#testProfile{*/
-    /*background: #4ca7aa;*/
+/*background: #4ca7aa;*/
 /*}*/
 /*#testProfile{*/
-    /*width: 25%;*/
-    /*height: 25%;*/
-    /*!*margin: 5%;*!*/
-    /*background: #4ca7aa;*/
-    /*border-radius: 2em;*/
+/*width: 25%;*/
+/*height: 25%;*/
+/*!*margin: 5%;*!*/
+/*background: #4ca7aa;*/
+/*border-radius: 2em;*/
 /*}*/
 
 /*#profilePicTest{*/
-    /*width: 100%;*/
-    /*height: 25%;*/
+/*width: 100%;*/
+/*height: 25%;*/
 /*}*/
 
-#profilePicTestPic{
+#profilePicTestPic {
     width: 100%;
     border-radius: 50%;
 }
 
-.ratingPic{
+.ratingPic {
     width: 20%;
 }
 
-.ratingText{
+.ratingText {
     color: black;
     width: 100%;
 }
@@ -141,7 +234,7 @@ html {
 /*----------------------------------------------------------------------------------------------------------------*/
 /*                                                 general styling                                              */
 
-*{
+* {
     font-family: "Lucida Console", Monaco, monospace;
     user-select: none;
     -webkit-user-select: none;
@@ -151,45 +244,45 @@ html {
     -o-user-select: none;
 }
 
-body{
+body {
     background-color: rgb(31, 39, 52);
 }
 
-.icon_style{
+.icon_style {
     font-size: 2.5em;
 }
 
-.borderlessButtons{
+.borderlessButtons {
     padding: 0;
     border: none;
     background-color: transparent;
 }
 
-#nav_container{
+#nav_container {
     width: 100%;
-    text-align:center;
+    text-align: center;
     background-color: transparent;
 }
 
-#nav_center{
+#nav_center {
     display: inline-block;
-    margin:0 auto;
+    margin: 0 auto;
 
 }
 
-#nav_left{
-    float:left;
+#nav_left {
+    float: left;
     padding: 1em;
 }
 
-#nav_right{
-    float:right;
+#nav_right {
+    float: right;
     padding: 1em;
 }
 
-#status_bar{
+#status_bar {
     /* background-color: rgb(52, 64, 87);*/
-    min-width:10em;
+    min-width: 10em;
     max-width: 80%;
     align-content: center;
     margin: 0 auto;

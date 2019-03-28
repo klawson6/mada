@@ -4,43 +4,43 @@
 var view = null;
 
 function SearchMap() {
-    var contentString = '<div id="testProfile">'+
-        '<div id="profilePicTest">'+
-        '<img id="profilePicTestPic" src="img/woman.jpeg"/>'+
-        '</div>'+
-        '<div id="profileInfoTest">'+
-        '<span id="nameTest"></span>'+
-        '<div class="ratings" id="rating1">'+
-        '<span class= "ratingText" id="rating1text">Personality</span>'+
-        '</div>'+
-        '<div>'+
-        '<img class="ratingPic" src="img/star.png"/>'+
-        '<img class="ratingPic" src="img/star.png"/>'+
-        '<img class="ratingPic" src="img/star.png"/>'+
-        '<img class="ratingPic" src="img/star.png"/>'+
-        '<img class="ratingPic" src="img/star.png"/>'+
-        '</div>'+
-        '<div class="ratings" id="rating2">'+
-        '<span class= "ratingText" id="rating2text">Driving Ability</span>'+
-        '</div>'+
-        '<div>'+
-        '<img class="ratingPic" src="img/star.png"/>'+
-        '<img class="ratingPic" src="img/star.png"/>'+
-        '<img class="ratingPic" src="img/star.png"/>'+
-        '<img class="ratingPic" src="img/star.png"/>'+
-        '<img class="ratingPic" src="img/star.png"/>'+
-        '</div>'+
-        '<div class="ratings" id="rating3">'+
-        '<span class= "ratingText" id="rating3text">Cleanliness</span>'+
-        '</div>'+
-        '<div>'+
-        '<img class="ratingPic" src="img/star.png"/>'+
-        '<img class="ratingPic" src="img/star.png"/>'+
-        '<img class="ratingPic" src="img/star.png"/>'+
-        '<img class="ratingPic" src="img/star.png"/>'+
-        '<img class="ratingPic" src="img/star.png"/>'+
-        '</div>'+
-        '</div>'+
+    var contentString = '<div id="testProfile">' +
+        '<div id="profilePicTest">' +
+        '<img id="profilePicTestPic" src="img/woman.jpeg"/>' +
+        '</div>' +
+        '<div id="profileInfoTest">' +
+        '<span id="nameTest"></span>' +
+        '<div class="ratings" id="rating1">' +
+        '<span class= "ratingText" id="rating1text">Personality</span>' +
+        '</div>' +
+        '<div>' +
+        '<img class="ratingPic" src="img/star.png"/>' +
+        '<img class="ratingPic" src="img/star.png"/>' +
+        '<img class="ratingPic" src="img/star.png"/>' +
+        '<img class="ratingPic" src="img/star.png"/>' +
+        '<img class="ratingPic" src="img/star.png"/>' +
+        '</div>' +
+        '<div class="ratings" id="rating2">' +
+        '<span class= "ratingText" id="rating2text">Driving Ability</span>' +
+        '</div>' +
+        '<div>' +
+        '<img class="ratingPic" src="img/star.png"/>' +
+        '<img class="ratingPic" src="img/star.png"/>' +
+        '<img class="ratingPic" src="img/star.png"/>' +
+        '<img class="ratingPic" src="img/star.png"/>' +
+        '<img class="ratingPic" src="img/star.png"/>' +
+        '</div>' +
+        '<div class="ratings" id="rating3">' +
+        '<span class= "ratingText" id="rating3text">Cleanliness</span>' +
+        '</div>' +
+        '<div>' +
+        '<img class="ratingPic" src="img/star.png"/>' +
+        '<img class="ratingPic" src="img/star.png"/>' +
+        '<img class="ratingPic" src="img/star.png"/>' +
+        '<img class="ratingPic" src="img/star.png"/>' +
+        '<img class="ratingPic" src="img/star.png"/>' +
+        '</div>' +
+        '</div>' +
         '</div>';
 
     var infowindow = null;
@@ -58,6 +58,10 @@ function SearchMap() {
         // icon: "https://i.imgur.com/LgWloAM.png"
         searchRadius: null
     };
+
+    var driver = null;
+
+    var last = false;
 
     var exampleDrivers = [
         {
@@ -95,8 +99,22 @@ function SearchMap() {
             marker: null,
             icon: "https://i.imgur.com/LgWloAM.png",
             position: {lat: 55.857031, lng: -4.246709}
+        },
+        {
+            email: "cm@yahoo.com",
+            marker: null,
+            icon: "https://i.imgur.com/LgWloAM.png",
+            position: {lat: 55.858031, lng: -4.246609}
+        },
+        {
+            email: "holyeee@hotmail.com",
+            marker: null,
+            icon: "https://i.imgur.com/LgWloAM.png",
+            position: {lat: 55.856031, lng: -4.246609}
         }
     ];
+
+    var loadedDrivers = [];
 
     var map,
         ticker;
@@ -157,23 +175,144 @@ function SearchMap() {
         // view.addMarker(exampleDrivers[4], 35, 20, true);
         // view.addMarker(exampleDrivers[5], 35, 20, true);
         for (var i = 0; i < emailArray.length; i++) {
-            for (var j = 0; j < exampleDrivers.length; j++) {
-                if (emailArray[i] === exampleDrivers[j].email) {
-                    if (view.checkDriverLoc(exampleDrivers[j])) {
-                        view.addMarker(exampleDrivers[j], 35, 20, true);
-                    }
-                }
-            }
+            // for (var j = 0; j < exampleDrivers.length; j++) {
+            //     if (emailArray[i] === exampleDrivers[j].email) {
+            //         if (view.checkDriverLoc(exampleDrivers[j])) {
+            //             view.addMarker(exampleDrivers[j], 35, 20, true);
+            //         }
+            //     }
+            // }
+            // Get the driver's route info, index 0: source pos, index 1: destination pos, index 2: time of departure, index 3: current plat, index 4: current lng
+            view.addDriver(emailArray[i], i, emailArray.length);
+            //view.addrToLatLng(pos[0], i, emailArray[i]);
+            // loadedDrivers[i] = {
+            //     email: emailArray[i],
+            //     marker: null,
+            //     icon: "https://i.imgur.com/LgWloAM.png",
+            //     position: view.addrToLatLng(pos[0])};
         }
-        view.doneLoad();
     };
 
-    this.checkDriverLoc = function (driver) {
+    this.addrToLatLng = function (route, index, email, doneLim) {
+        var pos = null;
+        var geocoder = new google.maps.Geocoder();
+        geocoder.geocode({'address': route[0]}, function (results, status) {
+            window.console.log(route[5] + "'s geocode results : " + results[0].geometry.location);
+            if (status === 'OK') {
+                window.console.log('Geocode was successful');
+                if (view.checkLoc({
+                    position: {
+                        lat: results[0].geometry.location.lat(),
+                        lng: results[0].geometry.location.lng()
+                    }
+                })) {
+                    window.console.log("Origin is ok.");
+                    loadedDrivers[index] = {
+                        email: email,
+                        marker: null,
+                        icon: "https://i.imgur.com/LgWloAM.png",
+                        position: {lat: results[0].geometry.location.lat(), lng: results[0].geometry.location.lng()},
+                        route: route
+                    };
+                    if (index === doneLim - 1) {
+                        view.doneLoad();
+                    }
+                    //  view.addMarker(loadedDrivers[index], 35, 20, true);
+                } else {
+                    geocoder.geocode({'address': route[1]}, function (results2, status2) {
+                        if (status2 == 'OK') {
+                            window.console.log('Geocode was successful again');
+                            if (view.checkLoc({
+                                position: {
+                                    lat: results2[0].geometry.location.lat(),
+                                    lng: results2[0].geometry.location.lng()
+                                }
+                            })) {
+                                window.console.log("Destination is ok.");
+                                loadedDrivers[index] = {
+                                    email: email,
+                                    marker: null,
+                                    icon: "https://i.imgur.com/LgWloAM.png",
+                                    position: {
+                                        lat: results[0].geometry.location.lat(),
+                                        lng: results[0].geometry.location.lng()
+                                    },
+                                    route: route
+                                };
+                                if (index === doneLim - 1) {
+                                    view.doneLoad();
+                                }
+                                //view.addMarker(loadedDrivers[index], 35, 20, true);
+                            } else {
+                                if (index === doneLim - 1) {
+                                    view.doneLoad();
+                                }
+                            }
+                        } else {
+                            if (index === doneLim - 1) {
+                                view.doneLoad();
+                            }
+                            window.console.log('Geocode 2 was not successful for the following reason: ' + status2);
+                        }
+                    });
+                }
+            } else {
+                if (index === doneLim - 1) {
+                    view.doneLoad();
+                }
+                window.console.log('Geocode was not successful for the following reason: ' + status);
+            }
+        });
+        return pos;
+    };
+
+    this.addDriver = function (email, index, doneLim) {
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.open("GET", "GetDriverRoute.php?email=".concat(email));
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState === 4) {
+                if (xmlhttp.status === 200) {
+                    var response = JSON.parse(xmlhttp.responseText);
+                    // if (view.testRoute(response, index, email)) {
+                    //     continueAdding(response[0], index, email);
+                    // }
+                    view.addrToLatLng(response, index, email, doneLim);
+                    // view.testRoute(response, index, email);
+                } else {
+                    window.console.log("Error " + xmlhttp.status);
+                }
+            }
+        };
+        xmlhttp.send(null);
+    };
+
+    this.testRoute = function (route, index, email) {
+
+
+        // DISPLAYS THE PATH THE ROUTE REPRESENTS ON MAP GOOD CODE NO DELETE
+
+        // var directionsService = new google.maps.DirectionsService();
+        // var directionsDisplay = new google.maps.DirectionsRenderer({markerOptions: {label: {color: "white", text: route[5]+" "+route[6]}}});
+        // directionsDisplay.setMap(map);
+        // var path = {
+        //     origin: route[0],
+        //     destination: route[1],
+        //     travelMode: 'DRIVING'
+        // };
+        // directionsService.route(path, function (result, status) {
+        //     window.console.log("Direction status: " + status);
+        //     if (status == 'OK') {
+        //         directionsDisplay.setDirections(result);
+        //     }
+        // });
+    };
+
+    this.checkLoc = function (loc) {
         var ky = 40000 / 360;
         var kx = Math.cos(Math.PI * rider.position.lat / 180.0) * ky;
-        var dx = Math.abs(rider.position.lng - driver.position.lng) * kx;
-        var dy = Math.abs(rider.position.lat - driver.position.lat) * ky;
-        return Math.sqrt(dx * dx + dy * dy) <= rider.searchRadius.radius/1000;
+        var dx = Math.abs(rider.position.lng - loc.position.lng) * kx;
+        var dy = Math.abs(rider.position.lat - loc.position.lat) * ky;
+        return Math.sqrt(dx * dx + dy * dy) <= rider.searchRadius.radius / 1000;
     };
 
     this.doneLoad = function () {
@@ -190,6 +329,150 @@ function SearchMap() {
             document.getElementById("searchDiv").removeChild(document.getElementById("searchButton"));
             view.getDrivers();
         });
+
+        var options = document.createElement("div");
+        options.setAttribute("id", "driverList");
+        document.getElementById("map_home").appendChild(options);
+
+        var driveCount = 0;
+        for (var i = 0; i < loadedDrivers.length; i++) {
+            if (loadedDrivers[i] !== null && loadedDrivers[i] !== undefined) {
+                var driverDiv = document.createElement("div");
+                driverDiv.setAttribute("class", "driverDiv");
+                document.getElementById("driverList").appendChild(driverDiv);
+                window.console.log(loadedDrivers[i]);
+                view.addBugFixListener(driverDiv, loadedDrivers[i]);
+                var name = document.createElement("span");
+                name.setAttribute("class", "driverName");
+                name.innerHTML = loadedDrivers[i].route[5] + " " + loadedDrivers[i].route[6];
+                driverDiv.appendChild(name);
+                var imgDiv = document.createElement("div");
+                imgDiv.setAttribute("class", "driverPicDiv");
+                driverDiv.appendChild(imgDiv);
+                var img = document.createElement("img");
+                img.setAttribute("id", "driverPic" + driveCount);
+                img.setAttribute("class", "driverPic");
+                img.setAttribute("src", "img/woman.jpeg");
+                imgDiv.appendChild(img);
+                var ratingsDiv = document.createElement("div");
+                ratingsDiv.setAttribute("class", "ratingsDiv");
+                driverDiv.appendChild(ratingsDiv);
+
+                var ratingsDiv1 = document.createElement("div");
+                ratingsDiv1.setAttribute("class", "ratingsDivInner");
+                ratingsDiv.appendChild(ratingsDiv1);
+
+                var ratingsDiv1text = document.createElement("div");
+                ratingsDiv1text.setAttribute("class", "ratingsDivInner");
+                ratingsDiv1text.innerHTML = "Personality";
+                ratingsDiv.appendChild(ratingsDiv1text);
+
+                var ratingsDiv2 = document.createElement("div");
+                ratingsDiv2.setAttribute("class", "ratingsDivInner");
+                ratingsDiv.appendChild(ratingsDiv2);
+
+                var ratingsDiv2text = document.createElement("div");
+                ratingsDiv2text.setAttribute("class", "ratingsDivInner");
+                ratingsDiv2text.innerHTML = "Driving Ability";
+                ratingsDiv.appendChild(ratingsDiv2text);
+
+                var ratingsDiv3 = document.createElement("div");
+                ratingsDiv3.setAttribute("class", "ratingsDivInner");
+                ratingsDiv.appendChild(ratingsDiv3);
+
+                var ratingsDiv3text = document.createElement("div");
+                ratingsDiv3text.setAttribute("class", "ratingsDivInner");
+                ratingsDiv3text.innerHTML = "Cleanliness";
+                ratingsDiv.appendChild(ratingsDiv3text);
+
+                for (var j = 0; j < 5; j++) {
+                    var picDiv = document.createElement("div");
+                    picDiv.setAttribute("class", "ratingPicDiv");
+                    ratingsDiv1.appendChild(picDiv);
+                    var star1 = document.createElement("img");
+                    star1.setAttribute("class", "ratingPic");
+                    star1.setAttribute("src", "img/star.png");
+                    picDiv.appendChild(star1);
+                }
+                for (var k = 0; k < 5; k++) {
+                    var picDiv2 = document.createElement("div");
+                    picDiv2.setAttribute("class", "ratingPicDiv");
+                    ratingsDiv2.appendChild(picDiv2);
+                    var star2 = document.createElement("img");
+                    star2.setAttribute("class", "ratingPic");
+                    star2.setAttribute("src", "img/star.png");
+                    picDiv2.appendChild(star2);
+                }
+                for (var l = 0; l < 5; l++) {
+                    var picDiv3 = document.createElement("div");
+                    picDiv3.setAttribute("class", "ratingPicDiv");
+                    ratingsDiv3.appendChild(picDiv3);
+                    var star3 = document.createElement("img");
+                    star3.setAttribute("class", "ratingPic");
+                    star3.setAttribute("src", "img/star.png");
+                    picDiv3.appendChild(star3);
+                }
+                driveCount++;
+            }
+        }
+    };
+
+    this.addBugFixListener = function (thing, info) {
+        window.console.log(info);
+        thing.addEventListener('click', function () {
+            view.beginJourney(info);
+        });
+    };
+
+    this.beginJourney = function (user) {
+        window.console.log(user);
+        document.getElementById("map_home").removeChild(document.getElementById("driverList"));
+        var directionsService = new google.maps.DirectionsService();
+        var directionsDisplay = new google.maps.DirectionsRenderer({
+            preserveViewport: true,
+            markerOptions: {label: {color: "white", text: user.route[5] + " " + user.route[6]}}
+        });
+        directionsDisplay.setMap(map);
+        var path = {
+            origin: user.route[0],
+            destination: user.route[1],
+            travelMode: 'DRIVING'
+        };
+        directionsService.route(path, function (result, status) {
+            window.console.log("Direction status: " + status);
+            if (status == 'OK') {
+                directionsDisplay.setDirections(result);
+            }
+        });
+        driver = user;
+        view.addMarker(driver, 35, 20, true);
+        document.getElementById("searchDiv").removeChild(document.getElementById("searchButton"));
+        var button = document.createElement("button");
+        button.setAttribute("id", "searchButton");
+        button.innerHTML = "End Co-Ride";
+        document.getElementById("searchDiv").appendChild(button);
+        button.addEventListener('click', function () {
+            document.getElementById("searchDiv").removeChild(document.getElementById("searchButton"));
+            var button2 = document.createElement("button");
+            button2.setAttribute("id", "searchButton");
+            button2.innerHTML = "Find Co-Ride";
+            document.getElementById("searchDiv").appendChild(button2);
+            document.getElementById("searchButton").addEventListener('click', function () {
+                var img = document.createElement("img");
+                img.setAttribute("id", "loading");
+                img.setAttribute("src", "https://www.hotelnumberfour.com/wp-content/uploads/2017/09/loading.gif")
+                document.getElementById("searchDiv").appendChild(img);
+                document.getElementById("searchDiv").removeChild(document.getElementById("searchButton"));
+                view.getDrivers();
+            });
+            view.review();
+            //driver = null;
+            view.init();
+        });
+    };
+
+    this.review = function () {
+        // TODO add Michael's review
     };
 
     this.beginMapUpdater = function () {
@@ -206,11 +489,48 @@ function SearchMap() {
             view.addMarker(rider, 35, 35, false);
             // Refresh the search radius to center the rider
             view.refreshRadius();
+
+            if (driver !== null) {
+                view.updateDriverPos();
+            }
         }, 500);
         document.getElementById("radiusSlider").onchange = function () {
             document.getElementById("sliderVal").innerHTML = view.logSlider(document.getElementById("radiusSlider").value).toFixed(2).toString() + "m";
             view.refreshRadius();
         };
+    };
+
+    this.updateDriverPos = function () {
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.open("GET", "GetDriverRoute.php?email=".concat(driver.email));
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState === 4) {
+                if (xmlhttp.status === 200) {
+                    var response = JSON.parse(xmlhttp.responseText);
+                    window.console.log(response);
+                    // if (view.testRoute(response, index, email)) {
+                    //     continueAdding(response[0], index, email);
+                    // }
+                    view.continueUpdateDriverPos(response);
+                    // view.testRoute(response, index, email);
+                } else {
+                    window.console.log("Error " + xmlhttp.status);
+                }
+            }
+        };
+        xmlhttp.send(null);
+    };
+
+    this.continueUpdateDriverPos = function (response) {
+        window.console.log(response);
+        window.console.log(driver);
+        driver.marker.setMap(null);
+       // driver.route = response;
+       // var tempLoc = new google.maps.LatLng({lat: parseFloat(response[3]).toFixed(4), lng: parseFloat(response[4]).toFixed(4)});
+        driver.route[3] = parseFloat(response[3]);
+        driver.route[4] = parseFloat(response[4]);
+        driver.position = {lat: driver.route[3], lng:driver.route[4]};
+        view.addMarker(driver, 35, 20, true);
     };
 
     this.logSlider = function (value) {
@@ -251,13 +571,13 @@ function SearchMap() {
 
     };
 
-    this.addMarker = function (marker, size1, size2, driver) {
+    this.addMarker = function (marker, size1, size2, isDriver) {
         marker.marker = new google.maps.Marker({
             position: {lat: marker.position.lat, lng: marker.position.lng},
             map: map,
             icon: {url: marker.icon, scaledSize: new google.maps.Size(size1, size2)}
         });
-        if (driver){
+        if (isDriver) {
             marker.marker.addListener('click', function () {
                 // var profile = document.createElement("img");
                 // img.setAttribute("id", "loading");
@@ -266,7 +586,6 @@ function SearchMap() {
                 // document.getElementById("searchDiv").removeChild(document.getElementById("searchButton"));
                 // view.getDrivers();
                 infowindow.open(map, marker.marker);
-
             });
         }
     };

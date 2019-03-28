@@ -40,7 +40,7 @@ function swipe(evt) {
 
         popUP = true;
         ReactDOM.render(
-            <DetailedUserProfile coverImg = {coverImg} alt = {alt} data = {data} bio = {bio} photo1 = {photo1} photo2 = {photo2} photo3 = {photo3} photo4 = {photo4}  />,
+            <DetailedUserProfile coverImg = {coverImg} alt = {alt} data = {data} bio = {bio} personality = {personality} cleanliness = {cleanliness} driving = {driving} timeliness = {timeliness} photo1 = {photo1} photo2 = {photo2} photo3 = {photo3} photo4 = {photo4} />,
             document.getElementById('card_moreDetails')
         );
 
@@ -54,9 +54,9 @@ function swipe(evt) {
         if (currTime < 150) return; /*we are swiping too quick*/
         if (Math.abs(xSwipe) > Math.abs(ySwipe)) {
             if (xSwipe > 0) {
-                choice = "accept"
-            } else {
                 choice = "reject"
+            } else {
+                choice = "accept"
             }
         }
         animate(-xSwipe);
@@ -67,7 +67,7 @@ function swipe(evt) {
 
 let animating = false;
 let popUP = false;
-let coverImg = "",alt = "", data = "",bio = "",  photo1 = "" , photo2 = "" , photo3 = "" , photo4 = "" ;
+let coverImg = "",alt = "", data = "",bio = "",  photo1 = "" , photo2 = "" , photo3 = "" , photo4 = "",email = "" ,personality = "", cleanliness = "", driving = "",timeliness ="";
 let change = false;
 
 function animate(pullDelta){
@@ -99,18 +99,18 @@ function revertChanges(){
     frontCard.style.transform = "translate(.3rem) rotate(0deg)";
     acceptCard.style.transform = "translate(.3rem) rotate(0deg)";
     rejectCard.style.transform = "translate(.3rem) rotate(0deg)";
-    updateData();
+    updateData("yes");
 };
 
 
-function getData() {
+function getData(needToSavePrevious) {
     if(!popUP) {
         jQuery.ajax(
             {
                 type: "post",
                 url: "HomeUtilities.php",
                 dataType: 'json',
-                data: {"update": "1"},
+                data: {"update": needToSavePrevious},
                 success: function (response) {
 
                    // console.log(response);
@@ -123,6 +123,12 @@ function getData() {
                     photo2 = user.photo2;
                     photo3 = user.photo3;
                     photo4 = user.photo4;
+                    personality = user.personality;
+                    driving = user.drivingAbility;
+                    cleanliness = user.cleanliness;
+                    timeliness = user.timeliness;
+
+                    email = user.email;
 
                     ReactDOM.render(
                         <UserProfilePage link={coverImg} alt={alt} data={data}/>,
@@ -131,16 +137,16 @@ function getData() {
                 },
                 error: function (e) {
                     console.log('error');
-                    console.log(e);
+                    console.log(e.responseText);
                 }
             });
     }
 
 }
 
-function updateData() {
+function updateData(needToSavePrevious) {
     if (animating) {
-        getData();
+        getData(needToSavePrevious);
     }
 };
 
@@ -160,13 +166,61 @@ class UserProfilePage extends React.Component {
                     <label id="image_label" htmlFor="image">{this.props.data}</label>
                 </div>
             </div>
-    );
+        );
     }
 }
 
-/*{this.photo2 != null ? <img id = "photo3" className="profileI" src={this.props.photo2} alt="Image 3"></img>  : null }
-                  {this.photo3 != null ? <img id = "photo3" className="profileI" src={this.props.photo2} alt="Image 3"></img>  : null }
-                  {this.photo4 != null ? <img id = "photo4" className="profileI" src={this.props.photo3} alt="Image 4"></img>  : null }*/
+class Review extends React.Component{
+    render() {
+        let personalityStars = [];
+        let timelinessStars = [];
+        let cleanlinessStars = [];
+        let drivingStars = [];
+
+        if (personality > 0){
+            personalityStars.push(<h4>Personality</h4>);
+            for (let i = 0; i < 5; i++){
+                if (personality > i){
+                    personalityStars.push(<img className={"star"} src={"img/star.png"}/>);
+                }
+            }
+        }
+        if (timeliness > 0){
+            timelinessStars.push(<h4>Timeliness</h4>);
+            for (let i = 0; i < 5; i++){
+                if (timeliness > i){
+                    timelinessStars.push(<img className={"star"} src={"img/star.png"}/>);
+                }
+            }
+        }
+        if (cleanliness > 0){
+            cleanlinessStars.push(<h4>Cleanliness</h4>);
+            for (let i = 0; i < 5; i++){
+                if (cleanliness > i){
+                    cleanlinessStars.push(<img className={"star"} src={"img/star.png"}/>);
+                }
+            }
+        }
+        if (driving > 0){
+            drivingStars.push(<h4>Driving</h4>);
+            for (let i = 0; i < 5; i++){
+                if (driving > i){
+                    drivingStars.push(<img className={"star"} src={"img/star.png"}/>);
+                }
+            }
+        }
+        return(
+            <div>
+                <div>{personalityStars}</div>
+                <div>{cleanlinessStars}</div>
+                <div>{drivingStars}</div>
+                <div>{timelinessStars}</div>
+            </div>
+
+        );
+    }
+}
+
 class DetailedUserProfile extends React.Component {
     constructor(props){
         super(props);
@@ -204,33 +258,18 @@ class DetailedUserProfile extends React.Component {
                     <div class="aboutMe">
                         {this.props.bio}
                     </div>
-                    <div class="reviewGroup">
-                        <h1>Reviews</h1>
-                        <div className="reviews">
-                            <h4>Cleanliness</h4>
-                            <img className="star" src="img/star.png" alt="emptyStar"></img>
-                            <img className="star" src="img/star_empty.png" alt="emptyStar"></img>
-                            <img className="star" src="img/star_empty.png" alt="emptyStar"></img>
-                            <img className="star" src="img/star_empty.png" alt="emptyStar"></img>
-                            <img className="star" src="img/star_empty.png" alt="emptyStar"></img>
-                        </div>
-                        <div className="reviews">
-                            <h4>Politeness</h4>
-                            <img className="star" src="img/star.png" alt="emptyStar"></img>
-                            <img className="star" src="img/star.png" alt="emptyStar"></img>
-                            <img className="star" src="img/star.png" alt="emptyStar"></img>
-                            <img className="star" src="img/star_empty.png" alt="emptyStar"></img>
-                            <img className="star" src="img/star_empty.png" alt="emptyStar"></img>
-                        </div>
-                        <div className="reviews">
-                            <h4>Ability To Drive</h4>
-                            <img className="star" src="img/star.png" alt="emptyStar"></img>
-                            <img className="star" src="img/star.png" alt="emptyStar"></img>
-                            <img className="star" src="img/star.png" alt="emptyStar"></img>
-                            <img className="star" src="img/star_half.png" alt="emptyStar"></img>
-                            <img className="star" src="img/star_empty.png" alt="emptyStar"></img>
-                        </div>
+
+
+                    <h1>Reviews</h1>
+                        <div className="reviewGroup">
+                            {
+                                (this.props.cleanliness === 0 && this.props.personality === 0 && this.props.driving === 0 && this.props.timeliness === 0) ?
+                                (<div>There are currently no reviews of this user</div>)
+                                :
+                                <Review personality = {personality} timeliness = {timeliness} driving = {driving} cleanliness = {cleanliness}/>
+                            }
                     </div>
+
                 </div>
                 <br></br>
                 <button id="close" className="closeButton" onClick={closePopUp}>Close</button>
@@ -238,12 +277,24 @@ class DetailedUserProfile extends React.Component {
         );
     }
 }
-getData();
+getData("no");
 if(!popUP) {
     ReactDOM.render(
         <UserProfilePage link={coverImg} alt={alt} data={data}/>,
         document.getElementById('frontCard')
     );
+}
+
+/*------------------------------------------------------------------------------------------------------------------------------------------------------*/
+/*                                                         Play Audio*/
+
+function playAudio(path) {
+
+    var audio = new Audio(path);
+    audio.play().catch(function (e) {
+        //ignore the error
+    })
+
 }
 
 /*------------------------------------------------------------------------------------------------------------------------------------------------------*/
@@ -269,12 +320,22 @@ function postChange(change){
 }
 
 
+function postLiked(likedEmail){
+    jQuery.ajax(
+        {
+            type: "post",
+            url: "HomeUtilities.php",
+            dataType: 'json',
+            data: {"liked": likedEmail}
+        });
+}
+
 let yes_button = document.getElementById("cirlce_yes");
 let no_button = document.getElementById("cirlce_no");
 let redo_button = document.getElementById("cirlce_redo");
 
 document.addEventListener("load",function () {
-    getData();
+    getData("no");
     document.body.scroll = "no";
 })
 
@@ -286,11 +347,17 @@ document.addEventListener("touchend",function () {
     if(animating) {
         if (!choice) return;
         /*display choice*/
+        if(choice === "accept"){
+            postLiked(email);
+        }
+        playAudio("audio/swoosh.mp3");
         revertChanges();
         animating = false;
         choice = null;
         xFirst = null;
         yFirst = null;
+
+
     }
 },false);
 
@@ -322,7 +389,8 @@ slider.addEventListener("click", function () {
 
     }
 
-    getData();
+    getData("reset");
+    console.log("reset");
     ReactDOM.render(
         <UserProfilePage link={coverImg} alt={alt} data={data}/>,
         document.getElementById('frontCard')
@@ -377,5 +445,47 @@ no_button.addEventListener("click", function () {
 });
 
 redo_button.addEventListener("click", function () {
+    jQuery.ajax(
+        {
+            type: "post",
+            url: "HomeUtilities.php",
+            dataType: 'json',
+            data: {"rewind": "1"},
+            success: function (response) {
+                console.log(response);
+                if(response.name != "no") {
 
+                    let user = response;
+                    data = user.name + " | " + user.age;
+                    alt = user.name;
+                    coverImg = user.coverImg;
+                    bio = user.bio;
+                    photo1 = user.photo1;
+                    photo2 = user.photo2;
+                    photo3 = user.photo3;
+                    photo4 = user.photo4;
+
+                    email = user.email;
+
+                    ReactDOM.render(
+                        <UserProfilePage link={coverImg} alt={alt} data={data}/>,
+                        document.getElementById("frontCard")
+                    );
+                }
+            },
+            error: function (e) {
+                console.log('error');
+                console.log(e);
+            }
+        });
 });
+
+window.onbeforeunload = function(){
+    jQuery.ajax(
+        {
+            type: "post",
+            url: "HomeUtilities.php",
+            dataType: 'json',
+            data: {"unset": ""}
+        });
+};

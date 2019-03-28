@@ -27,6 +27,10 @@ if(isset($_GET["action"]) && $_GET["action"]=="logIn"){
     die();
 }
 if(loggedIn()){
+    if(!validToken()){
+        header("Location: Logout.php?token=invalid");
+        die();
+    }
     header("Location: Home.php");
     die();
 }
@@ -78,6 +82,25 @@ if(loggedIn()){
             Register
         </button>
     </form>
+    <?php
+    if(isset($_GET["token"]) && $_GET["token"]=="invalid"){
+        ?>
+    <div class="alert alert-warning">
+        <h3 style="color: black">Logged in on other device. You have been logged out</h3>
+    </div>
+    <?php
+    }
+    if(isset($_GET["token"]) && $_GET["token"]=="logout"){
+        ?>
+        <div class="alert alert-success">
+            <h3 style="color: black">You have been logged out</h3>
+        </div>
+        <?php
+    }
+    ?>
+
+
+
 </div>
 </body>
 
@@ -101,7 +124,7 @@ if(loggedIn()){
                 this.style.backgroundColor = "#ffffff";
             });
 
-            $( "form" ).on( "submit", function( event ) {
+            $( "#sign_up_form" ).on( "submit", function( event ) {
                 event.preventDefault();
                 var xhttp = new XMLHttpRequest();
 
@@ -137,18 +160,6 @@ if(loggedIn()){
                 xhttp.send($(this).serialize());
             });
         });
-    </script>
-    <script>
-        window.addEventListener("load",function() {
-            alert("Testing");
-            if (typeof CoRideApp != null) {
-                alert("Working");
-                CoRideApp.vibrate("1000");
-            }
-            else {
-                alert("Not Working");
-            }
-        })
     </script>
 
 </footer>

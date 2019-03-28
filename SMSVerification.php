@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 include "utilities.php";
 include "testingSMS.php";
 
@@ -53,6 +55,7 @@ if(isset($_GET["action"]) && $_GET["action"]=="sendCode"){
                     $stmt = $dbconn->prepare("UPDATE UserInfo SET mobile_number = ? WHERE email = ?");
                     $stmt->bind_param("ss", $phoneNumber,$_SESSION["email"]);
                     $stmt->execute();
+                    setcookie("smsCode", $_POST["sent_code"], time() + (10 * 365 * 24 * 60 * 60));
                     echo json_encode(["result" => "success"]);
                 }
                 else{
@@ -104,7 +107,7 @@ if(isset($_GET["action"]) && $_GET["action"]=="sendCode"){
             </div>
         </div>
         <div style="display:none" id="invalid" class="alert alert-warning"></div>
-        <input type="submit" id="numberSubmit" value="Request SMS Code">
+        <input type="submit" class="btn btn-lg btn-inverse btn-block" id="numberSubmit" value="Request SMS Code">
     </form>
     <div id="sendCodeForm" style="display:none">
     <form method="post" id="sendCode" class="form-horizontal" action="Index.php?action=logIn">
@@ -115,7 +118,7 @@ if(isset($_GET["action"]) && $_GET["action"]=="sendCode"){
             </div>
         </div>
         <div style="display:none" id="invalidCode" class="alert alert-warning"></div>
-        <input type="submit" id="codeSubmit" value="Request SMS Code">
+        <input type="submit" class="btn btn-lg btn-inverse btn-block" id="codeSubmit" value="Request SMS Code">
     </form>
     </div>
 </div>
@@ -132,6 +135,14 @@ if(isset($_GET["action"]) && $_GET["action"]=="sendCode"){
     <!-- Our own Plugins -->
     <script src="Controller.js"></script>
     <script>
+        try{
+            CoRideApp.startSMSListener();
+        }
+        catch (e) {
+            
+        }
+
+
         $(document).ready(function(){
             $( "#sign_up_form" ).on( "submit", function( event ) {
                 event.preventDefault();
