@@ -71,7 +71,11 @@ class User{
     public $photo3;
     public $photo4;
     public $bio;
-};
+    public $cleanliness;
+    public $personality;
+    public $timeliness;
+    public $drivingAbility;
+    };
 
 
 
@@ -126,17 +130,67 @@ function getAllUsers($choice,$email){
 }
 
 function getReviews($user){
+
     $conn = dbconn();
-    $reviewStmt = $conn->query("SELECT * FROM Photo WHERE email = '".$user->email."'");
 
-    if($reviewStmt->num_rows > 0) {
-        while ($reviewStmt = $reviewStmt->fetch_assoc()) {
+            $avgCleanlinessRider = 0;
+            $avgPersonalityRider = 0;
+            $avgTimelinessRider = 0;
 
+            $avgPersonalityDriver = 0;
+            $avgCleanlinessDriver = 0;
+            $avgTimelinessDriver = 0;
 
+            //-----------
+            //connect to get reviews
+            $reviewDriver = $conn->query("SELECT * FROM reviewsAboutDrivers WHERE revieweeEmail = '" . $user->email . "'");
+            if ($reviewDriver->num_rows > 0) {
+                $totalPersonalityDriving = 0;
+                $totalCleanlinessDriving = 0;
+                $totalTimelinessDriving = 0;
+                $totalDrivingAbility = 0;
+                $i = 0;
 
+                while ($reviewRow = $reviewDriver->fetch_assoc()) {
+                    $totalPersonalityDriving += $reviewRow['personality'];
+                    $totalCleanlinessDriving += $reviewRow['cleanliness'];
+                    $totalDrivingAbility += $reviewRow['drivingAbility'];
+                    $totalTimelinessDriving += $reviewRow['timeliness'];
+                    $i++;
+                }
+                $avgPersonalityDriver = $totalPersonalityDriving / $i;
+                $avgCleanlinessDriver = $totalCleanlinessDriving / $i;
+                $avgTimelinessDriver = $totalTimelinessDriving / $i;
+                $avgDrivingAbiityDriver = $totalDrivingAbility / $i;
+                $user->drivingAbility = round($avgDrivingAbiityDriver);
+            }
 
-        }
-    }
+            $reviewRider = $conn->query("SELECT * FROM reviewsAboutRiders WHERE revieweeEmail = '" . $user->email . "'");
+            if ($reviewRider->num_rows > 0) {
+                $totalPersonalityRiding = 0;
+                $totalCleanlinessRiding = 0;
+                $totalTimelinessRiding = 0;
+                $j = 0;
+                while ($riderReviewRow = $reviewRider->fetch_assoc()) {
+                    $totalPersonalityRiding += $riderReviewRow['personality'];
+                    $totalCleanlinessRiding += $riderReviewRow['cleanliness'];
+                    $totalTimelinessRiding += $riderReviewRow['timeliness'];
+                    $j++;
+                }
+                $avgCleanlinessRider = $totalPersonalityRiding / $j;
+                $avgPersonalityRider = $totalPersonalityRiding / $j;
+                $avgTimelinessRider = $totalTimelinessRiding / $j;
+            }
+
+            $finalAvgClean = ($avgCleanlinessDriver + $avgCleanlinessRider) / 2;
+            $user->cleanliness = round($finalAvgClean);
+
+            $finalAvgPerson = ($avgPersonalityDriver + $avgPersonalityRider) / 2;
+            $user->personality = round($finalAvgPerson);
+
+            $finalAvgTime = ($avgTimelinessDriver + $avgTimelinessRider) / 2;
+            $user->timeliness = round($finalAvgTime);
+
     return $user;
 }
 
@@ -190,7 +244,6 @@ function getPhotos($user){
     }
     return $user;
 }
-
 
 function selectUser($choice,$email){
     header('Content-Type: application/json');
