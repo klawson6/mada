@@ -35,7 +35,7 @@ if ($result->num_rows > 0) {
         if ($row["Email1"] == $email) { // If the users email is in this row
             if (!in_array($row["Email2"], $links)) {// If the associated other email in this row is not already in the links array
                 $temp = $row["Email2"];
-                $stmt = $conn->prepare("SELECT * FROM `UserTypes` WHERE Email = ?"); // Request user rider/driver status of bi-directionally liked user
+                $stmt = $conn->prepare("SELECT * FROM `UserInfo` WHERE email = ?"); // Request user rider/driver status of bi-directionally liked user
                 $stmt->bind_param("s",$row["Email2"]);
                 $stmt->execute();
                 $result2 = $stmt->get_result(); // Get user rider/driver status of bi-directionally liked user
@@ -51,7 +51,7 @@ if ($result->num_rows > 0) {
         } else if ($row["Email2"] == $email) { // bi directional link
             if (!in_array($row["Email1"], $links)) {// If the associated other email in this row is not already in the links array
                 $temp = $row["Email1"];
-                $stmt = $conn->prepare("SELECT * FROM `UserTypes` WHERE Email = ?"); // Request user rider/driver status of bi-directionally liked user
+                $stmt = $conn->prepare("SELECT * FROM `UserInfo` WHERE email = ?"); // Request user rider/driver status of bi-directionally liked user
                 $stmt->bind_param("s",$row["Email1"]);
                 $stmt->execute();
                 $result2 = $stmt->get_result(); // Get user rider/driver status of bi-directionally liked user
