@@ -21,6 +21,7 @@ $userImagesSTMT->execute();
 $userImages = $userImagesSTMT->get_result();
 $numImages = $userImages->num_rows;
 
+
 if(isset($_POST["action"]) && $_POST["action"] == "updatePassword") {
 
     $password = $_POST["edit_password"];
@@ -114,7 +115,6 @@ else if(isset($_POST["action"]) && $_POST["action"] == "deleteImage"){
     $addPicSTMT->execute();
 
     header("Location:Edit2.php");
-
 }
 
 
@@ -182,8 +182,8 @@ if($uImage = $userImages->fetch_assoc()){
     <?php
     if($numImages > 0){
         ?>
-        <form name="deleteImage1" method="post" enctype="multipart/form-data">
-            <input type="hidden" name="profile_pic_id"  value="<?php echo $profile_image_1_id; ?>">
+        <form id="deleteImage1" name="deleteImage1" method="post" enctype="multipart/form-data">
+            <input type="hidden" id = "profile_pic_id_1" name="profile_pic_id"  value="<?php echo $profile_image_1_id; ?>">
             <input type="hidden" name="action" value="deleteImage">
             <button id="delete_image_1" class="btn btn-lg btn-inverse btn-block pop_up_button">Delete Image 1</button>
         </form>
@@ -193,7 +193,7 @@ if($uImage = $userImages->fetch_assoc()){
     if($numImages > 1){
         ?>
         <form name="deleteImage2" method="post" enctype="multipart/form-data">
-            <input type="hidden" name="profile_pic_id"  value="<?php echo $profile_image_2_id; ?>">
+            <input type="hidden" id = "profile_pic_id_2" name="profile_pic_id"  value="<?php echo $profile_image_2_id; ?>">
             <input type="hidden" name="action" value="deleteImage">
             <button id="delete_image_2" class="btn btn-lg btn-inverse btn-block pop_up_button">Delete Image 2</button>
         </form>
@@ -203,7 +203,7 @@ if($uImage = $userImages->fetch_assoc()){
     if($numImages > 2){
         ?>
         <form name="deleteImage3" method="post" enctype="multipart/form-data">
-            <input type="hidden" name="profile_pic_id"  value="<?php echo $profile_image_3_id; ?>">
+            <input type="hidden" id = "profile_pic_id_3" name="profile_pic_id" style="visibility: hidden" value="<?php echo $profile_image_3_id; ?>">
             <input type="hidden" name="action" value="deleteImage">
             <button id="delete_image_3" class="btn btn-lg btn-inverse btn-block pop_up_button">Delete Image 3</button>
         </form>
@@ -213,7 +213,7 @@ if($uImage = $userImages->fetch_assoc()){
     if($numImages > 3){
         ?>
         <form name="deleteImage4" method="post" enctype="multipart/form-data">
-            <input type="hidden" name="profile_pic_id"  value="<?php echo $profile_image_4_id; ?>">
+            <input type="hidden" id = "profile_pic_id_4" name="profile_pic_id"  value="<?php echo $profile_image_4_id; ?>">
             <input type="hidden" name="action" value="deleteImage">
             <button id="delete_image_4" class="btn btn-lg btn-inverse btn-block pop_up_button">Delete Image 4</button>
         </form>
