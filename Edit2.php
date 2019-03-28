@@ -300,7 +300,7 @@ if($uImage = $userImages->fetch_assoc()){
         <input name="profile_pic_input" type="file" accept="image/jpeg, image/gif, image/x-png" id="image_input_1" style="display: none;">
         <input type="hidden" name="action" value="updateImage">
         <input type="hidden" name="user_email" id="user_email4" value="<?php echo $userInfo['email']; ?>">
-        <button id="submit_image_1" style="display:none;">Submit</button>
+        <button id="submit_image_1" style="display:none;"></button>
     </form>
 
     <form name="changeImage2" id="changeImage2" method="post" enctype="multipart/form-data">
