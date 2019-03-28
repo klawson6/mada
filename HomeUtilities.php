@@ -96,7 +96,6 @@ function getAllUsers($choice,$email){
 
     $sql = "SELECT * FROM UserInfo WHERE Rider = 1 AND email <> '" .$email ."' AND ". $innersql1 . " AND " . $innersql2;
 
-
     if($choice == "driver"){
         $sql = "SELECT * FROM UserInfo WHERE Driver = 1 AND email <> '" .$email ."' AND ". $innersql1 . " AND " . $innersql2;
     }

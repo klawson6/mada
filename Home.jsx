@@ -67,7 +67,7 @@ function swipe(evt) {
 
 let animating = false;
 let popUP = false;
-let coverImg = "",alt = "", data = "",bio = "",  photo1 = "" , photo2 = "" , photo3 = "" , photo4 = "",email = "" ;
+let coverImg = "",alt = "", data = "",bio = "",  photo1 = "" , photo2 = "" , photo3 = "" , photo4 = "",email = "" ,personality = "", cleanliness = "", driving = "",timeliness ="";
 let change = false;
 
 function animate(pullDelta){
