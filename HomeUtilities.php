@@ -85,10 +85,6 @@ function addLinkedUser($user,$email){
 
 function getAllUsers($choice,$email){
     $dbconn = dbconn();
-    /*
-     * SELECT * FROM UserInfo WHERE Rider = 1 AND email <> 'a@a.com' AND email NOT IN (SELECT Email1 FROM LinkedUsers WHERE 'a@a.com' = Email1)
-     * AND email NOT IN (SELECT Email2 FROM LinkedUsers WHERE 'a@a.com' = Email2)
-     */
 
     $innersql1 = "email NOT IN (SELECT Email1 FROM LinkedUsers WHERE '".$email . "' = Email1)";
     $innersql2 = "email NOT IN (SELECT Email2 FROM LinkedUsers WHERE '". $email."' = Email2)";
@@ -113,53 +109,8 @@ function getAllUsers($choice,$email){
             $user->age = $difference->format('%y');
             $user->email =  $row["email"];
 
-            $conn = dbconn();
-
-            $photoStmt = $conn->query("SELECT * FROM Photo WHERE email = '".$row['email']."'");
-            $loop = 0;
-
-            if($photoStmt->num_rows > 0) {
-                while ($photoRow = $photoStmt->fetch_assoc()) {
-                    if($loop == 0){
-                        $user->coverImg = "data:image/jpg;base64, ".base64_encode($photoRow['photo']);
-                    }
-                    else if($loop == 1){
-                        $user->photo1 = "data:image/jpg;base64, ".base64_encode($photoRow['photo']);
-                    }
-                    else if($loop == 2){
-                        $user->photo2 = "data:image/jpg;base64, ".base64_encode($photoRow['photo']);
-                    }
-                    else if($loop == 3){
-                        $user->photo3 = "data:image/jpg;base64, ".base64_encode($photoRow['photo']);
-                    }
-                    else if($loop == 4){
-                        $user->photo4 = "data:image/jpg;base64, ".base64_encode($photoRow['photo']);
-                    }
-
-                    $loop++;
-                }
-                if($loop<1){
-                    $user->photo1 = null;
-                    $user->photo2 = null;
-                    $user->photo3 = null;
-                    $user->photo4 = null;
-                }
-
-                if($loop<2){
-                    $user->photo2 = null;
-                    $user->photo3 = null;
-                    $user->photo4 = null;
-                }
-
-                if($loop<3){
-                    $user->photo3 = null;
-                    $user->photo4 = null;
-                }
-
-                if($loop<4){
-                    $user->photo4 = null;
-                }
-            }
+            $user = getPhotos($user);
+            $user = getReviews($user);
 
             array_push($users,$user);
             $user = new User();
@@ -170,6 +121,72 @@ function getAllUsers($choice,$email){
     return $users;
 }
 
+function getReviews($user){
+    $conn = dbconn();
+    $reviewStmt = $conn->query("SELECT * FROM Photo WHERE email = '".$user->email."'");
+
+    if($reviewStmt->num_rows > 0) {
+        while ($reviewStmt = $reviewStmt->fetch_assoc()) {
+
+
+
+
+        }
+    }
+    return $user;
+}
+
+function getPhotos($user){
+    $conn = dbconn();
+
+    $photoStmt = $conn->query("SELECT * FROM Photo WHERE email = '".$user->email."'");
+    $loop = 0;
+
+    if($photoStmt->num_rows > 0) {
+        while ($photoRow = $photoStmt->fetch_assoc()) {
+            if($loop == 0){
+                $user->coverImg = "data:image/jpg;base64, ".base64_encode($photoRow['photo']);
+            }
+            else if($loop == 1){
+                $user->photo1 = "data:image/jpg;base64, ".base64_encode($photoRow['photo']);
+            }
+            else if($loop == 2){
+                $user->photo2 = "data:image/jpg;base64, ".base64_encode($photoRow['photo']);
+            }
+            else if($loop == 3){
+                $user->photo3 = "data:image/jpg;base64, ".base64_encode($photoRow['photo']);
+            }
+            else if($loop == 4){
+                $user->photo4 = "data:image/jpg;base64, ".base64_encode($photoRow['photo']);
+            }
+
+            $loop++;
+        }
+        if($loop<1){
+            $user->photo1 = null;
+            $user->photo2 = null;
+            $user->photo3 = null;
+            $user->photo4 = null;
+        }
+
+        if($loop<2){
+            $user->photo2 = null;
+            $user->photo3 = null;
+            $user->photo4 = null;
+        }
+
+        if($loop<3){
+            $user->photo3 = null;
+            $user->photo4 = null;
+        }
+
+        if($loop<4){
+            $user->photo4 = null;
+        }
+    }
+    return $user;
+}
+
 
 function selectUser($choice,$email){
     header('Content-Type: application/json');
@@ -178,6 +195,5 @@ function selectUser($choice,$email){
     $index = floor(rand(0,sizeof($users)-1));
     $_SESSION["current"] =  $users[$index];
     $current = $users[$index];
-
     return json_encode($current);
 }

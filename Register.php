@@ -43,7 +43,6 @@ if(isset($_POST["action"]) && $_POST["action"] == "submit") {
         header("Location:test.php");
         die();
     }
-
 }
 ?>
 
