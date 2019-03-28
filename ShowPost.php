@@ -7,6 +7,8 @@ include "utilities.php";
  * Time: 19:46
  */
 
+/*TODO
+
 function connectOrDie(){
     $mysqli = dbconn();
     if($mysqli->connect_errno){

@@ -29,10 +29,10 @@ if (loggedIn()) {
 
     $mysqli = connectOrDie();
     $post = $mysqli->real_escape_string(urldecode($_POST["msg"]));
-    $postID = $mysqli->real_escape_string(urldecode($_POST["uid"]));
-    $userA = "@chloe@yahoo.com";
+    $postID = $mysqli->real_escape_string(urldecode($_POST["msgID"]));
+    $userA = "chloe@yahoo.com";
     $userB = "kyle@yahoo.com";
 
     addNewPost($post, $postID, $userA, $userB);
-//echo "$id";
+    //echo "$id";
 }

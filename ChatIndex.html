@@ -15,11 +15,19 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="Normalize.css"/>
     <link rel="stylesheet" type="text/css" href="StyleSheet.css"/>
+    <link rel="stylesheet" type="text/css" href="Chat.css"/>
+
 </head>
 <body>
     <header>Chat</header>
     <main>
         <div id="chatHistoryDiv"></div>
+        <div id="chatFormDiv">
+            <form id="chatForm">
+                <label for="messageText"></label><input type="text" id="messageText"/>
+                <input type ="submit" id ="postButton" value ="Post"/>
+            </form>
+        </div>
     </main>
     <footer>
         <!-- JQuery Plugins -->

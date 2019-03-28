@@ -12,6 +12,8 @@ function ChatController() {
         model.setShowNewPostCallBack(function(message){
            view.addMessage(message);
         });
+
+        view.setCallbackForMessagePost(model.post());
     };
 }
 
