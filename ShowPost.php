@@ -7,7 +7,6 @@ include "utilities.php";
  * Time: 19:46
  */
 
-/*TODO
 
 function connectOrDie(){
     $mysqli = dbconn();
@@ -44,6 +43,7 @@ header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
 
 if (loggedIn()){
     //$currentUser = $_COOKIE["email"];
+    //$secondUser =  connectOrDie()->real_escape_string($_GET["secondUser"]);
     $currentUser = "chloe@hotmail.com";
     $secondUser = "kyle@yahoo.com";
     //$firstID = isset($_GET["startID"]) ? $mysqli->real_escape_string($_GET["startID"]) : 0;

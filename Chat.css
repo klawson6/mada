@@ -18,9 +18,13 @@ html, body{
 }
 
 #messageText{
-    /*TODO maybe font size?*/
-    width: calc(100% - 7rem);
-    text-align: right; /*TODO change for user*/
+    left: 1em;
+    color: black;
+    width: calc(100% - 10rem);
+    text-align: left;
+    bottom: 1.45em;
+    position: fixed;
+    float: left;
 }
 
 #postButton{
@@ -30,5 +34,11 @@ html, body{
     padding: 1rem;
     width: 6rem;
     cursor: pointer;
+    float: right;
+    right: 1em;
+    margin: 0 auto;
+    bottom: 1em;
+    position: fixed;
+    justify-content: right;
 }
 

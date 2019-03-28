@@ -3,7 +3,6 @@
 function ChatModel(){
     /*TODO pretty php so fix it
         add message boxes / alter message div
-        assign user to messages
         make inbox - include get for second user **ask alex
      */
 
