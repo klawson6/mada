@@ -44,6 +44,21 @@ function user_exists($email){
     $dbconn->close();
     return 0;
 }
+
+function validToken(){
+    $dbconn = dbconn();
+    if(isset($_COOKIE["smsCode"])){
+        $stmt = $dbconn->prepare("SELECT email FROM SMSCode WHERE email = ? AND smsCode = ?");
+        $stmt->bind_param("ss", $_SESSION["email"],$_COOKIE["smsCode"]);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows > 0) {
+            return True;
+        }
+    }
+    return False;
+}
+
 function loggedIn()
 {
     if (!isset($_SESSION["email"]) && isset($_COOKIE["email"])) {

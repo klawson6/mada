@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 include "utilities.php";
 include "testingSMS.php";
 
@@ -53,6 +55,7 @@ if(isset($_GET["action"]) && $_GET["action"]=="sendCode"){
                     $stmt = $dbconn->prepare("UPDATE UserInfo SET mobile_number = ? WHERE email = ?");
                     $stmt->bind_param("ss", $phoneNumber,$_SESSION["email"]);
                     $stmt->execute();
+                    setcookie("smsCode", $_POST["sent_code"], time() + (10 * 365 * 24 * 60 * 60));
                     echo json_encode(["result" => "success"]);
                 }
                 else{
@@ -132,8 +135,11 @@ if(isset($_GET["action"]) && $_GET["action"]=="sendCode"){
     <!-- Our own Plugins -->
     <script src="Controller.js"></script>
     <script>
-        if (typeof CoRideApp != null) {
+        try{
             CoRideApp.startSMSListener();
+        }
+        catch (e) {
+            
         }
 
 

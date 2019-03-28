@@ -24,4 +24,3 @@ function sendSMSCode($number,$code)
 )
 );
 }
-

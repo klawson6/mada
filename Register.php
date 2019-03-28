@@ -1,4 +1,10 @@
 <?php
+session_start();
+
+if(loggedIn()){
+    header("Location: Home.php");
+}
+
 include "utilities.php";
 
 $forename = null;
@@ -40,7 +46,10 @@ if(isset($_POST["action"]) && $_POST["action"] == "submit") {
         $stmt1->bind_param("sssssss", $email, $address_name, $address_line_1, $address_line_2, $town, $country, $postcode);
         $stmt1->execute();
 
-        header("Location:test.php");
+        setcookie("email", $_POST["email"], time() + (10 * 365 * 24 * 60 * 60));
+        $_SESSION["email"] = $_POST["email"];
+        header("Location:SMSVerification.php");
+        //var_dump($_COOKIE);
         die();
     }
 
