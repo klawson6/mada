@@ -351,6 +351,12 @@ document.addEventListener("touchend",function () {
             postLiked(email);
         }
         playAudio("audio/swoosh.mp3");
+        try{
+            CoRideApp.vibrate("100");
+        }
+        catch (e) {
+
+        }
         revertChanges();
         animating = false;
         choice = null;

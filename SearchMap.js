@@ -3,6 +3,13 @@
 /*global view*/
 var view = null;
 
+try{
+    CoRideApp.requestGPS();
+}
+catch (e) {
+    
+}
+
 function SearchMap() {
     var contentString = '<div id="testProfile">' +
         '<div id="profilePicTest">' +
