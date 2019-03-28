@@ -9,15 +9,16 @@ session_start();
 include "utilities.php";
 
 $choice = "rider";
-
 if(!loggedIn()){
     header("Location: Index.php", true, 301);
     exit();
 }
+
 if(!validToken()){
-    header("Location: Logout.php",true,301);
-    die();
+    header("Location: Logout.php?token=invalid", true, 301);
+    exit();
 }
+
 
 if(isset($_POST['unset'])){
     session_unset();
@@ -75,9 +76,7 @@ class User{
     public $personality;
     public $timeliness;
     public $drivingAbility;
-    };
-
-
+};
 
 function addLinkedUser($user,$email){
 
@@ -89,7 +88,6 @@ function addLinkedUser($user,$email){
 
     $stmt->execute();
 }
-
 
 function getAllUsers($choice,$email){
     $dbconn = dbconn();
@@ -130,66 +128,63 @@ function getAllUsers($choice,$email){
 }
 
 function getReviews($user){
-
     $conn = dbconn();
+    $avgCleanlinessRider = 0;
+    $avgPersonalityRider = 0;
+    $avgTimelinessRider = 0;
 
-            $avgCleanlinessRider = 0;
-            $avgPersonalityRider = 0;
-            $avgTimelinessRider = 0;
+    $avgPersonalityDriver = 0;
+    $avgCleanlinessDriver = 0;
+    $avgTimelinessDriver = 0;
 
-            $avgPersonalityDriver = 0;
-            $avgCleanlinessDriver = 0;
-            $avgTimelinessDriver = 0;
-
-            //-----------
             //connect to get reviews
-            $reviewDriver = $conn->query("SELECT * FROM reviewsAboutDrivers WHERE revieweeEmail = '" . $user->email . "'");
-            if ($reviewDriver->num_rows > 0) {
-                $totalPersonalityDriving = 0;
-                $totalCleanlinessDriving = 0;
-                $totalTimelinessDriving = 0;
-                $totalDrivingAbility = 0;
-                $i = 0;
+    $reviewDriver = $conn->query("SELECT * FROM reviewsAboutDrivers WHERE revieweeEmail = '" . $user->email . "'");
+    if ($reviewDriver->num_rows > 0) {
+        $totalPersonalityDriving = 0;
+        $totalCleanlinessDriving = 0;
+        $totalTimelinessDriving = 0;
+        $totalDrivingAbility = 0;
+        $i = 0;
 
-                while ($reviewRow = $reviewDriver->fetch_assoc()) {
-                    $totalPersonalityDriving += $reviewRow['personality'];
-                    $totalCleanlinessDriving += $reviewRow['cleanliness'];
-                    $totalDrivingAbility += $reviewRow['drivingAbility'];
-                    $totalTimelinessDriving += $reviewRow['timeliness'];
-                    $i++;
-                }
-                $avgPersonalityDriver = $totalPersonalityDriving / $i;
-                $avgCleanlinessDriver = $totalCleanlinessDriving / $i;
-                $avgTimelinessDriver = $totalTimelinessDriving / $i;
-                $avgDrivingAbiityDriver = $totalDrivingAbility / $i;
-                $user->drivingAbility = round($avgDrivingAbiityDriver);
-            }
+        while ($reviewRow = $reviewDriver->fetch_assoc()) {
+            $totalPersonalityDriving += $reviewRow['personality'];
+            $totalCleanlinessDriving += $reviewRow['cleanliness'];
+            $totalDrivingAbility += $reviewRow['drivingAbility'];
+            $totalTimelinessDriving += $reviewRow['timeliness'];
+            $i++;
+        }
+        $avgPersonalityDriver = $totalPersonalityDriving / $i;
+        $avgCleanlinessDriver = $totalCleanlinessDriving / $i;
+        $avgTimelinessDriver = $totalTimelinessDriving / $i;
+        $avgDrivingAbiityDriver = $totalDrivingAbility / $i;
+        $user->drivingAbility = round($avgDrivingAbiityDriver);
+    }
 
-            $reviewRider = $conn->query("SELECT * FROM reviewsAboutRiders WHERE revieweeEmail = '" . $user->email . "'");
-            if ($reviewRider->num_rows > 0) {
-                $totalPersonalityRiding = 0;
-                $totalCleanlinessRiding = 0;
-                $totalTimelinessRiding = 0;
-                $j = 0;
-                while ($riderReviewRow = $reviewRider->fetch_assoc()) {
-                    $totalPersonalityRiding += $riderReviewRow['personality'];
-                    $totalCleanlinessRiding += $riderReviewRow['cleanliness'];
-                    $totalTimelinessRiding += $riderReviewRow['timeliness'];
-                    $j++;
-                }
-                $avgCleanlinessRider = $totalPersonalityRiding / $j;
-                $avgPersonalityRider = $totalPersonalityRiding / $j;
-                $avgTimelinessRider = $totalTimelinessRiding / $j;
-            }
+    $reviewRider = $conn->query("SELECT * FROM reviewsAboutRiders WHERE revieweeEmail = '" . $user->email . "'");
+    if ($reviewRider->num_rows > 0) {
+        $totalPersonalityRiding = 0;
+        $totalCleanlinessRiding = 0;
+        $totalTimelinessRiding = 0;
+        $j = 0;
+        while ($riderReviewRow = $reviewRider->fetch_assoc()) {
+            $totalPersonalityRiding += $riderReviewRow['personality'];
+            $totalCleanlinessRiding += $riderReviewRow['cleanliness'];
+            $totalTimelinessRiding += $riderReviewRow['timeliness'];
+            $j++;
+        }
+        $avgCleanlinessRider = $totalPersonalityRiding / $j;
+        $avgPersonalityRider = $totalPersonalityRiding / $j;
+        $avgTimelinessRider = $totalTimelinessRiding / $j;
+    }
 
-            $finalAvgClean = ($avgCleanlinessDriver + $avgCleanlinessRider) / 2;
-            $user->cleanliness = round($finalAvgClean);
+    $finalAvgClean = ($avgCleanlinessDriver + $avgCleanlinessRider) / 2;
+    $user->cleanliness = round($finalAvgClean);
 
-            $finalAvgPerson = ($avgPersonalityDriver + $avgPersonalityRider) / 2;
-            $user->personality = round($finalAvgPerson);
+    $finalAvgPerson = ($avgPersonalityDriver + $avgPersonalityRider) / 2;
+    $user->personality = round($finalAvgPerson);
 
-            $finalAvgTime = ($avgTimelinessDriver + $avgTimelinessRider) / 2;
-            $user->timeliness = round($finalAvgTime);
+    $finalAvgTime = ($avgTimelinessDriver + $avgTimelinessRider) / 2;
+    $user->timeliness = round($finalAvgTime);
 
     return $user;
 }
@@ -244,6 +239,7 @@ function getPhotos($user){
     }
     return $user;
 }
+
 
 function selectUser($choice,$email){
     header('Content-Type: application/json');

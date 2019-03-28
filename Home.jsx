@@ -68,6 +68,8 @@ function swipe(evt) {
 let animating = false;
 let popUP = false;
 let coverImg = "",alt = "", data = "",bio = "",  photo1 = "" , photo2 = "" , photo3 = "" , photo4 = "",email = "" ;
+
+
 let change = false;
 
 function animate(pullDelta){
@@ -113,7 +115,7 @@ function getData(needToSavePrevious) {
                 data: {"update": needToSavePrevious},
                 success: function (response) {
 
-                   // console.log(response);
+                    console.log(response);
                     let user = response;
                     data = user.name + " | " + user.age;
                     alt = user.name;
@@ -246,8 +248,19 @@ if(!popUP) {
 }
 
 /*------------------------------------------------------------------------------------------------------------------------------------------------------*/
-/*                                                         Action Listeners*/
+/*                                                         Play Audio*/
 
+function playAudio(path) {
+
+    var audio = new Audio(path);
+    audio.play().catch(function (e) {
+        //ignore the error
+    })
+
+}
+
+/*------------------------------------------------------------------------------------------------------------------------------------------------------*/
+/*                                                         Action Listeners*/
 
 function closePopUp(){
     moreDetailsCard.style.display = "none";
@@ -266,7 +279,6 @@ function postChange(change){
             data: {"change": change}
         });
 }
-
 
 function postLiked(likedEmail){
     jQuery.ajax(
@@ -298,6 +310,7 @@ document.addEventListener("touchend",function () {
         if(choice === "accept"){
             postLiked(email);
         }
+        playAudio("audio/swoosh.mp3");
         revertChanges();
         animating = false;
         choice = null;
