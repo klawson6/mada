@@ -276,7 +276,7 @@ if($uImage = $userImages->fetch_assoc()){
     <button id="close_change_password" class="btn btn-lg btn-inverse btn-block pop_up_button">Close</button>
 </div>
 
-<div id="editInfo" class="editProfileWrapper">
+<div id="editInfo" class="editProfileWrapper" style="display: none">
 
     <label>Profile Images</label>
     <div class="profileImages">
