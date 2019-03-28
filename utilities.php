@@ -31,7 +31,19 @@ function authentication($email,$password){
     }
     return 0;
 }
-
+function user_exists($email){
+    $dbconn = dbconn();
+    $stmt = $dbconn->prepare("SELECT email FROM UserInfo WHERE email = ?");
+    $stmt->bind_param("s",$email);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if($result->num_rows > 0){
+        $dbconn->close();
+        return 1;
+    }
+    $dbconn->close();
+    return 0;
+}
 function loggedIn()
 {
     if (!isset($_SESSION["email"]) && isset($_COOKIE["email"])) {

@@ -101,7 +101,7 @@ if(loggedIn()){
                 this.style.backgroundColor = "#ffffff";
             });
 
-            $( "form" ).on( "submit", function( event ) {
+            $( "#sign_up_form" ).on( "submit", function( event ) {
                 event.preventDefault();
                 var xhttp = new XMLHttpRequest();
 
