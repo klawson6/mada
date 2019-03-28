@@ -110,7 +110,7 @@ function getData(needToSavePrevious) {
                 type: "post",
                 url: "HomeUtilities.php",
                 dataType: 'json',
-                data: {"update": "1", "save":needToSavePrevious},
+                data: {"update": needToSavePrevious},
                 success: function (response) {
 
                    // console.log(response);
