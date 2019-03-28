@@ -27,8 +27,9 @@ function getPosts($currentUser, $user2){
                 $comments[] = $row;
             }
             $result->close();
-
             return $comments;
+        } else{
+            die("Query failed: %s ". $showChats->error);
         }
     }else{
         die("Query failed: %s ". $showChats->error);

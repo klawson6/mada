@@ -3,7 +3,8 @@
 "use strict";
 
 function ChatController() {
-    var model = new ChatModel(), view = new ChatView();
+    var model = new ChatModel(),
+        view = new ChatView();
 
     this.init = function () {
         model.init();
@@ -13,7 +14,7 @@ function ChatController() {
            view.addMessage(message);
         });
 
-        view.setCallbackForMessagePost(model.post());
+        view.setCallbackForMessagePost(model.post);
     };
 }
 

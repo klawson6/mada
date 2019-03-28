@@ -18,6 +18,7 @@ function ChatView(){
 
     this.setCallbackForMessagePost = function(callback){
         chatForm.addEventListener("submit", function(event){
+            window.console.log("Text: " + postTextField.value);
             callback(postTextField.value);
             postTextField.value = "";
             postTextField.focus();
