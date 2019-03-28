@@ -30,7 +30,7 @@ include "HomeUtilities.php"
                 <span class="glyphicon glyphicon-search icon_style"></span>
             </button>
         </form>
-            <label id = "nav_center"><h3>Select a buddy</h3></label>
+            <label id = "nav_center"><h3 id = "headder">Select a Rider</h3></label>
         <form action="EditProfile.html">
             <button id = "nav_right"  class="borderlessButtons">
                 <span class="glyphicon  glyphicon-user icon_style"></span>
@@ -39,13 +39,20 @@ include "HomeUtilities.php"
         </table>
     </div>
 </nav>
-<body class="home">
+
 <div id = "card_moreDetails"></div>
+<table>
+<h5>Change Mode:</h5>
+<div id = "slider_container">
+    <button id="isDriverSlider">  </button>
+</div>
+</table>
+<br>
+
 <div id = "card_status"></div>
 <div id = "frontCard"></div>
 <div id = "card_reject" class = "card_reject"></div>
 <div id = "card_accept" class ="card_accept"></div>
-
 
 <div id ="status_bar">
     <table id = "wrapper_table">
@@ -81,6 +88,9 @@ include "HomeUtilities.php"
         </tr>
     </table>
 </div>
+<form action="Logout.php">
+    <input type="submit">
+</form>
 </body>
 
 <footer>
@@ -95,6 +105,5 @@ include "HomeUtilities.php"
     <script src= "https://unpkg.com/react@16/umd/react.production.min.js"></script>
     <script src= "https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
-
 </footer>
 </html>

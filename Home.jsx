@@ -5,8 +5,10 @@ let frontCard = document.getElementById("frontCard");
 let acceptCard = document.getElementById("card_accept");
 let rejectCard = document.getElementById("card_reject");
 let moreDetailsCard = document.getElementById("card_moreDetails");
+let slider = document.getElementById("slider_container");
 let choice = null;
 let startTime = null;
+
 
 
 /* get first touch location*/
@@ -33,11 +35,12 @@ function swipe(evt) {
           ySwipe = yFirst - ySecond;
 
 
-    if(ySwipe >= 0 && ySwipe <= 100 && xSwipe >= 0 && xSwipe <= 100  && currTime >= 100){
+    if(ySwipe >= 0 && ySwipe <= 100 && xSwipe >= 0 && xSwipe <= 100  && currTime >= 200){
          /*we are holding */
 
+        popUP = true;
         ReactDOM.render(
-            <DetailedUserProfile link = {link} alt = {alt} data = {data} />,
+            <DetailedUserProfile coverImg = {coverImg} alt = {alt} data = {data} bio = {bio} photo1 = {photo1} photo2 = {photo2} photo3 = {photo3} photo4 = {photo4}  />,
             document.getElementById('card_moreDetails')
         );
 
@@ -51,12 +54,11 @@ function swipe(evt) {
         if (currTime < 150) return; /*we are swiping too quick*/
         if (Math.abs(xSwipe) > Math.abs(ySwipe)) {
             if (xSwipe > 0) {
-                choice = "accept"
-            } else {
                 choice = "reject"
+            } else {
+                choice = "accept"
             }
         }
-
         animate(-xSwipe);
     }
 };
@@ -64,7 +66,8 @@ function swipe(evt) {
 /*                                                               Animations*/
 
 let animating = false;
-let link = "img/man1.jpeg",alt = "Biggie Smalls", data = "Biggie S | Swag";
+let popUP = false;
+let coverImg = "",alt = "", data = "",bio = "",  photo1 = "" , photo2 = "" , photo3 = "" , photo4 = "",email = "" ;
 let change = false;
 
 function animate(pullDelta){
@@ -96,43 +99,57 @@ function revertChanges(){
     frontCard.style.transform = "translate(.3rem) rotate(0deg)";
     acceptCard.style.transform = "translate(.3rem) rotate(0deg)";
     rejectCard.style.transform = "translate(.3rem) rotate(0deg)";
-    updateData();
+    updateData("yes");
 };
 
-function updateData() {
-    if (animating) {
 
+function getData(needToSavePrevious) {
+    if(!popUP) {
         jQuery.ajax(
             {
-                type:"post",
+                type: "post",
                 url: "HomeUtilities.php",
                 dataType: 'json',
-                data: {"update":"1"},
+                data: {"update": "1", "save":needToSavePrevious},
                 success: function (response) {
 
-                    console.log(response);
+                   // console.log(response);
                     let user = response;
                     data = user.name + " | " + user.age;
                     alt = user.name;
+                    coverImg = user.coverImg;
+                    bio = user.bio;
+                    photo1 = user.photo1;
+                    photo2 = user.photo2;
+                    photo3 = user.photo3;
+                    photo4 = user.photo4;
 
+                    email = user.email;
 
                     ReactDOM.render(
-                        <UserProfilePage link={link} alt={alt} data={data} />,
+                        <UserProfilePage link={coverImg} alt={alt} data={data}/>,
                         document.getElementById("frontCard")
                     );
                 },
-                error: function(e){
+                error: function (e) {
                     console.log('error');
-                    console.log(e);
+                    console.log(e.responseText);
                 }
             });
+    }
 
+}
 
+function updateData(needToSavePrevious) {
+    if (animating) {
+        getData(needToSavePrevious);
     }
 };
 
 /*------------------------------------------------------------------------------------------------------------------------------------------------------*/
 /*                                                          React Components*/
+let detailedRef ;
+
 class UserProfilePage extends React.Component {
     render() {
         return(
@@ -150,26 +167,41 @@ class UserProfilePage extends React.Component {
 }
 
 class DetailedUserProfile extends React.Component {
+    constructor(props){
+        super(props);
+        this.detailedRef  = React.createRef();
+    }
+
     render() {
         return(
-            <div class = "moreDetailedUserProfile">
+            <div class = "moreDetailedUserProfile" ref = {this.detailedRef}>
                 <h1>
                     <label id="image_label" htmlFor="image">{this.props.data}</label>
                 </h1>
                 <div id="profileImages" class="profileImages" >
-
-                    <img className="profileI" src="img/man1.jpeg" alt="Image 1"></img>
-                    <img className="profileI" src="img/free_img.png" alt="Image 2"></img>
-                    <img className="profileI" src="img/free_img.png" alt="Image 3"></img>
-                    <img className="profileI" src="img/free_img.png" alt="Image 4"></img>
-                    <img className="profileI" src="img/free_img.png" alt="Image 5"></img>
+                    <img id = "photo1" className="profileI" src={this.props.coverImg} alt="Image 1"></img>
+                    {
+                        (this.props.photo1) == null ?
+                            (null)
+                            :  (<img id = "photo2" className="profileI" src={this.props.photo1}  alt="Image 2"></img> )}
+                    {
+                        (this.props.photo2) == null ?
+                            (null)
+                            :  (<img id = "photo2" className="profileI" src={this.props.photo2}  alt="Image 3"></img> )}
+                    {
+                        (this.props.photo3) == null ?
+                            (null)
+                            :  (<img id = "photo2" className="profileI" src={this.props.photo3}  alt="Image 4"></img> )}
+                    {
+                        (this.props.photo4) == null ?
+                            (null)
+                            :  (<img id = "photo2" className="profileI" src={this.props.photo4}  alt="Image 5"></img> )}
 
                 </div>
                 <div class="moreDetails">
                     <h1>About ME</h1>
                     <div class="aboutMe">
-                        <p>I am a friendly person</p>
-                        <p>I like long walks on the beach and etc</p>
+                        {this.props.bio}
                     </div>
                     <div class="reviewGroup">
                         <h1>Reviews</h1>
@@ -205,12 +237,13 @@ class DetailedUserProfile extends React.Component {
         );
     }
 }
-
-
+getData("no");
+if(!popUP) {
     ReactDOM.render(
-        <UserProfilePage link = {link} alt = {alt} data = {data} />,
+        <UserProfilePage link={coverImg} alt={alt} data={data}/>,
         document.getElementById('frontCard')
-);
+    );
+}
 
 /*------------------------------------------------------------------------------------------------------------------------------------------------------*/
 /*                                                         Action Listeners*/
@@ -221,6 +254,28 @@ function closePopUp(){
     frontCard.style.display = "block";
     acceptCard.style.display = "block";
     rejectCard.style.display = "block";
+    popUP = false;
+}
+
+function postChange(change){
+    jQuery.ajax(
+        {
+            type: "post",
+            url: "HomeUtilities.php",
+            dataType: 'json',
+            data: {"change": change}
+        });
+}
+
+
+function postLiked(likedEmail){
+    jQuery.ajax(
+        {
+            type: "post",
+            url: "HomeUtilities.php",
+            dataType: 'json',
+            data: {"liked": likedEmail}
+        });
 }
 
 let yes_button = document.getElementById("cirlce_yes");
@@ -228,31 +283,7 @@ let no_button = document.getElementById("cirlce_no");
 let redo_button = document.getElementById("cirlce_redo");
 
 document.addEventListener("load",function () {
-    jQuery.ajax(
-        {
-            type:"post",
-            url: "HomeUtilities.php",
-            dataType: 'json',
-            data: {"update":"1"},
-            success: function (response) {
-                console.log(response);
-                let user = response;
-                data = user.name + " | " + user.age;
-                alt = user.name;
-
-            },
-            error: function(e){
-                console.log('error');
-                console.log(e);
-            }
-        });
-
-    ReactDOM.render(
-        <UserProfilePage link={link} alt={alt} data={data} />,
-        document.getElementById("frontCard")
-    );
-
-
+    getData("no");
     document.body.scroll = "no";
 })
 
@@ -264,13 +295,55 @@ document.addEventListener("touchend",function () {
     if(animating) {
         if (!choice) return;
         /*display choice*/
+        if(choice === "accept"){
+            postLiked(email);
+        }
         revertChanges();
         animating = false;
         choice = null;
         xFirst = null;
         yFirst = null;
+
+
     }
 },false);
+
+slider.addEventListener("click", function () {
+
+    let button = document.getElementById("isDriverSlider");
+    let title = document.getElementById("headder");
+
+    if(button.style.cssFloat == "left"){
+        button.style.cssFloat = "right";
+
+        button.style.backgroundColor = "rgb(131, 12, 127)";
+        slider.style.backgroundColor = "rgb(98, 9, 95)";
+        button.style.borderColor = "rgb(106, 10, 103)";
+        title.innerText = "Select a Driver"
+
+        postChange("driver");
+
+    }else{
+        button.style.cssFloat = "left";
+
+        /*green*/
+        button.style.backgroundColor = "rgb(31, 138, 82)";
+        slider.style.backgroundColor = "rgb(14, 70, 45)";
+        button.style.borderColor = "rgb(25, 112, 66)";
+        title.innerText = "Select a Rider"
+
+        postChange("rider");
+
+    }
+
+    getData("reset");
+    console.log("reset");
+    ReactDOM.render(
+        <UserProfilePage link={coverImg} alt={alt} data={data}/>,
+        document.getElementById('frontCard')
+    );
+
+});
 
 yes_button.addEventListener("click", function () {
     animating = true;
@@ -319,5 +392,47 @@ no_button.addEventListener("click", function () {
 });
 
 redo_button.addEventListener("click", function () {
+    jQuery.ajax(
+        {
+            type: "post",
+            url: "HomeUtilities.php",
+            dataType: 'json',
+            data: {"rewind": "1"},
+            success: function (response) {
+                console.log(response);
+                if(response.name != "no") {
 
+                    let user = response;
+                    data = user.name + " | " + user.age;
+                    alt = user.name;
+                    coverImg = user.coverImg;
+                    bio = user.bio;
+                    photo1 = user.photo1;
+                    photo2 = user.photo2;
+                    photo3 = user.photo3;
+                    photo4 = user.photo4;
+
+                    email = user.email;
+
+                    ReactDOM.render(
+                        <UserProfilePage link={coverImg} alt={alt} data={data}/>,
+                        document.getElementById("frontCard")
+                    );
+                }
+            },
+            error: function (e) {
+                console.log('error');
+                console.log(e);
+            }
+        });
 });
+
+window.onbeforeunload = function(){
+    jQuery.ajax(
+        {
+            type: "post",
+            url: "HomeUtilities.php",
+            dataType: 'json',
+            data: {"unset": ""}
+        });
+};

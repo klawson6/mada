@@ -15,19 +15,47 @@ die("Connection failed: " . $conn->connect_error);
 }
 return $conn;
 }
+
+function authentication($email,$password){
+    $dbconn = dbconn();
+    $stmt = $dbconn->prepare("SELECT password FROM UserInfo WHERE email = ?");
+    $stmt->bind_param("s",$email);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $dbconn->close();
+    if($result->num_rows>0){
+        $row = $result->fetch_assoc();
+        if(password_verify($password,$row["password"])){
+            return 1;
+        }
+    }
+    return 0;
+}
+function user_exists($email){
+    $dbconn = dbconn();
+    $stmt = $dbconn->prepare("SELECT email FROM UserInfo WHERE email = ?");
+    $stmt->bind_param("s",$email);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if($result->num_rows > 0){
+        $dbconn->close();
+        return 1;
+    }
+    $dbconn->close();
+    return 0;
+}
 function loggedIn()
 {
     if (!isset($_SESSION["email"]) && isset($_COOKIE["email"])) {
 
         $email = $_COOKIE["email"];
         $dbconn = dbconn();
-        $stmt = $dbconn->prepare("SELECT name FROM Users WHERE email = ?");
+        $stmt = $dbconn->prepare("SELECT email FROM UserInfo WHERE email = ?");
         $stmt->bind_param("s", $email);
         $stmt->execute();
         $result = $stmt->get_result();
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
-            $_SESSION["name"] = $row["name"];
             $_SESSION["email"] = $email;
             return True;
         }
