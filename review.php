@@ -7,9 +7,17 @@
  */
 include "utilities.php";
 
-if (isset($_COOKIE['email'])){
-    $userEmail = $_COOKIE['email'];
+if(!loggedIn()){
+    header("Location: Index.php");
+    die();
 }
+
+if(!validToken()){
+    header("Location: Logout.php?token=invalid");
+    die();
+}
+
+$userEmail = $_SESSION["email"];
 
 if (isset($_SESSION['rider'])){
     $rider = true;
