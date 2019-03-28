@@ -40,7 +40,7 @@ function swipe(evt) {
 
         popUP = true;
         ReactDOM.render(
-            <DetailedUserProfile coverImg = {coverImg} alt = {alt} data = {data} bio = {bio} photo1 = {photo1} photo2 = {photo2} photo3 = {photo3} photo4 = {photo4}  />,
+            <DetailedUserProfile coverImg = {coverImg} alt = {alt} data = {data} bio = {bio} personality = {personality} cleanliness = {cleanliness} driving = {driving} timeliness = {timeliness} photo1 = {photo1} photo2 = {photo2} photo3 = {photo3} photo4 = {photo4} />,
             document.getElementById('card_moreDetails')
         );
 
@@ -68,8 +68,6 @@ function swipe(evt) {
 let animating = false;
 let popUP = false;
 let coverImg = "",alt = "", data = "",bio = "",  photo1 = "" , photo2 = "" , photo3 = "" , photo4 = "",email = "" ;
-
-
 let change = false;
 
 function animate(pullDelta){
@@ -115,7 +113,7 @@ function getData(needToSavePrevious) {
                 data: {"update": needToSavePrevious},
                 success: function (response) {
 
-                    console.log(response);
+                   // console.log(response);
                     let user = response;
                     data = user.name + " | " + user.age;
                     alt = user.name;
@@ -125,6 +123,10 @@ function getData(needToSavePrevious) {
                     photo2 = user.photo2;
                     photo3 = user.photo3;
                     photo4 = user.photo4;
+                    personality = user.personality;
+                    driving = user.cleanliness;
+                    cleanliness = user.cleanliness;
+                    timeliness = user.timeliness;
 
                     email = user.email;
 
@@ -164,7 +166,58 @@ class UserProfilePage extends React.Component {
                     <label id="image_label" htmlFor="image">{this.props.data}</label>
                 </div>
             </div>
-    );
+        );
+    }
+}
+
+class Review extends React.Component{
+    render() {
+        let personalityStars = [];
+        let timelinessStars = [];
+        let cleanlinessStars = [];
+        let drivingStars = [];
+
+        if (personality > 0){
+            personalityStars.push(<h4>Personality</h4>);
+            for (let i = 0; i < 5; i++){
+                if (personality > i){
+                    personalityStars.push(<img className={"star"} src={"img/star.png"}/>);
+                }
+            }
+        }
+        if (timeliness > 0){
+            timelinessStars.push(<h4>Timeliness</h4>);
+            for (let i = 0; i < 5; i++){
+                if (timeliness > i){
+                    timelinessStars.push(<img className={"star"} src={"img/star.png"}/>);
+                }
+            }
+        }
+        if (cleanliness > 0){
+            cleanlinessStars.push(<h4>Cleanliness</h4>);
+            for (let i = 0; i < 5; i++){
+                if (cleanliness > i){
+                    cleanlinessStars.push(<img className={"star"} src={"img/star.png"}/>);
+                }
+            }
+        }
+        if (driving > 0){
+            drivingStars.push(<h4>Driving</h4>);
+            for (let i = 0; i < 5; i++){
+                if (driving > i){
+                    drivingStars.push(<img className={"star"} src={"img/star.png"}/>);
+                }
+            }
+        }
+        return(
+            <div>
+                <div>{personalityStars}</div>
+                <div>{cleanlinessStars}</div>
+                <div>{drivingStars}</div>
+                <div>{timelinessStars}</div>
+            </div>
+
+        );
     }
 }
 
@@ -205,33 +258,18 @@ class DetailedUserProfile extends React.Component {
                     <div class="aboutMe">
                         {this.props.bio}
                     </div>
-                    <div class="reviewGroup">
-                        <h1>Reviews</h1>
-                        <div className="reviews">
-                            <h4>Cleanliness</h4>
-                            <img className="star" src="img/star.png" alt="emptyStar"></img>
-                            <img className="star" src="img/star_empty.png" alt="emptyStar"></img>
-                            <img className="star" src="img/star_empty.png" alt="emptyStar"></img>
-                            <img className="star" src="img/star_empty.png" alt="emptyStar"></img>
-                            <img className="star" src="img/star_empty.png" alt="emptyStar"></img>
-                        </div>
-                        <div className="reviews">
-                            <h4>Politeness</h4>
-                            <img className="star" src="img/star.png" alt="emptyStar"></img>
-                            <img className="star" src="img/star.png" alt="emptyStar"></img>
-                            <img className="star" src="img/star.png" alt="emptyStar"></img>
-                            <img className="star" src="img/star_empty.png" alt="emptyStar"></img>
-                            <img className="star" src="img/star_empty.png" alt="emptyStar"></img>
-                        </div>
-                        <div className="reviews">
-                            <h4>Ability To Drive</h4>
-                            <img className="star" src="img/star.png" alt="emptyStar"></img>
-                            <img className="star" src="img/star.png" alt="emptyStar"></img>
-                            <img className="star" src="img/star.png" alt="emptyStar"></img>
-                            <img className="star" src="img/star_half.png" alt="emptyStar"></img>
-                            <img className="star" src="img/star_empty.png" alt="emptyStar"></img>
-                        </div>
+
+
+                    <h1>Reviews</h1>
+                        <div className="reviewGroup">
+                            {
+                                (this.props.cleanliness == 0 && this.props.personality == 0 && this.props.driving == 0 && this.props.timeliness == 0) ?
+                                (<div>There are currently no reviews of this user</div>)
+                                :
+                                <Review personality = {personality} timeliness = {timeliness} driving = {driving} cleanliness = {cleanliness}/>
+                            }
                     </div>
+
                 </div>
                 <br></br>
                 <button id="close" className="closeButton" onClick={closePopUp}>Close</button>
@@ -262,6 +300,7 @@ function playAudio(path) {
 /*------------------------------------------------------------------------------------------------------------------------------------------------------*/
 /*                                                         Action Listeners*/
 
+
 function closePopUp(){
     moreDetailsCard.style.display = "none";
     frontCard.style.display = "block";
@@ -279,6 +318,7 @@ function postChange(change){
             data: {"change": change}
         });
 }
+
 
 function postLiked(likedEmail){
     jQuery.ajax(
