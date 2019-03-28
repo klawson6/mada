@@ -1,3 +1,11 @@
+<?php
+
+if(isset($_GET["type"])){
+    echo "<script>var type='" . $_GET["type"] . "';</script>";
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

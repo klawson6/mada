@@ -22,10 +22,18 @@ include "HomeUtilities.php"
 
 </head>
 
+<script>
+    function getUsertype() {
+
+        window.location.href = "SearchMap.php?type=rider";
+
+        return false;
+    }
+</script>
 <nav id="my_navbar" class="nav_buttons">
     <div id="nav_container">
         <table>
-        <form action="SearchMap.html">
+        <form action="SearchMap.php" onsubmit="return getUsertype()">
             <button id = "nav_left"  class="borderlessButtons">
                 <span class="glyphicon glyphicon-search icon_style"></span>
             </button>

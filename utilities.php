@@ -80,3 +80,13 @@ function loggedIn()
     }
     return False;
 }
+
+
+//if(isset($_GET["action"]) && $_GET["action"]=="getEmail"){
+//    if(loggedIn()) {
+//        if(validToken()) {
+//            echo json_encode(["email" => $_SESSION["email"]]);
+//        }
+//    }
+//    echo j
+//}
