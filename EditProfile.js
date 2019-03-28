@@ -17,6 +17,15 @@ var town;
 var country;
 var postcode;
 
+var cHeight = window.innerHeight;
+var cWidth = window.innerWidth;
+
+window.onresize = function(){
+
+    window.innerHeight = cHeight;
+    window.innerWidth = cWidth;
+};
+
 document.body.onload = function(){
     document.getElementById("editInfo").style.display = "block";
 };
