@@ -47,7 +47,7 @@ class User{
 
 $current = new User();
 $previousUser =$current;
-$email = $_COOKIE["email"];
+$email = $_SESSION["email"];
 
 function addLinkedUser($user){
 

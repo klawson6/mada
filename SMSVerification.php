@@ -132,6 +132,11 @@ if(isset($_GET["action"]) && $_GET["action"]=="sendCode"){
     <!-- Our own Plugins -->
     <script src="Controller.js"></script>
     <script>
+        if (typeof CoRideApp != null) {
+            CoRideApp.startSMSListener();
+        }
+
+
         $(document).ready(function(){
             $( "#sign_up_form" ).on( "submit", function( event ) {
                 event.preventDefault();

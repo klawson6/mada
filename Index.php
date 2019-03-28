@@ -138,18 +138,6 @@ if(loggedIn()){
             });
         });
     </script>
-    <script>
-        window.addEventListener("load",function() {
-            alert("Testing");
-            if (typeof CoRideApp != null) {
-                alert("Working");
-                CoRideApp.vibrate("1000");
-            }
-            else {
-                alert("Not Working");
-            }
-        })
-    </script>
 
 </footer>
 </html>
