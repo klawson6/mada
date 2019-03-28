@@ -124,7 +124,7 @@ function getData(needToSavePrevious) {
                     photo3 = user.photo3;
                     photo4 = user.photo4;
                     personality = user.personality;
-                    driving = user.cleanliness;
+                    driving = user.drivingAbility;
                     cleanliness = user.cleanliness;
                     timeliness = user.timeliness;
 
@@ -263,7 +263,7 @@ class DetailedUserProfile extends React.Component {
                     <h1>Reviews</h1>
                         <div className="reviewGroup">
                             {
-                                (this.props.cleanliness == 0 && this.props.personality == 0 && this.props.driving == 0 && this.props.timeliness == 0) ?
+                                (this.props.cleanliness === 0 && this.props.personality === 0 && this.props.driving === 0 && this.props.timeliness === 0) ?
                                 (<div>There are currently no reviews of this user</div>)
                                 :
                                 <Review personality = {personality} timeliness = {timeliness} driving = {driving} cleanliness = {cleanliness}/>

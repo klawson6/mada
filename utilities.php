@@ -81,6 +81,52 @@ function loggedIn()
     return False;
 }
 
-function getReviewAvg(){
+function getReviewAvg($email, $reviewType){
 
+    $dbconn = dbconn();
+
+    $avgRider = 0;
+    $avgDriver = 0;
+    $divi = 0;
+
+    $reviewDriver = $dbconn->query("SELECT * FROM reviewsAboutDrivers WHERE revieweeEmail = '" . $email . "'");
+
+    if ($reviewDriver->num_rows > 0) {
+
+        $totalDriving = 0;
+        $i = 0;
+
+        while ($rr = $reviewDriver->fetch_assoc()) {
+            $totalDriving += $rr[$reviewType];
+            $i++;
+        }
+
+        $avgDriver = $totalDriving / $i;
+
+        if ($reviewType == "drivingAbility"){
+            return round($avgDriver);
+        }
+        $divi++;
+    }
+
+    $reviewRider = $dbconn->query("SELECT * FROM reviewsAboutRiders WHERE revieweeEmail = '" . $email . "'");
+    if ($reviewRider->num_rows > 0) {
+        $totalRider = 0;
+        $j = 0;
+
+        while ($reviewRow = $reviewRider->fetch_assoc()) {
+            $totalRider += $reviewRow[$reviewType];
+            $j++;
+        }
+        $avgRider = $totalRider / $j;
+        $divi++;
+    }
+
+    if ($divi > 0){
+        $finalAvg = ($avgDriver + $avgRider) / $divi;
+
+        return round($finalAvg);
+    } else {
+        return 0;
+    }
 }
