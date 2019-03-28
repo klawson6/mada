@@ -1,21 +1,21 @@
 
-    var addresses = [];
+var addresses = [];
 
-    var forename;
-    var surname;
-    var mobileNumber;
-    var bio;
-    var email;
+var forename;
+var surname;
+var mobileNumber;
+var bio;
+var email;
 
-    var password;
+var password;
 
-    var address_id;
-    var address_name;
-    var address_line_1;
-    var address_line_2;
-    var town;
-    var country;
-    var postcode;
+var address_id;
+var address_name;
+var address_line_1;
+var address_line_2;
+var town;
+var country;
+var postcode;
 
     $("#editInfo").on("submit", function (event) {
         event.preventDefault();
@@ -379,7 +379,6 @@
     };
 
     document.getElementById("image_input_1").onchange = function (event) {
-        console.log("hello");
         var selectedFile = event.target.files[0];
         var reader = new FileReader();
 
@@ -422,6 +421,9 @@
 
         reader.onload = function (event) {
             profile_image_3.src = event.target.result;
+            image = profile_image_3.src;
+            image_id = document.getElementById("profile_pic_3_id");
+            email = document.getElementById("user_email6");
         };
 
         reader.readAsDataURL(selectedFile);
