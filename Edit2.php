@@ -30,8 +30,7 @@ if(isset($_POST["action"]) && $_POST["action"] == "updatePassword") {
     $passwordChangeSTMT = $dbconn->prepare("UPDATE UserInfo SET password=? WHERE email=?;");
     $passwordChangeSTMT->bind_param("ss", $hash, $user_email);
     $passwordChangeSTMT->execute();
-    header("Location:Edit2.php");
-
+    die();
 
 }
 else if(isset($_POST["action"]) && $_POST["action"] == "updateAddress"){
@@ -74,8 +73,8 @@ else if(isset($_POST["action"]) && $_POST["action"] == "updateInformation"){
     $passwordChangeSTMT->bind_param("sssss", $forename, $surname, $mobile_number, $bio,  $user_email);
     $passwordChangeSTMT->execute();
 
+    die();
 
-    header("Location:Edit2.php");
 
 }
 else if(isset($_POST["action"]) && $_POST["action"] == "deleteAddress"){
@@ -226,7 +225,7 @@ if($uImage = $userImages->fetch_assoc()){
 </div>
 
 <div id ="editAddress" class="pop_up">
-    <form name="editAddress" method="post" enctype="multipart/form-data" onsubmit="return validateEditAddressData()">
+    <form name="editAddress" id="editAddress" method="post" enctype="multipart/form-data" onsubmit="return validateEditAddressData()">
         <h4>Edit Address</h4>
         <div id="address_input_wrapper" class="inputWrapper">
             <label>Name:</label>
@@ -260,7 +259,7 @@ if($uImage = $userImages->fetch_assoc()){
 </div>
 
 <div id="changePassword" class="pop_up">
-    <form name="editPassword" method="post" enctype="multipart/form-data" onsubmit="return validateChangePasswordData()">
+    <form name="editPassword" id="editPassword" method="post" enctype="multipart/form-data">
         <h4>Change Password</h4>
         <br>
         <div id="password_input_wrapper" class="inputWrapper">
@@ -296,7 +295,7 @@ if($uImage = $userImages->fetch_assoc()){
     </div>
     <br>
 
-    <form name="changeImage1" method="post" enctype="multipart/form-data">
+    <form name="changeImage1" id="changeImage1" method="post" enctype="multipart/form-data">
         <input type="hidden" name="profile_pic_id" id="profile_pic_1_id" value="<?php if($profile_image_1_id != null){echo $profile_image_1_id;} ?>">
         <input name="profile_pic_input" type="file" accept="image/jpeg, image/gif, image/x-png" id="image_input_1" style="display: none;">
         <input type="hidden" name="action" value="updateImage">
@@ -304,7 +303,7 @@ if($uImage = $userImages->fetch_assoc()){
         <button id="submit_image_1" style="display:none;">Submit</button>
     </form>
 
-    <form name="changeImage2" method="post" enctype="multipart/form-data">
+    <form name="changeImage2" id="changeImage2" method="post" enctype="multipart/form-data">
         <input type="hidden" name="profile_pic_id" id="profile_pic_2_id" value="<?php if($profile_image_2_id != null){echo $profile_image_2_id;} ?>">
         <input name="profile_pic_input" type="file" accept="image/jpeg, image/gif, image/x-png" id="image_input_2" style="display: none;">
         <input type="hidden" name="action" value="updateImage">
@@ -312,7 +311,7 @@ if($uImage = $userImages->fetch_assoc()){
         <button id="submit_image_2" style="display:none;"></button>
     </form>
 
-    <form name="changeImage3" method="post" enctype="multipart/form-data">
+    <form name="changeImage3" id="changeImage3" method="post" enctype="multipart/form-data">
         <input type="hidden" name="profile_pic_id" id="profile_pic_3_id" value="<?php if($profile_image_3_id != null){echo $profile_image_3_id;} ?>">
         <input name="profile_pic_input" type="file" accept="image/jpeg, image/gif, image/x-png" id="image_input_3" style="display: none;">
         <input type="hidden" name="action" value="updateImage">
@@ -320,7 +319,7 @@ if($uImage = $userImages->fetch_assoc()){
         <button id="submit_image_3" style="display:none;"></button>
     </form>
 
-    <form name="changeImage4" method="post" enctype="multipart/form-data">
+    <form name="changeImage4" id="changeImage4" method="post" enctype="multipart/form-data">
         <input type="hidden" name="profile_pic_id" id="profile_pic_4_id" value="<?php if($profile_image_4_id != null){echo $profile_image_4_id;} ?>">
         <input name="profile_pic_input" type="file" accept="image/jpeg, image/gif, image/x-png" id="image_input_4" style="display: none;">
         <input type="hidden" name="action" value="updateImage">
@@ -328,7 +327,7 @@ if($uImage = $userImages->fetch_assoc()){
         <button id="submit_image_4" style="display:none;"></button>
     </form>
 
-    <form name="editInfo" method="post" enctype="multipart/form-data" onsubmit="return validateUpdateInfoData()">
+    <form name="editInfo" id="editInfo" method="post" enctype="multipart/form-data" onsubmit="validateUpdateInfoData()">
         <button id="delete_pic_button" type="button" class="btn btn-lg btn-inverse btn-block back_button">Delete Profile Picture</button>
         <br>
 

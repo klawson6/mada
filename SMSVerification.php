@@ -107,7 +107,7 @@ if(isset($_GET["action"]) && $_GET["action"]=="sendCode"){
             </div>
         </div>
         <div style="display:none" id="invalid" class="alert alert-warning"></div>
-        <input type="submit" id="numberSubmit" value="Request SMS Code">
+        <input type="submit" class="btn btn-lg btn-inverse btn-block" id="numberSubmit" value="Request SMS Code">
     </form>
     <div id="sendCodeForm" style="display:none">
     <form method="post" id="sendCode" class="form-horizontal" action="Index.php?action=logIn">
@@ -118,7 +118,7 @@ if(isset($_GET["action"]) && $_GET["action"]=="sendCode"){
             </div>
         </div>
         <div style="display:none" id="invalidCode" class="alert alert-warning"></div>
-        <input type="submit" id="codeSubmit" value="Request SMS Code">
+        <input type="submit" class="btn btn-lg btn-inverse btn-block" id="codeSubmit" value="Request SMS Code">
     </form>
     </div>
 </div>

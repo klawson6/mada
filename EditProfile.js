@@ -1,6 +1,79 @@
 
 var addresses = [];
 
+var forename;
+var surname;
+var mobileNumber;
+var bio;
+var email;
+
+var password;
+
+var address_id;
+var address_name;
+var address_line_1;
+var address_line_2;
+var town;
+var country;
+var postcode;
+
+$( "#editInfo" ).on( "submit", function( event ) {
+    event.preventDefault();
+    if(validateUpdateInfoData()){
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+
+                document.getElementById("forename_change").value = forename;
+                document.getElementById("surname_change").value = surname;
+                document.getElementById("mobile_number_change").value = mobileNumber;
+                document.getElementById("bio_change").value = bio;
+                document.getElementById("user_email2").value = email;
+            }
+        };
+        xhttp.open("POST", "Edit2.php", true);
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhttp.send("action=updateInformation&forename_change=" + forename + "&surname_change=" + surname + "& mobile_number_change=" + mobileNumber + "&bio_change=" + bio + "&user_email=" + email);
+
+    }
+});
+
+$( "#editPassword" ).on( "submit", function( event ) {
+    event.preventDefault();
+    if(validateChangePasswordData()){
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                document.getElementById("edit_password").value = "";
+                document.getElementById("edit_password_verify").value = "";
+            }
+        };
+        xhttp.open("POST", "Edit2.php", true);
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhttp.send("action=updatePassword&edit_password=" + password + "&user_email=" + email);
+    }
+});
+
+$( "#editAddress" ).on( "submit", function( event ) {
+    event.preventDefault();
+    if(validateEditAddressData()){
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                document.getElementById("address_name_input").value = address_name;
+                document.getElementById("address_line1_input").value = address_line_1;
+                document.getElementById("address_line2_input").value = address_line_2;
+                document.getElementById("town_input").value = town;
+                document.getElementById("country_input").value = country;
+                document.getElementById("postcode_input").value = postcode;
+                document.getElementById("address_id").value = address_id;
+            }
+        };
+        xhttp.open("POST", "Edit2.php", true);
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhttp.send("action=updateAddress&address_id=" + address_id + "&address_name_input=" + address_name + "& address_line1_input=" + address_line_1 + "&address_line2_input=" + address_line_2 + "&town_input=" + town + "&country_input=" + country + "&postcode_input=" + postcode);
+    }
+});
 
 var address_0_button = document.getElementById("address0");
 if(address_0_button != null){
@@ -163,9 +236,9 @@ if(addressAddbutton != null) {
     }
 }
 
-var password = document.getElementById("edit_password");
-password.onclick = function(){
-    password.style.backgroundColor = "white";
+var passwordInput = document.getElementById("edit_password");
+passwordInput.onclick = function(){
+    passwordInput.style.backgroundColor = "white";
 };
 
 var passwordV = document.getElementById("edit_password_verify");
@@ -363,6 +436,7 @@ document.getElementById("image_input_4").onchange = function(event){
 
     reader.onload = function(event){
         profile_image_4.src = event.target.result;
+
     };
 
     reader.readAsDataURL(selectedFile);
@@ -388,8 +462,9 @@ function validateChangePasswordData(){
     var response = "";
     var pass = document.getElementById("edit_password");
     var passV = document.getElementById("edit_password_verify");
-    var password = pass.value;
+    password = pass.value;
     var passwordVer = passV.value;
+    email = document.getElementById("user_email1").value;
 
     if((password !== "") && (passwordVer !== "")){
         if(!(password === passwordVer)){
@@ -430,13 +505,19 @@ function validateChangePasswordData(){
 function validateUpdateInfoData(){
 
     var fn = document.getElementById("forename_change");
-    var forename = fn.value.trim();
+    forename = fn.value.trim();
 
     var sn = document.getElementById("surname_change");
-    var surname = sn.value.trim();
+    surname = sn.value.trim();
 
     var mn = document.getElementById("mobile_number_change");
-    var mobileNumber = mn.value;
+    mobileNumber = mn.value;
+
+    var bi = document.getElementById("bio_change");
+    bio = bi.value;
+
+    var em = document.getElementById("user_email2");
+    email = em.value;
 
     var response = "";
 
@@ -481,23 +562,26 @@ function validateUpdateInfoData(){
 function validateEditAddressData(){
 
     var response = "";
+
+    address_id = document.getElementById("address_id").value;
+
     var an = document.getElementById("address_name_input");
-    var address_name = an.value.trim();
+    address_name = an.value.trim();
 
     var addl1 = document.getElementById("address_line1_input");
-    var address_line_1 = addl1.value.trim();
+    address_line_1 = addl1.value.trim();
 
     var addl2 = document.getElementById("address_line2_input");
-    var address_line_2 = addl2.value.trim();
+    address_line_2 = addl2.value.trim();
 
     var tn = document.getElementById("town_input");
-    var town = tn.value.trim();
+    town = tn.value.trim();
 
     var cy = document.getElementById("country_input");
-    var country = cy.value.trim();
+    country = cy.value.trim();
 
     var pc = document.getElementById("postcode_input");
-    var postcode = pc.value.trim();
+    postcode = pc.value.trim();
 
     if(address_name === ""){
         an.placeholder = "ADDRESS NAME REQUIRED";
