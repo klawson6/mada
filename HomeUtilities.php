@@ -26,19 +26,15 @@ if(isset($_POST['unset'])){
 
 
 if(isset($_POST['update'])){
-    $user =selectUser($choice,$_SESSION["email"]);
-    echo $user;
-}
-
-if(isset($_POST['save'])){
-    if($_POST['save']==="yes"){
+    if($_POST['update']==="yes"){
         $_SESSION["previous"] = $_SESSION["current"];
     }
-    else if($_POST['save'] === "reset"){
+    else if($_POST['update'] === "reset"){
         unset($_SESSION['previous']);
-    }else{
-        //do nothing
     }
+
+    $user =selectUser($choice,$_SESSION["email"]);
+    echo $user;
 }
 
 if(isset($_POST['rewind'])){
