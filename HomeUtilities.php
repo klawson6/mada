@@ -5,24 +5,53 @@
  * Date: 2019-03-27
  * Time: 11:59
  */
-
+session_start();
 include "utilities.php";
 
 $choice = "rider";
-
 
 if(!loggedIn()){
     header("Location: Index.php", true, 301);
     exit();
 }
 
+if(isset($_POST['unset'])){
+    session_unset();
+    session_destroy();
+}
+
+if(isset($_POST['save'])){
+    if($_POST['save']==="yes"){
+        $_SESSION["previous"] = $_SESSION["current"];
+
+    }
+    else if($_POST['save'] === "reset"){
+        unset($_SESSION['previous']);
+    }
+}
+
 if(isset($_POST['update'])){
-    echo selectUser($choice);
+    //this must be where it is breaking
+    $user =selectUser($choice,$_SESSION["email"]);
+    echo $user;
+
+
+
+}
+
+if(isset($_POST['rewind'])){
+    if(isset($_SESSION["previous"])) {
+        echo json_encode( $_SESSION["previous"]);
+        unset($_SESSION['previous']);
+    }else{
+        $u = $_SESSION["current"] ;
+        $u->name = "no";
+        echo json_encode($u);
+    }
 }
 
 if(isset($_POST['liked'])){
-
-
+    addLinkedUser($_POST['liked'],$_SESSION["email"]);
 }
 
 if(isset($_POST['change'])){
@@ -45,24 +74,36 @@ class User{
     public $bio;
 };
 
-$current = new User();
-$previousUser =$current;
-$email = $_SESSION["email"];
 
-function addLinkedUser($user){
 
+function addLinkedUser($user,$email){
+
+    $conn = dbconn();
+    $sql = "INSERT INTO LinkedUsers (Email1, Email2) VALUES (?,?)";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ss",$email,$user);
+
+    $stmt->execute();
 }
 
 
-function getAllUsers($choice){
+function getAllUsers($choice,$email){
     $dbconn = dbconn();
+    /*
+     * SELECT * FROM UserInfo WHERE Rider = 1 AND email <> 'a@a.com' AND email NOT IN (SELECT Email1 FROM LinkedUsers WHERE 'a@a.com' = Email1)
+     * AND email NOT IN (SELECT Email2 FROM LinkedUsers WHERE 'a@a.com' = Email2)
+     */
 
-    $sql = "SELECT * FROM UserInfo WHERE Rider = 1 ";
+    $innersql1 = "email NOT IN (SELECT Email1 FROM LinkedUsers WHERE '".$email . "' = Email1)";
+    $innersql2 = "email NOT IN (SELECT Email2 FROM LinkedUsers WHERE '". $email."' = Email2)";
+
+    $sql = "SELECT * FROM UserInfo WHERE Rider = 1 AND email <> '" .$email ."' AND ". $innersql1 . " AND " . $innersql2;
+
 
     if($choice == "driver"){
-        $sql = "SELECT * FROM UserInfo  WHERE Driver = 1";
+        $sql = "SELECT * FROM UserInfo WHERE Driver = 1 AND email <> '" .$email ."' AND ". $innersql1 . " AND " . $innersql2;
     }
-
 
     $result = $dbconn->query($sql);
     $users = array();
@@ -135,12 +176,15 @@ function getAllUsers($choice){
 }
 
 
-function selectUser($choice){
+function selectUser($choice,$email){
     header('Content-Type: application/json');
-    $users = getAllUsers($choice);
-    $index = floor(rand(0,sizeof($users)-1));
 
+    $users = getAllUsers($choice,$email);
+    $index = floor(rand(0,sizeof($users)-1));
+    $_SESSION["current"] =  $users[$index];
     $current = $users[$index];
+
+   // $e = 2;
 
     return json_encode($current);
 }

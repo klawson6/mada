@@ -54,9 +54,9 @@ function swipe(evt) {
         if (currTime < 150) return; /*we are swiping too quick*/
         if (Math.abs(xSwipe) > Math.abs(ySwipe)) {
             if (xSwipe > 0) {
-                choice = "accept"
-            } else {
                 choice = "reject"
+            } else {
+                choice = "accept"
             }
         }
         animate(-xSwipe);
@@ -67,7 +67,7 @@ function swipe(evt) {
 
 let animating = false;
 let popUP = false;
-let coverImg = "",alt = "", data = "",bio = "",  photo1 = "" , photo2 = "" , photo3 = "" , photo4 = "" ;
+let coverImg = "",alt = "", data = "",bio = "",  photo1 = "" , photo2 = "" , photo3 = "" , photo4 = "",email = "" ;
 let change = false;
 
 function animate(pullDelta){
@@ -99,18 +99,18 @@ function revertChanges(){
     frontCard.style.transform = "translate(.3rem) rotate(0deg)";
     acceptCard.style.transform = "translate(.3rem) rotate(0deg)";
     rejectCard.style.transform = "translate(.3rem) rotate(0deg)";
-    updateData();
+    updateData("yes");
 };
 
 
-function getData() {
+function getData(needToSavePrevious) {
     if(!popUP) {
         jQuery.ajax(
             {
                 type: "post",
                 url: "HomeUtilities.php",
                 dataType: 'json',
-                data: {"update": "1"},
+                data: {"update": "1", "save":needToSavePrevious},
                 success: function (response) {
 
                    // console.log(response);
@@ -124,6 +124,8 @@ function getData() {
                     photo3 = user.photo3;
                     photo4 = user.photo4;
 
+                    email = user.email;
+
                     ReactDOM.render(
                         <UserProfilePage link={coverImg} alt={alt} data={data}/>,
                         document.getElementById("frontCard")
@@ -131,16 +133,16 @@ function getData() {
                 },
                 error: function (e) {
                     console.log('error');
-                    console.log(e);
+                    console.log(e.responseText);
                 }
             });
     }
 
 }
 
-function updateData() {
+function updateData(needToSavePrevious) {
     if (animating) {
-        getData();
+        getData(needToSavePrevious);
     }
 };
 
@@ -164,9 +166,6 @@ class UserProfilePage extends React.Component {
     }
 }
 
-/*{this.photo2 != null ? <img id = "photo3" className="profileI" src={this.props.photo2} alt="Image 3"></img>  : null }
-                  {this.photo3 != null ? <img id = "photo3" className="profileI" src={this.props.photo2} alt="Image 3"></img>  : null }
-                  {this.photo4 != null ? <img id = "photo4" className="profileI" src={this.props.photo3} alt="Image 4"></img>  : null }*/
 class DetailedUserProfile extends React.Component {
     constructor(props){
         super(props);
@@ -238,7 +237,7 @@ class DetailedUserProfile extends React.Component {
         );
     }
 }
-getData();
+getData("no");
 if(!popUP) {
     ReactDOM.render(
         <UserProfilePage link={coverImg} alt={alt} data={data}/>,
@@ -269,12 +268,22 @@ function postChange(change){
 }
 
 
+function postLiked(likedEmail){
+    jQuery.ajax(
+        {
+            type: "post",
+            url: "HomeUtilities.php",
+            dataType: 'json',
+            data: {"liked": likedEmail}
+        });
+}
+
 let yes_button = document.getElementById("cirlce_yes");
 let no_button = document.getElementById("cirlce_no");
 let redo_button = document.getElementById("cirlce_redo");
 
 document.addEventListener("load",function () {
-    getData();
+    getData("no");
     document.body.scroll = "no";
 })
 
@@ -286,11 +295,16 @@ document.addEventListener("touchend",function () {
     if(animating) {
         if (!choice) return;
         /*display choice*/
+        if(choice === "accept"){
+            postLiked(email);
+        }
         revertChanges();
         animating = false;
         choice = null;
         xFirst = null;
         yFirst = null;
+
+
     }
 },false);
 
@@ -322,7 +336,7 @@ slider.addEventListener("click", function () {
 
     }
 
-    getData();
+    getData("reset");
     ReactDOM.render(
         <UserProfilePage link={coverImg} alt={alt} data={data}/>,
         document.getElementById('frontCard')
@@ -377,5 +391,47 @@ no_button.addEventListener("click", function () {
 });
 
 redo_button.addEventListener("click", function () {
+    jQuery.ajax(
+        {
+            type: "post",
+            url: "HomeUtilities.php",
+            dataType: 'json',
+            data: {"rewind": "1"},
+            success: function (response) {
+                console.log(response);
+                if(response.name != "no") {
 
+                    let user = response;
+                    data = user.name + " | " + user.age;
+                    alt = user.name;
+                    coverImg = user.coverImg;
+                    bio = user.bio;
+                    photo1 = user.photo1;
+                    photo2 = user.photo2;
+                    photo3 = user.photo3;
+                    photo4 = user.photo4;
+
+                    email = user.email;
+
+                    ReactDOM.render(
+                        <UserProfilePage link={coverImg} alt={alt} data={data}/>,
+                        document.getElementById("frontCard")
+                    );
+                }
+            },
+            error: function (e) {
+                console.log('error');
+                console.log(e);
+            }
+        });
 });
+
+window.onbeforeunload = function(){
+    jQuery.ajax(
+        {
+            type: "post",
+            url: "HomeUtilities.php",
+            dataType: 'json',
+            data: {"unset": ""}
+        });
+};
