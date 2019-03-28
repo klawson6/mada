@@ -67,9 +67,7 @@ function swipe(evt) {
 
 let animating = false;
 let popUP = false;
-//tod oset local variables
-let coverImg = "",alt = "", data = "",bio = "",  photo1 = "" , photo2 = "" , photo3 = "" , photo4 = "",email = "" ;
-let cleanliness = "", timeliness = "", personality = "", driving = "";
+let coverImg = "",alt = "", data = "",bio = "",  photo1 = "" , photo2 = "" , photo3 = "" , photo4 = "",email = "" ,personality = "", cleanliness = "", driving = "",timeliness ="";
 let change = false;
 
 function animate(pullDelta){
@@ -288,6 +286,18 @@ if(!popUP) {
 }
 
 /*------------------------------------------------------------------------------------------------------------------------------------------------------*/
+/*                                                         Play Audio*/
+
+function playAudio(path) {
+
+    var audio = new Audio(path);
+    audio.play().catch(function (e) {
+        //ignore the error
+    })
+
+}
+
+/*------------------------------------------------------------------------------------------------------------------------------------------------------*/
 /*                                                         Action Listeners*/
 
 
@@ -340,6 +350,7 @@ document.addEventListener("touchend",function () {
         if(choice === "accept"){
             postLiked(email);
         }
+        playAudio("audio/swoosh.mp3");
         revertChanges();
         animating = false;
         choice = null;

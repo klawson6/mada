@@ -77,8 +77,6 @@ class User{
     public $drivingAbility;
 };
 
-
-
 function addLinkedUser($user,$email){
 
     $conn = dbconn();
@@ -90,7 +88,6 @@ function addLinkedUser($user,$email){
     $stmt->execute();
 }
 
-
 function getAllUsers($choice,$email){
     $dbconn = dbconn();
 
@@ -98,7 +95,6 @@ function getAllUsers($choice,$email){
     $innersql2 = "email NOT IN (SELECT Email2 FROM LinkedUsers WHERE '". $email."' = Email2)";
 
     $sql = "SELECT * FROM UserInfo WHERE Rider = 1 AND email <> '" .$email ."' AND ". $innersql1 . " AND " . $innersql2;
-
 
     if($choice == "driver"){
         $sql = "SELECT * FROM UserInfo WHERE Driver = 1 AND email <> '" .$email ."' AND ". $innersql1 . " AND " . $innersql2;
