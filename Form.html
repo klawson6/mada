@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name = "viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Form Chat</title>
+</head>
+<body>
+    <h1>view</h1>
+    <p><a href="ShowPost.php">Show All Chats</a></p>
+    <h1>add</h1>
+    <form method ="post" action = "AddPost.php">
+        <p> Message: <label>
+            <input type="text" name="msg"/>
+        </label></p>
+        <p>UID: <label>
+            <input type="number" name="uid"/>
+        </label></p>
+        <p><input type="submit" value="Post"/></p>
+    </form>
+</body>
+</html>
