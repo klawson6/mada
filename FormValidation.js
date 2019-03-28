@@ -30,10 +30,10 @@ passwordV.onclick = function(){
     passwordV.style.backgroundColor = "white";
 };
 
-var mobile_number = document.getElementById("mobile_number_input");
-mobile_number.onclick = function(){
-    mobile_number.style.backgroundColor = "white";
-};
+// var mobile_number = document.getElementById("mobile_number_input");
+// mobile_number.onclick = function(){
+//     mobile_number.style.backgroundColor = "white";
+// };
 
 var addressName = document.getElementById("address_name_input");
 addressName.onclick = function(){
@@ -73,7 +73,7 @@ function ValidateRegisterFormData(){
     var DOB = document.getElementById("dob_input").value;
     var password = document.getElementById("password_input").value;
     var passwordVer = document.getElementById("passwordVer_input").value;
-    var mobileNumber = document.getElementById("mobile_number_input").value;
+    //var mobileNumber = document.getElementById("mobile_number_input").value;
     var addressName = document.getElementById("address_name_input").value.trim();
     var addressLine1 = document.getElementById("address_line1_input").value.trim();
     var addressLine2 = document.getElementById("address_line2_input").value.trim();
@@ -162,21 +162,21 @@ function ValidateRegisterFormData(){
         }
     }
 
-    //mobile number validation
-    var mn = document.getElementById("mobile_number_input");
-    if(mobileNumber !== ""){
-       if(!validMobileNumber(mobileNumber)){
-           mn.placeholder = "MOBILE NUMBER NOT VALID";
-           mn.value = "";
-           mn.style.backgroundColor = "#FF4C4C";
-           response += "MOBILE NUMBER: NOT VALID FORMAT\n";
-       }
-    }
-    else{
-        mn.placeholder = "MOBILE NUMBER REQUIRED";
-        mn.style.backgroundColor = "#FF4C4C";
-        response += "MOBILE NUMBER: REQUIRED\n";
-    }
+    // //mobile number validation
+    // var mn = document.getElementById("mobile_number_input");
+    // if(mobileNumber !== ""){
+    //    if(!validMobileNumber(mobileNumber)){
+    //        mn.placeholder = "MOBILE NUMBER NOT VALID";
+    //        mn.value = "";
+    //        mn.style.backgroundColor = "#FF4C4C";
+    //        response += "MOBILE NUMBER: NOT VALID FORMAT\n";
+    //    }
+    // }
+    // else{
+    //     mn.placeholder = "MOBILE NUMBER REQUIRED";
+    //     mn.style.backgroundColor = "#FF4C4C";
+    //     response += "MOBILE NUMBER: REQUIRED\n";
+    // }
 
     //address line 1 validation
     var an = document.getElementById("address_name_input");
@@ -244,7 +244,7 @@ function ValidateRegisterFormData(){
     }
 
     if(response !== ""){
-        window.alert(response);
+        //window.alert(response);
         return false;
     }
 
@@ -263,10 +263,10 @@ function validEmail(email){
     return emailEx.test(email);
 }
 
-function validMobileNumber(number){
-    var numberEx = /[0-9]{11}/i;
-    return numberEx.test(number);
-}
+// function validMobileNumber(number){
+//     var numberEx = /[0-9]{11}/i;
+//     return numberEx.test(number);
+// }
 
 function calcAge(dob){
 
