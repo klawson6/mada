@@ -5,7 +5,7 @@
  * Date: 2019-03-27
  * Time: 11:59
  */
-
+session_start();
 include "utilities.php";
 
 $choice = "rider";
@@ -14,10 +14,40 @@ if(!loggedIn()){
     header("Location: Index.php", true, 301);
     exit();
 }
-//$email = $_COOKIE["email"];
+
+if(isset($_POST['unset'])){
+    session_unset();
+    session_destroy();
+}
+
+if(isset($_POST['save'])){
+    if($_POST['save']==="yes"){
+        $_SESSION["previous"] = $_SESSION["current"];
+
+    }
+    else if($_POST['save'] === "reset"){
+        unset($_SESSION['previous']);
+    }
+}
 
 if(isset($_POST['update'])){
-    echo selectUser($choice,$_SESSION["email"]);
+    //this must be where it is breaking
+    $user =selectUser($choice,$_SESSION["email"]);
+    echo $user;
+
+
+
+}
+
+if(isset($_POST['rewind'])){
+    if(isset($_SESSION["previous"])) {
+        echo json_encode( $_SESSION["previous"]);
+        unset($_SESSION['previous']);
+    }else{
+        $u = $_SESSION["current"] ;
+        $u->name = "no";
+        echo json_encode($u);
+    }
 }
 
 if(isset($_POST['liked'])){
@@ -44,8 +74,6 @@ class User{
     public $bio;
 };
 
-$current = new User();
-$previousUser =$current;
 
 
 function addLinkedUser($user,$email){
@@ -150,10 +178,13 @@ function getAllUsers($choice,$email){
 
 function selectUser($choice,$email){
     header('Content-Type: application/json');
+
     $users = getAllUsers($choice,$email);
     $index = floor(rand(0,sizeof($users)-1));
-
+    $_SESSION["current"] =  $users[$index];
     $current = $users[$index];
+
+   // $e = 2;
 
     return json_encode($current);
 }

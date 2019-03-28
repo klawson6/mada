@@ -54,9 +54,6 @@ include "HomeUtilities.php"
 <div id = "card_reject" class = "card_reject"></div>
 <div id = "card_accept" class ="card_accept"></div>
 
-
-
-
 <div id ="status_bar">
     <table id = "wrapper_table">
     <div id="status_bar_container">
