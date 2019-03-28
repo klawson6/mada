@@ -54,9 +54,9 @@ function swipe(evt) {
         if (currTime < 150) return; /*we are swiping too quick*/
         if (Math.abs(xSwipe) > Math.abs(ySwipe)) {
             if (xSwipe > 0) {
-                choice = "accept"
-            } else {
                 choice = "reject"
+            } else {
+                choice = "accept"
             }
         }
         animate(-xSwipe);
@@ -67,7 +67,7 @@ function swipe(evt) {
 
 let animating = false;
 let popUP = false;
-let coverImg = "",alt = "", data = "",bio = "",  photo1 = "" , photo2 = "" , photo3 = "" , photo4 = "" ;
+let coverImg = "",alt = "", data = "",bio = "",  photo1 = "" , photo2 = "" , photo3 = "" , photo4 = "",email = "" ;
 let change = false;
 
 function animate(pullDelta){
@@ -123,6 +123,8 @@ function getData() {
                     photo2 = user.photo2;
                     photo3 = user.photo3;
                     photo4 = user.photo4;
+
+                    email = user.email;
 
                     ReactDOM.render(
                         <UserProfilePage link={coverImg} alt={alt} data={data}/>,
@@ -269,6 +271,18 @@ function postChange(change){
 }
 
 
+function postLiked(likedEmail){
+    jQuery.ajax(
+        {
+            type: "post",
+            url: "HomeUtilities.php",
+            dataType: 'json',
+            data: {"liked": likedEmail}
+        });
+}
+
+
+
 let yes_button = document.getElementById("cirlce_yes");
 let no_button = document.getElementById("cirlce_no");
 let redo_button = document.getElementById("cirlce_redo");
@@ -286,11 +300,17 @@ document.addEventListener("touchend",function () {
     if(animating) {
         if (!choice) return;
         /*display choice*/
+        console.log(choice);
+        if(choice === "accept"){
+            postLiked(email);
+        }
         revertChanges();
         animating = false;
         choice = null;
         xFirst = null;
         yFirst = null;
+
+
     }
 },false);
 

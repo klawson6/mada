@@ -10,19 +10,18 @@ include "utilities.php";
 
 $choice = "rider";
 
-
 if(!loggedIn()){
     header("Location: Index.php", true, 301);
     exit();
 }
+//$email = $_COOKIE["email"];
 
 if(isset($_POST['update'])){
-    echo selectUser($choice);
+    echo selectUser($choice,$_SESSION["email"]);
 }
 
 if(isset($_POST['liked'])){
-
-
+    addLinkedUser($_POST['liked'],$_SESSION["email"]);
 }
 
 if(isset($_POST['change'])){
@@ -47,22 +46,36 @@ class User{
 
 $current = new User();
 $previousUser =$current;
-$email = $_COOKIE["email"];
 
-function addLinkedUser($user){
 
+function addLinkedUser($user,$email){
+
+    $conn = dbconn();
+    $sql = "INSERT INTO LinkedUsers (Email1, Email2) VALUES (?,?)";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ss",$email,$user);
+
+    $stmt->execute();
 }
 
 
-function getAllUsers($choice){
+function getAllUsers($choice,$email){
     $dbconn = dbconn();
+    /*
+     * SELECT * FROM UserInfo WHERE Rider = 1 AND email <> 'a@a.com' AND email NOT IN (SELECT Email1 FROM LinkedUsers WHERE 'a@a.com' = Email1)
+     * AND email NOT IN (SELECT Email2 FROM LinkedUsers WHERE 'a@a.com' = Email2)
+     */
 
-    $sql = "SELECT * FROM UserInfo WHERE Rider = 1 ";
+    $innersql1 = "email NOT IN (SELECT Email1 FROM LinkedUsers WHERE '".$email . "' = Email1)";
+    $innersql2 = "email NOT IN (SELECT Email2 FROM LinkedUsers WHERE '". $email."' = Email2)";
+
+    $sql = "SELECT * FROM UserInfo WHERE Rider = 1 AND email <> '" .$email ."' AND ". $innersql1 . " AND " . $innersql2;
+
 
     if($choice == "driver"){
-        $sql = "SELECT * FROM UserInfo  WHERE Driver = 1";
+        $sql = "SELECT * FROM UserInfo WHERE Driver = 1 AND email <> '" .$email ."' AND ". $innersql1 . " AND " . $innersql2;
     }
-
 
     $result = $dbconn->query($sql);
     $users = array();
@@ -135,9 +148,9 @@ function getAllUsers($choice){
 }
 
 
-function selectUser($choice){
+function selectUser($choice,$email){
     header('Content-Type: application/json');
-    $users = getAllUsers($choice);
+    $users = getAllUsers($choice,$email);
     $index = floor(rand(0,sizeof($users)-1));
 
     $current = $users[$index];
