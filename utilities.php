@@ -80,3 +80,7 @@ function loggedIn()
     }
     return False;
 }
+
+function getReviewAvg(){
+
+}
