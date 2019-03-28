@@ -1,5 +1,12 @@
 <?php
+session_start();
+
 include "utilities.php";
+
+if(loggedIn()){
+    header("Location: Home.php");
+}
+
 
 $forename = null;
 $surname = null;
@@ -22,7 +29,7 @@ if(isset($_POST["action"]) && $_POST["action"] == "submit") {
     $dob = $_POST["dob"];
     $password = $_POST["password"];
     $hash = password_hash($password, PASSWORD_DEFAULT);
-    $mobile_number = $_POST["mobile_number"];
+    $mobile_number = 0;
     $address_name = $_POST["address_name"];
     $address_line_1 = $_POST["address_line_1"];
     $address_line_2 = $_POST["address_line_2"];
@@ -40,7 +47,10 @@ if(isset($_POST["action"]) && $_POST["action"] == "submit") {
         $stmt1->bind_param("sssssss", $email, $address_name, $address_line_1, $address_line_2, $town, $country, $postcode);
         $stmt1->execute();
 
-        header("Location:test.php");
+        setcookie("email", $_POST["email"], time() + (10 * 365 * 24 * 60 * 60));
+        $_SESSION["email"] = $_POST["email"];
+        header("Location:SMSVerification.php");
+        //var_dump($_COOKIE);
         die();
     }
 }
@@ -100,9 +110,9 @@ if(isset($_POST["action"]) && $_POST["action"] == "submit") {
                 <input id="passwordVer_input"  type="password" class="form-control" value="" placeholder="Re-Type Password" />
                 <br><br>
 
-                <label>Mobile Number</label>
-                <input id="mobile_number_input" name="mobile_number" type="text" class="form-control" <?php if($mobile_number!=null){echo "value='$mobile_number'";}?> placeholder="Mobile Number" maxlength="11" />
-                <br><br>
+<!--                <label>Mobile Number</label>-->
+<!--                <input id="mobile_number_input" name="mobile_number" type="text" class="form-control" --><?php //if($mobile_number!=null){echo "value='$mobile_number'";}?><!-- placeholder="Mobile Number" maxlength="11" />-->
+<!--                <br><br>-->
 
                 <label>Home Address: </label>
                 <input id="address_name_input" name="address_name" type="text" class="form-control"  <?php if($address_name!=null){echo "value='$address_name'";}?> placeholder="Address Name" maxlength="12" />
@@ -127,11 +137,7 @@ if(isset($_POST["action"]) && $_POST["action"] == "submit") {
             </div>
             <br>
         </form>
-        <form>
-            <button id = "login_button" class="btn btn-lg btn-inverse btn-block back_button" type="submit">Login</button>
-            <br>
-        </form>
-        <form>
+        <form action="Index.php">
             <button id = "back_button" class="btn btn-lg btn-inverse btn-block back_button" type="submit">Back</button>
             <br><br>
         </form>

@@ -14,6 +14,10 @@ if(!loggedIn()){
     header("Location: Index.php", true, 301);
     exit();
 }
+if(!validToken()){
+    header("Location: Logout.php",true,301);
+    die();
+}
 
 if(isset($_POST['unset'])){
     session_unset();
