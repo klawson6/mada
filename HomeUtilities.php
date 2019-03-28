@@ -20,28 +20,27 @@ if(isset($_POST['unset'])){
     session_destroy();
 }
 
+
+if(isset($_POST['update'])){
+    $user =selectUser($choice,$_SESSION["email"]);
+    echo $user;
+}
+
 if(isset($_POST['save'])){
     if($_POST['save']==="yes"){
         $_SESSION["previous"] = $_SESSION["current"];
-
     }
     else if($_POST['save'] === "reset"){
         unset($_SESSION['previous']);
+    }else{
+        //do nothing
     }
-}
-
-if(isset($_POST['update'])){
-    //this must be where it is breaking
-    $user =selectUser($choice,$_SESSION["email"]);
-    echo $user;
-
-
-
 }
 
 if(isset($_POST['rewind'])){
     if(isset($_SESSION["previous"])) {
         echo json_encode( $_SESSION["previous"]);
+
         unset($_SESSION['previous']);
     }else{
         $u = $_SESSION["current"] ;
@@ -183,8 +182,6 @@ function selectUser($choice,$email){
     $index = floor(rand(0,sizeof($users)-1));
     $_SESSION["current"] =  $users[$index];
     $current = $users[$index];
-
-   // $e = 2;
 
     return json_encode($current);
 }

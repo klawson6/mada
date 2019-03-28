@@ -337,6 +337,7 @@ slider.addEventListener("click", function () {
     }
 
     getData("reset");
+    console.log("reset");
     ReactDOM.render(
         <UserProfilePage link={coverImg} alt={alt} data={data}/>,
         document.getElementById('frontCard')
