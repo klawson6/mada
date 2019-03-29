@@ -31,7 +31,7 @@ include "HomeUtilities.php"
             </button>
         </form>
             <label id = "nav_center"><h3 id = "headder">Select a Rider</h3></label>
-        <form action="EditProfile.html">
+        <form action="ViewProfile.php">
             <button id = "nav_right"  class="borderlessButtons">
                 <span class="glyphicon  glyphicon-user icon_style"></span>
             </button>
