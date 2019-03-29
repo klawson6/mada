@@ -43,7 +43,11 @@ if ($result->num_rows > 0){
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="Normalize.css"/>
     <link rel="stylesheet" type="text/css" href="StyleSheet.css"/>
-
+    <style>
+        *{
+            overflow: auto;
+        }
+    </style>
 </head>
 
 <nav id="my_navbar" class="nav_buttons">
@@ -63,7 +67,7 @@ if ($result->num_rows > 0){
     </div>
 </nav>
 
-<body class="body" style="overflow: auto;">
+<body class="viewP">
     <h1><?php echo $name ?></h1>
     <br>
     <h2>Profile Images</h2>
