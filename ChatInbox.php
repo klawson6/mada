@@ -20,24 +20,17 @@ $userEmail = $_SESSION["email"];
 
 $connectedUsers = array();
 $dbconn = dbconn();
-$showChats = $dbconn->prepare("SELECT Email1,Email2 FROM LinkedUsers where (Email1=? OR Email2=?)");
-$showChats->bind_param("ss", $userEmail, $userEmail);
+
+$showChats = $dbconn->prepare("SELECT DISTINCT ui.forename, ui.surname, ui.email FROM UserInfo ui LEFT JOIN LinkedUsers o ON o.Email2 = ui.email LEFT JOIN LinkedUsers i ON o.Email2 = i.Email1 WHERE o.Email1 = ?");
+$showChats->bind_param("s", $userEmail);
 if($showChats->execute()) {
     $result = $showChats->get_result();
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
-            if ($row["Email1"] == $userEmail){
-                $connectedUsers[] = $row["Email2"];
-            }
-            else if($row["Email2"] == $userEmail){
-                $connectedUsers[] = $row["Email1"];
-            }
+            $connectedUsers[] = $row;
         }
     }
     $result->close();
-    echo json_encode($connectedUsers);
-} else{
-    die("Query failed no messages");
 }
 
 ?>
@@ -54,7 +47,6 @@ if($showChats->execute()) {
     <link rel="icon" sizes="192x192" href="img/car.png" />
     <link rel="apple-touch-icon" href="img/car.png" />
     <link rel="shortcut icon" href="img/car.png" type="image/x-icon" />
-
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="Normalize.css"/>
     <link rel="stylesheet" type="text/css" href="StyleSheet.css"/>
@@ -62,11 +54,21 @@ if($showChats->execute()) {
 
 </head>
 <body>
-<h1>Messages</h1>
+<h1>Matched Contacts</h1>
+
 <main>
 
 
+<?php
 
+if(sizeof($connectedUsers)>0){
+    foreach($connectedUsers as $user){
+        echo("<a href='ChatIndex.php?otherEmail=" . $user["email"] . "'><h3>" . $user["forename"] . " " .  $user["surname"] . "</h3></a>");
+    }
+}
+
+
+?>
 
 
 
