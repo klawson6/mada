@@ -1,5 +1,7 @@
 <?php
-include "HomeUtilities.php"
+include "HomeUtilities.php";
+$_SESSION['swipe_number'] = 0;
+
 ?>
 
 <!DOCTYPE html>
