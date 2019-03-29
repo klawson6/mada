@@ -82,8 +82,11 @@ else{
     <link rel="stylesheet" type="text/css" href="Chat.css"/>
 
 </head>
+
+
+
 <body>
-    <h1>Sorry, something went wrong</h1>
+    <h1 id = "fail">Sorry, something went wrong</h1>
 </body>
 </html>
 <?php

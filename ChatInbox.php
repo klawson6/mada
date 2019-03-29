@@ -53,8 +53,23 @@ if($showChats->execute()) {
     <link rel="stylesheet" type="text/css" href="Chat.css"/>
 
 </head>
+
+<nav id="my_navbar" class="nav_buttons">
+    <div id="nav_container">
+        <table>
+            <form action="Home.php">
+                <button id="nav_left" class="borderlessButtons">
+                    <span class="glyphicon glyphicon-home icon_style"></span>
+                </button>
+            </form>
+            <h2>Matched Contacts</h2>
+
+        </table>
+    </div>
+</nav>
+
 <body>
-<h1>Matched Contacts</h1>
+
 <main>
     <div id = "parent_chat">
         <?php
