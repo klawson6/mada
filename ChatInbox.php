@@ -81,9 +81,11 @@ if($showChats->execute()) {
                 <tr>
                 <td>
                 <div>
-                    <button class='borderlessButtons'  onclick= 'window.location.href =\"review.php\"; ' >
+                <form action='review.php' method='post'>
+                    <button type='submit' class='borderlessButtons' name='reviewee' value= '" .$user["email"] . "' >
                         <span class='glyphicon glyphicon-star-empty icon_style'> </span>
                     </button>
+                </form>
                 </div>
                 </td>
                 <td>

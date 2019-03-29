@@ -32,11 +32,20 @@ $driver =false;
 $rider = true;
 
 $dbconn = dbconn();
+$revieweeEmail = "";
 
+
+if(isset($_POST['reviewee'])){
+    $revieweeEmail = $_POST['reviewee'];
+}
 
 if (isset($_POST['submit'])){
-    $userEmail = "michaeldavie182@gmail.com";
-    $revieweeEmail = "biggie@gmail.com";
+    $userEmail =$_SESSION['email'];//"michaeldavie182@gmail.com";
+
+    if(isset($_POST['reviewee'])){
+        $revieweeEmail = $_POST['reviewee'];
+    }
+
     $id = null;
 
     if ($driver) {
