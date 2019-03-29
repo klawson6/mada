@@ -4,20 +4,13 @@ function ChatModel(){
 
 
     var newPostCallBack = null, lastSeenID = -1,
-        postQueue = [],
+        postQueue = [];
+
+        var uniqueID = 0,
+
         getUUID = function () {
-            var rand, millies, userID;
-
-            if(localStorage.chat_uuid){
-                localStorage.chat_uuid = localStorage.chat_uuid*1 + 1;
-            }else{
-                rand = Math.floor(Math.random()*10000);
-                millies = (new Date()).getMilliseconds() % 100;
-                userID = rand*100 + millies;
-
-                localStorage.chat_uuid = userID * 1000;
-            }
-            return localStorage.chat_uuid;
+            uniqueID+=1;
+            return uniqueID;
         },
 
 
