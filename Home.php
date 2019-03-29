@@ -89,7 +89,7 @@ include "HomeUtilities.php"
     </table>
 </div>
 <form action="Logout.php">
-    <input type="submit">
+    <input type="submit" class="btn btn-lg btn-inverse btn-block back_button" value="Logout">
 </form>
 </body>
 
