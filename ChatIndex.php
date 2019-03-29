@@ -9,10 +9,12 @@ if(!validToken()){
     die();
 }
 if (isset($_GET["otherEmail"]) && user_exists($_GET["otherEmail"])) {
+
+    $name = getUserName($_GET["otherEmail"]);
+
     echo("<script>var otherEmail = '" . $_GET["otherEmail"] . "'</script>");
     echo("<script>var currentUserEmail = '" . $_SESSION["email"] . "'</script>");
     ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,7 +36,7 @@ if (isset($_GET["otherEmail"]) && user_exists($_GET["otherEmail"])) {
 
 </head>
 <body>
-    <h1 id = "name">Chat</h1>
+    <h1 id = "name">Chat with <?php echo $name; ?></h1>
     <main>
         <div id="chatHistoryDiv"></div>
         <div id="chatFormDiv">

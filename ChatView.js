@@ -9,18 +9,17 @@ function ChatView(){
         chatForm = document.getElementById("chatForm");
         postTextField = document.getElementById("messageText");
         postTextField.focus();
-        document.getElementById("name").innerHTML = otherEmail;
     };
 
     this.addMessage = function(message,left){
       var chatHistoryDiv = document.getElementById("chatHistoryDiv");
       if(left===1){
-          //chatHistoryDiv.innerHTML = chatHistoryDiv.innerHTML + "<h3>" + message + "</h3>";
-          chatHistoryDiv.style.cssFloat = "left";
+          chatHistoryDiv.innerHTML = chatHistoryDiv.innerHTML + "<div><p>" + message + "</p></div>";
+        //  chatHistoryDiv.innerHTML.sty.cssFloat = "left";
       }
       else{
-          //chatHistoryDiv.innerHTML = chatHistoryDiv.innerHTML + "<p>" + message + "</p>";
-          chatHistoryDiv.style.cssFloat = "right";
+          chatHistoryDiv.innerHTML = chatHistoryDiv.innerHTML + "<div style='float: right'><p>" + message + "</p></div>";
+          //chatHistoryDiv.style.cssFloat = "right";
       }
     };
 
