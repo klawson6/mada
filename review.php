@@ -7,7 +7,6 @@
  */
 include "utilities.php";
 
-
 if(!loggedIn()){
     header("Location: Index.php");
     die();
@@ -18,29 +17,29 @@ if(!validToken()){
     die();
 }
 
-
 $userEmail = $_SESSION["email"];
 
-if (isset($_GET['type'])){
-    if ($_GET['type'] == "rider"){
-        $rider = true;
-        $driver = false;
-    } elseif ($_GET['type'] == "driver"){
-        $driver = true;
-        $rider = false;
-    }
+if (isset($_SESSION['rider'])){
+    $rider = true;
+    $driver = false;
+
+} elseif (isset($_SESSION['driver'])){
+    $driver = true;
+    $rider = false;
 }
+
+$driver =false;
+$rider = true;
 
 $dbconn = dbconn();
 
 
 if (isset($_POST['submit'])){
-
+    $userEmail = "michaeldavie182@gmail.com";
+    $revieweeEmail = "biggie@gmail.com";
     $id = null;
 
     if ($driver) {
-        $userEmail = $_GET['driverEmail'];
-        $revieweeEmail = $_GET['riderEmail'];
         $riderPersonality = $_POST['p'];
         $riderCleanliness = $_POST['c'];
         $riderTimeliness = $_POST['t'];
@@ -48,8 +47,6 @@ if (isset($_POST['submit'])){
         $reviewInsert->bind_param("issiii", $id, $userEmail, $revieweeEmail, $riderPersonality, $riderCleanliness, $riderTimeliness);
         $reviewInsert->execute();
     } elseif ($rider) {
-        $userEmail = $_GET['riderEmail'];
-        $revieweeEmail = $_GET['driverEmail'];
         $driverPersonality = $_POST['p'];
         $driverCleanliness = $_POST['c'];
         $driverAbility = $_POST['d'];
