@@ -15,7 +15,7 @@ $userAddressesSTMT->bind_param("s", $email);
 $userAddressesSTMT->execute();
 $userAddresses = $userAddressesSTMT->get_result();
 
-$userImagesSTMT = $dbconn->prepare("SELECT * FROM UserPhotos WHERE email=?");
+$userImagesSTMT = $dbconn->prepare("SELECT * FROM Photo WHERE email=?");
 $userImagesSTMT->bind_param("s", $email);
 $userImagesSTMT->execute();
 $userImages = $userImagesSTMT->get_result();
@@ -95,12 +95,12 @@ else if(isset($_POST["action"]) && $_POST["action"] == "updateImage"){
         $image = file_get_contents($_FILES['profile_pic_input']['tmp_name']);
         $user_email = $_POST["user_email"];
         if($id != null){
-            $addPicSTMT = $dbconn->prepare("UPDATE UserPhotos SET photo=? WHERE photo_id=?;");
+            $addPicSTMT = $dbconn->prepare("UPDATE Photo SET photo=? WHERE photoID=?;");
             $addPicSTMT->bind_param("ss", $image, $id);
             $addPicSTMT->execute();
         }
         else{
-            $addPicSTMT = $dbconn->prepare("INSERT INTO UserPhotos (email, photo) VALUES (?,?);");
+            $addPicSTMT = $dbconn->prepare("INSERT INTO Photo (email, photo) VALUES (?,?);");
             $addPicSTMT->bind_param("ss", $user_email, $image);
             $addPicSTMT->execute();
         }
@@ -110,7 +110,7 @@ else if(isset($_POST["action"]) && $_POST["action"] == "updateImage"){
 else if(isset($_POST["action"]) && $_POST["action"] == "deleteImage"){
     $profile_pic_id = $_POST["profile_pic_id"];
 
-    $addPicSTMT = $dbconn->prepare("DELETE FROM UserPhotos WHERE photo_id=?;");
+    $addPicSTMT = $dbconn->prepare("DELETE FROM Photo WHERE photoID=?;");
     $addPicSTMT->bind_param("s", $profile_pic_id);
     $addPicSTMT->execute();
 
@@ -161,19 +161,19 @@ $profile_image_4_id = null;
 
 if($uImage = $userImages->fetch_assoc()){
     $profile_image_1_src = $uImage['photo'];
-    $profile_image_1_id = $uImage['photo_id'];
+    $profile_image_1_id = $uImage['photoID'];
 }
 if($uImage = $userImages->fetch_assoc()) {
     $profile_image_2_src = $uImage['photo'];
-    $profile_image_2_id = $uImage['photo_id'];
+    $profile_image_2_id = $uImage['photoID'];
 }
 if($uImage = $userImages->fetch_assoc()){
     $profile_image_3_src = $uImage['photo'];
-    $profile_image_3_id = $uImage['photo_id'];
+    $profile_image_3_id = $uImage['photoID'];
 }
 if($uImage = $userImages->fetch_assoc()){
     $profile_image_4_src = $uImage['photo'];
-    $profile_image_4_id = $uImage['photo_id'];
+    $profile_image_4_id = $uImage['photoID'];
 }
 
 ?>
