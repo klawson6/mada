@@ -370,7 +370,7 @@ document.addEventListener("touchend",function () {
 slider.addEventListener("click", function () {
 
     let button = document.getElementById("isDriverSlider");
-    let title = document.getElementById("headder");
+    let title = document.getElementById("header");
 
     if(button.style.cssFloat == "left"){
         button.style.cssFloat = "right";
