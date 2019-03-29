@@ -479,83 +479,82 @@ function SearchMap() {
                 img.setAttribute("src", "data:image/png;base64," + imageTemp);
                 imgDiv.appendChild(img);
 
-                var ratingsDiv = document.createElement("div");
-                ratingsDiv.setAttribute("class", "ratingsDiv");
-                driverDiv.appendChild(ratingsDiv);
+                if (info[3] === 0 && info[4] === 0 && info[5] === 0 && info[6] === 0) {
+                    var ratingsDiv = document.createElement("div");
+                    ratingsDiv.setAttribute("class", "ratingsDiv");
+                    driverDiv.appendChild(ratingsDiv);
 
-                var ratingsDiv1 = document.createElement("div");
-                ratingsDiv1.setAttribute("class", "ratingsDivInner");
-                ratingsDiv.appendChild(ratingsDiv1);
-                var ratingsDiv1text = document.createElement("div");
-                ratingsDiv1text.setAttribute("class", "ratingsDivInner");
-                ratingsDiv1text.innerHTML = "Personality";
-                ratingsDiv.appendChild(ratingsDiv1text);
+                    var ratingsDiv1 = document.createElement("div");
+                    ratingsDiv1.setAttribute("class", "ratingsDivInner");
+                    ratingsDiv.appendChild(ratingsDiv1);
+                    var ratingsDiv1text = document.createElement("div");
+                    ratingsDiv1text.setAttribute("class", "ratingsDivInner");
+                    ratingsDiv1text.innerHTML = "Personality";
+                    ratingsDiv.appendChild(ratingsDiv1text);
 
-                var ratingsDiv2 = document.createElement("div");
-                ratingsDiv2.setAttribute("class", "ratingsDivInner");
-                ratingsDiv.appendChild(ratingsDiv2);
-                var ratingsDiv2text = document.createElement("div");
-                ratingsDiv2text.setAttribute("class", "ratingsDivInner");
-                ratingsDiv2text.innerHTML = "Driving Ability";
-                ratingsDiv.appendChild(ratingsDiv2text);
+                    var ratingsDiv2 = document.createElement("div");
+                    ratingsDiv2.setAttribute("class", "ratingsDivInner");
+                    ratingsDiv.appendChild(ratingsDiv2);
+                    var ratingsDiv2text = document.createElement("div");
+                    ratingsDiv2text.setAttribute("class", "ratingsDivInner");
+                    ratingsDiv2text.innerHTML = "Driving Ability";
+                    ratingsDiv.appendChild(ratingsDiv2text);
 
-                var ratingsDiv3 = document.createElement("div");
-                ratingsDiv3.setAttribute("class", "ratingsDivInner");
-                ratingsDiv.appendChild(ratingsDiv3);
-                var ratingsDiv3text = document.createElement("div");
-                ratingsDiv3text.setAttribute("class", "ratingsDivInner");
-                ratingsDiv3text.innerHTML = "Cleanliness";
-                ratingsDiv.appendChild(ratingsDiv3text);
+                    var ratingsDiv3 = document.createElement("div");
+                    ratingsDiv3.setAttribute("class", "ratingsDivInner");
+                    ratingsDiv.appendChild(ratingsDiv3);
+                    var ratingsDiv3text = document.createElement("div");
+                    ratingsDiv3text.setAttribute("class", "ratingsDivInner");
+                    ratingsDiv3text.innerHTML = "Cleanliness";
+                    ratingsDiv.appendChild(ratingsDiv3text);
 
-                var ratingsDiv4 = document.createElement("div");
-                ratingsDiv4.setAttribute("class", "ratingsDivInner");
-                ratingsDiv.appendChild(ratingsDiv4);
-                var ratingsDiv4text = document.createElement("div");
-                ratingsDiv4text.setAttribute("class", "ratingsDivInner");
-                ratingsDiv4text.innerHTML = "Timeliness";
-                ratingsDiv.appendChild(ratingsDiv4text);
+                    var ratingsDiv4 = document.createElement("div");
+                    ratingsDiv4.setAttribute("class", "ratingsDivInner");
+                    ratingsDiv.appendChild(ratingsDiv4);
+                    var ratingsDiv4text = document.createElement("div");
+                    ratingsDiv4text.setAttribute("class", "ratingsDivInner");
+                    ratingsDiv4text.innerHTML = "Timeliness";
+                    ratingsDiv.appendChild(ratingsDiv4text);
 
 
-                console.log(info[3]);
-
-                for (var j = 0; j < info[3]; j++) {
-                    var picDiv = document.createElement("div");
-                    picDiv.setAttribute("class", "ratingPicDiv");
-                    ratingsDiv1.appendChild(picDiv);
-                    var star1 = document.createElement("img");
-                    star1.setAttribute("class", "ratingPic");
-                    star1.setAttribute("src", "img/star.png");
-                    picDiv.appendChild(star1);
-                }
-                for (var k = 0; k < info[6]; k++) {
-                    var picDiv2 = document.createElement("div");
-                    picDiv2.setAttribute("class", "ratingPicDiv");
-                    ratingsDiv2.appendChild(picDiv2);
-                    var star2 = document.createElement("img");
-                    star2.setAttribute("class", "ratingPic");
-                    star2.setAttribute("src", "img/star.png");
-                    picDiv2.appendChild(star2);
-                }
-                for (var l = 0; l < info[4]; l++) {
-                    var picDiv3 = document.createElement("div");
-                    picDiv3.setAttribute("class", "ratingPicDiv");
-                    ratingsDiv3.appendChild(picDiv3);
-                    var star3 = document.createElement("img");
-                    star3.setAttribute("class", "ratingPic");
-                    star3.setAttribute("src", "img/star.png");
-                    picDiv3.appendChild(star3);
-                }
-                for (var m = 0; m < info[5]; m++) {
-                    var picDiv4 = document.createElement("div");
-                    picDiv4.setAttribute("class", "ratingPicDiv");
-                    ratingsDiv4.appendChild(picDiv4);
-                    var star4 = document.createElement("img");
-                    star4.setAttribute("class", "ratingPic");
-                    star4.setAttribute("src", "img/star.png");
-                    picDiv4.appendChild(star4);
+                    for (var j = 0; j < info[3]; j++) {
+                        var picDiv = document.createElement("div");
+                        picDiv.setAttribute("class", "ratingPicDiv");
+                        ratingsDiv1.appendChild(picDiv);
+                        var star1 = document.createElement("img");
+                        star1.setAttribute("class", "ratingPic");
+                        star1.setAttribute("src", "img/star.png");
+                        picDiv.appendChild(star1);
+                    }
+                    for (var k = 0; k < info[6]; k++) {
+                        var picDiv2 = document.createElement("div");
+                        picDiv2.setAttribute("class", "ratingPicDiv");
+                        ratingsDiv2.appendChild(picDiv2);
+                        var star2 = document.createElement("img");
+                        star2.setAttribute("class", "ratingPic");
+                        star2.setAttribute("src", "img/star.png");
+                        picDiv2.appendChild(star2);
+                    }
+                    for (var l = 0; l < info[4]; l++) {
+                        var picDiv3 = document.createElement("div");
+                        picDiv3.setAttribute("class", "ratingPicDiv");
+                        ratingsDiv3.appendChild(picDiv3);
+                        var star3 = document.createElement("img");
+                        star3.setAttribute("class", "ratingPic");
+                        star3.setAttribute("src", "img/star.png");
+                        picDiv3.appendChild(star3);
+                    }
+                    for (var m = 0; m < info[5]; m++) {
+                        var picDiv4 = document.createElement("div");
+                        picDiv4.setAttribute("class", "ratingPicDiv");
+                        ratingsDiv4.appendChild(picDiv4);
+                        var star4 = document.createElement("img");
+                        star4.setAttribute("class", "ratingPic");
+                        star4.setAttribute("src", "img/star.png");
+                        picDiv4.appendChild(star4);
+                    }
                 }
                 driveCount++;
-                dri
                 document.createElement("br");
             }
         }
@@ -629,7 +628,7 @@ function SearchMap() {
             view.endRide(driver.email);
             driver = null;
             hasAccepted = false;
-            view.review();
+            view.review("rider");
             window.console.log("driver set to null");
             clearInterval(ticker);
         });
@@ -665,8 +664,42 @@ function SearchMap() {
         xmlhttp.send(null);
     };
 
-    this.review = function () {
+    this.review = function (type) {
         // TODO add Michael's review
+        var riderEmail;
+        if (type === "rider") {
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.open("GET", "DriverOrRider.php?type=" + type);
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState === 4) {
+                    if (xmlhttp.status === 200) {
+                        load(xmlhttp.responseText);
+                        window.console.log(xmlhttp.responseText);
+                        riderEmail = this.responseText;
+                    } else {
+                        window.console.log("Error " + xmlhttp.status);
+                    }
+                }
+            };
+            xmlhttp.send(null);
+        }
+        if (type === "driver"){
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.open("GET", "GetDriverRoute.php?email=SELF");
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState === 4) {
+                    if (xmlhttp.status === 200) {
+                        load(xmlhttp.responseText);
+                        window.console.log(xmlhttp.responseText);
+                        riderEmail = this.responseText[7];
+                    } else {
+                        window.console.log("Error " + xmlhttp.status);
+                    }
+                }
+            };
+            xmlhttp.send(null);
+        }
+        window.location.href = "review.php?type="+type+"?driverEmail="+driver.email+"?riderEmail="+riderEmail;
     };
 
     this.beginMapUpdaterRider = function () {
@@ -927,7 +960,7 @@ function SearchMap() {
                     rider = null;
                 }
                 view.removeRide();
-                view.review();
+                view.review("driver");
                 clearInterval(ticker); // TODO delete dis kyle
             });
         });
