@@ -54,7 +54,7 @@ if (isset($_GET["otherEmail"]) && user_exists($_GET["otherEmail"])) {
     <main>
         <div id="chatHistoryDiv"></div>
         <div id="chatFormDiv">
-            <form id="chatForm">
+            <form id="chatForm" onsubmit="return false">
                 <label for="messageText"></label><input type="text" id="messageText" autocomplete="off"/>
                 <input type ="submit" id ="postButton" value ="Post"/>
             </form>

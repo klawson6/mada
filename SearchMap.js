@@ -161,6 +161,7 @@ function SearchMap() {
         view.addMarker(userDriver, 35, 20, false);
         this.postRide(from, to, tod);
         this.editUserType("Driver");
+        document.getElementById("nav_center2").innerHTML = "Find a Rider";
     };
 
     this.editUserType = function (type) {
@@ -555,7 +556,6 @@ function SearchMap() {
                     picDiv4.appendChild(star4);
                 }
                 driveCount++;
-                dri
                 document.createElement("br");
             }
         }
@@ -708,6 +708,10 @@ function SearchMap() {
                             document.getElementById("searchDiv").removeChild(document.getElementById("searchButton"));
                             view.getDrivers();
                         });
+                        button2.innerHTML = "Driver declined!";
+                        setTimeout(function () {
+                            document.getElementById("searchButton").innerHTML = "Find Co-Ride";
+                        }, 5000);
                         hasRequested = false;
                         break;
                     case 3:
