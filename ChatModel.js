@@ -1,11 +1,7 @@
 "use strict";
 
 function ChatModel(){
-    /*TODO pretty php so fix it
-        add message boxes / alter message div
-        make inbox - include get for second user **ask alex
-        hash messages
-     */
+
 
     var newPostCallBack = null, lastSeenID = -1,
         postQueue = [],
