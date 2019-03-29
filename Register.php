@@ -48,23 +48,20 @@ if(isset($_POST["action"]) && $_POST["action"] == "submit") {
         $stmt1->execute();
 
         if(is_uploaded_file($_FILES['new_pic_input']['tmp_name']) && getimagesize($_FILES['new_pic_input']['tmp_name']) != false ){
-            $id = $_POST['new_pic_id'];
             $image = file_get_contents($_FILES['new_pic_input']['tmp_name']);
             $user_email = $_POST["email"];
 
             $addPicSTMT = $dbconn->prepare("INSERT INTO Photo (email, photo) VALUES (?,?);");
             $addPicSTMT->bind_param("ss", $user_email, $image);
             $addPicSTMT->execute();
-
-            }
         }
 
-    setcookie("email", $_POST["email"], time() + (10 * 365 * 24 * 60 * 60));
-    $_SESSION["email"] = $_POST["email"];
-    //var_dump($_COOKIE);
-    header("Location:SMSVerification.php");
+        setcookie("email", $_POST["email"], time() + (10 * 365 * 24 * 60 * 60));
+        $_SESSION["email"] = $_POST["email"];
+        //var_dump($_COOKIE);
+        header("Location:SMSVerification.php");
+    }
 
-    die();
 }
 ?>
 
