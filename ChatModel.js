@@ -29,21 +29,23 @@ function ChatModel(){
             var http, repliesJSON, messageJSON, parameters;
             if (newPostCallBack !== null){
                 http = new XMLHttpRequest();
-                //parameters = "startID=" + ((lastSeenID * 1) + 1);
-                http.open('GET', 'ShowPost.php');
+                http.open('GET', 'ShowPost.php?otherEmail=' + encodeURIComponent(otherEmail) + '&msgID=' + lastSeenID);
+                console.log(http.open);
                 http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
                 http.onreadystatechange = function(){
-                    if(http.readyState === 4 && http.status === 200){
-                        repliesJSON = http.responseText.split('\n');
-                        repliesJSON.forEach(function(messageTextLine){
-                            //window.console.log("hey there");
-                           if(messageTextLine.length >0){
-                                window.console.log("Message Text: " + messageTextLine);
-                                messageJSON = JSON.parse(messageTextLine);
-                                //lastSeenID = messageJSON.uid;
-                                newPostCallBack(messageJSON.msg);
-                           }
-                        });
+                    if(this.readyState === 4 && this.status === 200) {
+                        try {
+                            repliesJSON = JSON.parse(this.responseText);
+                            repliesJSON.forEach(function (messageTextLine) {
+                                newPostCallBack(messageTextLine.msg, messageTextLine.user1 == currentUserEmail ? 1 : 0);
+                            });
+                            lastSeenID = repliesJSON[repliesJSON.length - 1].msgID;
+                            console.log("Last Seen ID Updated: " + lastSeenID);
+
+                        }
+                        catch (e) {
+                            
+                        }
                     }
                 };
                 http.send();
@@ -53,16 +55,17 @@ function ChatModel(){
         doSendPost = function(message, uuid){
             window.console.log("Posting message: " + message);
             var http = new XMLHttpRequest(),
-                params = "msg=" + encodeURIComponent(message) + "&msgID=" + getUUID();
+                params = "otherEmail=" + encodeURIComponent(otherEmail) + "&msg=" + encodeURIComponent(message);
             http.open("POST", "AddPost.php", true);
             http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             http.onreadystatechange = function(){
+                console.log(this.responseText);
                 if(http.readyState ===4&& http.status===200){
                     window.console.log("Reply: " + http.responseText);
                     if (isNaN(http.responseText*1)){
                         window.console.log("Error from server");
                     }else{
-                        delete postQueue[http.responseText];
+                        delete postQueue[uuid];
                         window.console.log("Removed item " + http.responseText);
                     }
                     window.setTimeout(updatePosts, 100);

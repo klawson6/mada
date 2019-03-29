@@ -1,8 +1,17 @@
 <?php
 include "utilities.php";
 
+if(!loggedIn()){
+    header("Location: Index.php");
+    die();
+}
+if(!validToken()){
+    header("Location: Logout.php?token=invalid");
+    die();
+}
+
 $dbconn = dbconn();
-$email = "chrstphrwthrs@googlemail.com";
+$email = $_SESSION["email"];
 
 $userInfoSTMT = $dbconn->prepare("SELECT * FROM UserInfo WHERE email=?;");
 $userInfoSTMT->bind_param("s", $email);

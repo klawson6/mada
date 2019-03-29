@@ -9,7 +9,6 @@
  */
 
 function connectOrDie(){
-
     $mysqli = dbconn();
     if($mysqli->connect_errno){
         die("Connect failed: %s ". $mysqli->connect_error);
@@ -17,22 +16,27 @@ function connectOrDie(){
     return $mysqli;
 }
 
-function addNewPost($post, $postID, $user1, $user2){
-    $mysqli = dbconn()->prepare("INSERT INTO Messages(msgID, msg, user1, user2) VALUES(?,?,?,?)");
-    $mysqli->bind_param("isss", $postID, $post, $user1, $user2);
-    if (!$mysqli->execute()){
-        die("Query failed: %s".$mysqli->error);
-    }
+function addNewPost($post, $user1, $user2){
+    $dbconn = dbconn();
+    $stmt = $dbconn->prepare("INSERT INTO Messages(msg, user1, user2) VALUES(?,?,?)");
+    $stmt->bind_param("sss", $post, $user1, $user2);
+    $stmt->execute();
+//    if (!$stmt->execute()){
+//        die("Query failed: %s".$stmt->error);
+//    }
 }
 
-if (loggedIn()) {
-
-    $mysqli = connectOrDie();
-    $post = $mysqli->real_escape_string(urldecode($_POST["msg"]));
-    $postID = $mysqli->real_escape_string(urldecode($_POST["msgID"]));
-    $userA = "chloe@yahoo.com";
-    $userB = "kyle@yahoo.com";
-
-    addNewPost($post, $postID, $userA, $userB);
-    //echo "$id";
+if(loggedIn()) {
+    if (validToken()) {
+        if (isset($_POST["msg"]) && isset($_POST["otherEmail"])) {
+// echo("Done");
+            $post = $_POST["msg"];
+            $userA = $_SESSION["email"];
+            $userB = urldecode($_POST["otherEmail"]);
+            //echo("Before Send");
+            addNewPost($post, $userA, $userB);
+            //echo("Done");
+        } //echo "$id";
+//}
+    }
 }

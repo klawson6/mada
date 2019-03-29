@@ -7,7 +7,7 @@ try{
     CoRideApp.requestGPS();
 }
 catch (e) {
-    
+
 }
 
 function SearchMap() {
