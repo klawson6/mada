@@ -44,7 +44,7 @@ if(isset($_POST['update'])){
         $_SESSION['swipe_number'] = 0;
     }
 
-   if($_SESSION['swipe_number'] == 3){
+   if($_SESSION['swipe_number'] == 7){
         $_SESSION['swipe_number'] = 0;
 
 
