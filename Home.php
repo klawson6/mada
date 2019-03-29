@@ -21,6 +21,7 @@ $_SESSION['swipe_number'] = 0;
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="Normalize.css"/>
     <link rel="stylesheet" type="text/css" href="StyleSheet.css"/>
+    <link rel="stylesheet" type="text/css" href="SearchMapStyleSheet.css"/>
 
 </head>
 
