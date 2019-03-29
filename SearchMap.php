@@ -1,3 +1,24 @@
+<?php
+
+if(isset($_GET["type"])){
+    echo "<script>var type='" . $_GET["type"] . "';</script>";
+    if($_GET["type"] == "driver"){
+        if(isset($_GET["from"])){
+            echo "<script>var from='" . $_GET["from"] . "';</script>";
+        }
+
+        if(isset($_GET["to"])){
+            echo "<script>var to='" . $_GET["to"] . "';</script>";
+        }
+
+        if(isset($_GET["tod"])){
+            echo "<script>var tod='" . $_GET["tod"] . "';</script>";
+        }
+    }
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
