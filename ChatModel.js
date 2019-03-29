@@ -30,7 +30,6 @@ function ChatModel(){
             if (newPostCallBack !== null){
                 http = new XMLHttpRequest();
                 http.open('GET', 'ShowPost.php?otherEmail=' + encodeURIComponent(otherEmail) + '&msgID=' + lastSeenID);
-                console.log(http.open);
                 http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
                 http.onreadystatechange = function(){
                     if(this.readyState === 4 && this.status === 200) {

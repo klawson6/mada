@@ -18,7 +18,7 @@ function connectOrDie(){
 
 function getPosts($currentUser, $user2,$msgID){
     $dbconn = dbconn();
-    $showChats = $dbconn->prepare("SELECT msgID,msg,user1,user2 FROM Messages where (user1=? AND user2=?) OR (user1=? AND user2=?) AND msgID > ?");
+    $showChats = $dbconn->prepare("SELECT msgID,msg,user1,user2 FROM Messages where ((user1=? AND user2=?) OR (user1=? AND user2=?)) AND msgID > ?");
     $showChats->bind_param("ssssi", $currentUser, $user2,$user2,$currentUser,$msgID);
     if($showChats->execute()) {
         $result = $showChats->get_result();
