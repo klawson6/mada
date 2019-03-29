@@ -199,7 +199,7 @@ if (isset($_POST['submit'])){
 </div>
     <p>
     <input class="btn btn-outline-dark" type="submit" name="submit">
-    <input class="btn btn-outline-dark" type="button" value="Skip">
+    <input id class="btn btn-outline-dark" type="button" value="Back" onclick="window.location.href = 'ChatInbox.php';">
     </p>
 </form>
 
