@@ -35,8 +35,22 @@ if (isset($_GET["otherEmail"]) && user_exists($_GET["otherEmail"])) {
     <link rel="stylesheet" type="text/css" href="Chat.css"/>
 
 </head>
+<nav id="my_navbar" class="nav_buttons">
+    <div id="nav_container">
+        <table>
+            <form action="ChatInbox.php">
+                <button id="nav_left" class="borderlessButtons">
+                    <span class="glyphicon glyphicon-chevron-left icon_style"></span>
+                </button>
+            </form>
+            <h2> <h4 id = "name">Chat with <?php echo $name; ?></h4></h2>
+
+        </table>
+    </div>
+</nav>
+<br>
 <body>
-    <h1 id = "name">Chat with <?php echo $name; ?></h1>
+
     <main>
         <div id="chatHistoryDiv"></div>
         <div id="chatFormDiv">
