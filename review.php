@@ -54,10 +54,6 @@ if (isset($_POST['submit'])){
         $driverCleanliness = $_POST['c'];
         $driverAbility = $_POST['d'];
         $driverTimeliness = $_POST['t'];
-        echo nl2br($driverPersonality);
-        echo nl2br($driverCleanliness);
-        echo nl2br($driverAbility);
-        echo nl2br($driverTimeliness);
         $reviewInsert = $dbconn->prepare("INSERT INTO reviewsAboutDrivers(reviewsAboutDrivers.reviewID, reviewsAboutDrivers.reviewerEmail, reviewsAboutDrivers.revieweeEmail, reviewsAboutDrivers.cleanliness, reviewsAboutDrivers.personality, reviewsAboutDrivers.drivingAbility, reviewsAboutDrivers.timeliness) VALUES (?,?,?,?,?,?,?)");
         $reviewInsert->bind_param("issiiii", $id, $userEmail, $revieweeEmail, $driverCleanliness, $driverPersonality, $driverAbility, $driverTimeliness);
         $reviewInsert->execute();

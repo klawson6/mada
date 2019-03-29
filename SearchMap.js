@@ -479,7 +479,7 @@ function SearchMap() {
                 img.setAttribute("src", "data:image/png;base64," + imageTemp);
                 imgDiv.appendChild(img);
 
-                if (info[3] === 0 && info[4] === 0 && info[5] === 0 && info[6] === 0) {
+             //   if (info[3] === 0 && info[4] === 0 && info[5] === 0 && info[6] === 0) {
                     var ratingsDiv = document.createElement("div");
                     ratingsDiv.setAttribute("class", "ratingsDiv");
                     driverDiv.appendChild(ratingsDiv);
@@ -553,7 +553,7 @@ function SearchMap() {
                         star4.setAttribute("src", "img/star.png");
                         picDiv4.appendChild(star4);
                     }
-                }
+             //   }
                 driveCount++;
                 document.createElement("br");
             }
@@ -666,7 +666,7 @@ function SearchMap() {
 
     this.review = function (type) {
         // TODO add Michael's review
-        var riderEmail;
+        let riderEmail=null;
         if (type === "rider") {
             var xmlhttp = new XMLHttpRequest();
             xmlhttp.open("GET", "DriverOrRider.php?type=" + type);
