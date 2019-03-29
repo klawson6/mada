@@ -40,7 +40,6 @@ if ($result->num_rows > 0) {
             $pos[5] = $row["Forename"];
             $pos[6] = $row["Surname"];
             echo json_encode($pos);
-//            $conn->close();
         }
     }
 }

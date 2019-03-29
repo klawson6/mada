@@ -1,4 +1,17 @@
-<!DOCTYPE html>
+<?php
+include "utilities.php";
+if(!loggedIn()){
+    header("Location: Index.php");
+    die();
+}
+if(!validToken()){
+    header("Location: Logout.php?token=invalid");
+    die();
+}
+echo("<script>var otherEmail = '" . $_GET["otherEmail"] . "'</script>");
+echo("<script>var currentUserEmail = '" . $_SESSION["email"] . "'</script>");
+
+?><!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">

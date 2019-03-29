@@ -3,10 +3,10 @@
 <?php
 include "utilities.php";
 
-/*if (!loggedIn()){
+if (!loggedIn()){
     header('Location: Index.php');
     die();
-} */
+}
 
 $conn = dbconn();
 
@@ -14,7 +14,7 @@ $name = null;
 $bio = null;
 $phone = null;
 
-$email = "chrstphrwthrs@googlemail.com";
+$email = $_SESSION['email'];
 
 $result = $conn->query("SELECT * FROM UserInfo WHERE email = '$email'");
 
