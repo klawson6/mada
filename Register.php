@@ -47,12 +47,21 @@ if(isset($_POST["action"]) && $_POST["action"] == "submit") {
         $stmt1->bind_param("sssssss", $email, $address_name, $address_line_1, $address_line_2, $town, $country, $postcode);
         $stmt1->execute();
 
+        if(is_uploaded_file($_FILES['new_pic_input']['tmp_name']) && getimagesize($_FILES['new_pic_input']['tmp_name']) != false ){
+            $image = file_get_contents($_FILES['new_pic_input']['tmp_name']);
+            $user_email = $_POST["email"];
+
+            $addPicSTMT = $dbconn->prepare("INSERT INTO Photo (email, photo) VALUES (?,?);");
+            $addPicSTMT->bind_param("ss", $user_email, $image);
+            $addPicSTMT->execute();
+        }
+
         setcookie("email", $_POST["email"], time() + (10 * 365 * 24 * 60 * 60));
         $_SESSION["email"] = $_POST["email"];
-        header("Location:SMSVerification.php");
         //var_dump($_COOKIE);
-        die();
+        header("Location:SMSVerification.php");
     }
+
 }
 ?>
 
@@ -89,6 +98,12 @@ if(isset($_POST["action"]) && $_POST["action"] == "submit") {
             <h1>Register</h1>
             <br>
             <div class="inputWrapper">
+
+                <Label>Profile Picture</Label>
+                <br>
+                <img id="new_profile_image" name="new_profile_image" class= "profile_img" src="img/blankPic.png" alt="Profile Image">
+                <input name="new_pic_input" type="file" accept="image/" id="new_profile_pic_input" style="display: none;">
+                <br>
 
                 <label>Name: </label>
                 <input id="first_name_input" name="forename" type="text" class="form-control" <?php if($forename!=null){echo "value='$forename'";}?> placeholder="First Name" maxlength="25" />

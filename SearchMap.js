@@ -7,7 +7,7 @@ try{
     CoRideApp.requestGPS();
 }
 catch (e) {
-    
+
 }
 
 function SearchMap() {
@@ -52,7 +52,7 @@ function SearchMap() {
 
     var infowindow = null;
 
-    var rider = {
+    var userRider = {
         marker: null,
         position: {lat: 0, lng: 0},
         // Dark rider
@@ -64,6 +64,19 @@ function SearchMap() {
         // Light Driver
         // icon: "https://i.imgur.com/LgWloAM.png"
         searchRadius: null
+    };
+
+    var userDriver = {
+        marker: null,
+        position: {lat: 0, lng: 0},
+        // Dark rider
+        // icon: "https://i.imgur.com/Z8kt5nw.png"
+        // Light rider
+        // icon: "https://i.imgur.com/VWIWNii.png",
+        // Dark driver
+        // icon: "https://i.imgur.com/BlCcQC8.png"
+        // Light Driver
+        icon: "https://i.imgur.com/LgWloAM.png"
     };
 
     var driver = null;
@@ -127,38 +140,118 @@ function SearchMap() {
         ticker;
 
     this.initRider = function () {
-        this.setPosDevice(rider);
-        view.addMarker(rider, 35, 35, false);
+        this.setPosDevice(userRider);
+        view.addMarker(userRider, 35, 35, false);
         this.refreshRadius();
+        this.editUserType("Rider");
+    };
+
+    this.initDriver = function () {
+        this.setPosDevice(userDriver);
+        view.addMarker(userDriver, 35, 20, false);
+        this.postRide(from, to, tod);
+        this.editUserType("Driver");
+    };
+
+    this.editUserType = function (type) {
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.open("GET", "EditUserType.php?type="+type);
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState === 4) {
+                if (xmlhttp.status === 200) {
+                    var response = xmlhttp.responseText;
+                    window.console.log(response);
+                    // if (view.testRoute(response, index, email)) {
+                    //     continueAdding(response[0], index, email);
+                    // }
+                    // view.testRoute(response, index, email);
+                } else {
+                    window.console.log("Error " + xmlhttp.status);
+                }
+            }
+        };
+        xmlhttp.send(null);
     };
 
     this.init = function () {
-        if (navigator.geolocation) {
-            this.startMap();
-            this.initRider();
-            this.beginMapUpdater();
-            document.getElementById("sliderVal").innerHTML = view.logSlider(document.getElementById("radiusSlider").value).toFixed(2).toString() + "m";
-        } else {
-            window.console.log("Geolocation is not supported by this browser.");
+        window.console.log("type: " + type);
+        if (type === "rider") {
+            if (navigator.geolocation) {
+                this.startMap();
+                this.initRider();
+                this.beginMapUpdaterRider();
+                document.getElementById("sliderVal").innerHTML = view.logSlider(document.getElementById("radiusSlider").value).toFixed(2).toString() + "m";
+            } else {
+                window.console.log("Geolocation is not supported by this browser.");
+            }
+            document.getElementById("searchButton").addEventListener('click', function () {
+                var img = document.createElement("img");
+                img.setAttribute("id", "loading");
+                img.setAttribute("src", "https://www.hotelnumberfour.com/wp-content/uploads/2017/09/loading.gif")
+                document.getElementById("searchDiv").appendChild(img);
+                document.getElementById("searchDiv").removeChild(document.getElementById("searchButton"));
+                view.getDrivers();
+            });
+            // infowindow = new google.maps.InfoWindow({
+            //     content: contentString,
+            //     maxWidth: 150
+            // });
+            driver = null;
+            loadedDrivers = [];
+        } else if (type == "driver") {
+            if (navigator.geolocation) {
+                this.startMap();
+                this.initDriver();
+                this.beginMapUpdaterDriver();
+                document.getElementById("nonNav").removeChild(document.getElementById("sliderVal"));
+                document.getElementById("nonNav").removeChild(document.getElementById("radiusSliderDiv"));
+                document.getElementById("nonNav").removeChild(document.getElementById("searchDiv"));
+            } else {
+                window.console.log("Geolocation is not supported by this browser.");
+            }
         }
-        document.getElementById("searchButton").addEventListener('click', function () {
-            var img = document.createElement("img");
-            img.setAttribute("id", "loading");
-            img.setAttribute("src", "https://www.hotelnumberfour.com/wp-content/uploads/2017/09/loading.gif")
-            document.getElementById("searchDiv").appendChild(img);
-            document.getElementById("searchDiv").removeChild(document.getElementById("searchButton"));
-            view.getDrivers();
-        });
-        infowindow = new google.maps.InfoWindow({
-            content: contentString,
-            maxWidth: 150
-        });
+
     };
+
+    this.postRide = function (origin, dest, time) {
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.open("GET", "PostRide.php?from="+origin+"&to="+dest+"&tod="+time);
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState === 4) {
+                if (xmlhttp.status === 200) {
+                    var response = xmlhttp.responseText;
+                    window.console.log(response);
+                    // if (view.testRoute(response, index, email)) {
+                    //     continueAdding(response[0], index, email);
+                    // }
+                    // view.testRoute(response, index, email);
+                } else {
+                    window.console.log("Error " + xmlhttp.status);
+                }
+            }
+        };
+        xmlhttp.send(null);
+    };
+
+    // this.getUserEmail = function () {
+    //     var xmlhttp = new XMLHttpRequest();
+    //     xmlhttp.open("GET", "utilities.php?action=getEmail");
+    //     xmlhttp.onreadystatechange = function () {
+    //         if (xmlhttp.readyState === 4) {
+    //             if (xmlhttp.status === 200) {
+    //                 return JSON.parse(xmlhttp.responseText).email;
+    //             } else {
+    //                 return null;
+    //             }
+    //         }
+    //     };
+    //     xmlhttp.send(null);
+    // };
 
     this.getDrivers = function () {
         var load = this.loadDrivers;
         var xmlhttp = new XMLHttpRequest();
-        xmlhttp.open("GET", "LoadLinks.php?email=michaeldavie182@gmail.com");
+        xmlhttp.open("GET", "LoadLinks.php");
         xmlhttp.onreadystatechange = function () {
             if (xmlhttp.readyState === 4) {
                 if (xmlhttp.status === 200) {
@@ -175,6 +268,7 @@ function SearchMap() {
     this.loadDrivers = function (json) {
         // window.console.log(json);
         var emailArray = JSON.parse(json);
+        // window.console.log("LOGGED IN AS: " + emailArray[emailArray.length-1]);
         // view.addMarker(exampleDrivers[0], 35, 20, true);
         // view.addMarker(exampleDrivers[1], 35, 20, true);
         // view.addMarker(exampleDrivers[2], 35, 20, true);
@@ -279,11 +373,14 @@ function SearchMap() {
         xmlhttp.onreadystatechange = function () {
             if (xmlhttp.readyState === 4) {
                 if (xmlhttp.status === 200) {
-                    var response = JSON.parse(xmlhttp.responseText);
+                    var response = xmlhttp.responseText;
+                    window.console.log(response);
+                    if (response !== null && response !== undefined && response !== "") {
+                        view.addrToLatLng(JSON.parse(response), index, email, doneLim);
+                    }
                     // if (view.testRoute(response, index, email)) {
                     //     continueAdding(response[0], index, email);
                     // }
-                    view.addrToLatLng(response, index, email, doneLim);
                     // view.testRoute(response, index, email);
                 } else {
                     window.console.log("Error " + xmlhttp.status);
@@ -316,13 +413,14 @@ function SearchMap() {
 
     this.checkLoc = function (loc) {
         var ky = 40000 / 360;
-        var kx = Math.cos(Math.PI * rider.position.lat / 180.0) * ky;
-        var dx = Math.abs(rider.position.lng - loc.position.lng) * kx;
-        var dy = Math.abs(rider.position.lat - loc.position.lat) * ky;
-        return Math.sqrt(dx * dx + dy * dy) <= rider.searchRadius.radius / 1000;
+        var kx = Math.cos(Math.PI * userRider.position.lat / 180.0) * ky;
+        var dx = Math.abs(userRider.position.lng - loc.position.lng) * kx;
+        var dy = Math.abs(userRider.position.lat - loc.position.lat) * ky;
+        return Math.sqrt(dx * dx + dy * dy) <= userRider.searchRadius.radius / 1000;
     };
 
     this.doneLoad = function () {
+        window.console.log("WE ARE IN LOAD");
         var button = document.createElement("button");
         button.setAttribute("id", "searchButton");
         button.innerHTML = "Find Co-Ride";
@@ -451,6 +549,7 @@ function SearchMap() {
                 directionsDisplay.setDirections(result);
             }
         });
+        window.console.log("driver set to " + user);
         driver = user;
         view.addMarker(driver, 35, 20, true);
         document.getElementById("searchDiv").removeChild(document.getElementById("searchButton"));
@@ -464,16 +563,16 @@ function SearchMap() {
             button2.setAttribute("id", "searchButton");
             button2.innerHTML = "Find Co-Ride";
             document.getElementById("searchDiv").appendChild(button2);
-            document.getElementById("searchButton").addEventListener('click', function () {
-                var img = document.createElement("img");
-                img.setAttribute("id", "loading");
-                img.setAttribute("src", "https://www.hotelnumberfour.com/wp-content/uploads/2017/09/loading.gif")
-                document.getElementById("searchDiv").appendChild(img);
-                document.getElementById("searchDiv").removeChild(document.getElementById("searchButton"));
-                view.getDrivers();
-            });
+            // document.getElementById("searchButton").addEventListener('click', function () {
+            //     var img = document.createElement("img");
+            //     img.setAttribute("id", "loading");
+            //     img.setAttribute("src", "https://www.hotelnumberfour.com/wp-content/uploads/2017/09/loading.gif")
+            //     document.getElementById("searchDiv").appendChild(img);
+            //     document.getElementById("searchDiv").removeChild(document.getElementById("searchButton"));
+            //     view.getDrivers();
+            // });
             view.review();
-            //driver = null;
+            window.console.log("driver set to null");
             view.init();
         });
     };
@@ -482,22 +581,22 @@ function SearchMap() {
         // TODO add Michael's review
     };
 
-    this.beginMapUpdater = function () {
+    this.beginMapUpdaterRider = function () {
         ticker = setInterval(function () {
             // Remove rider from map
-            rider.marker.setMap(null);
+            userRider.marker.setMap(null);
             // Update rider position
-            view.setPosDevice(rider);
+            view.setPosDevice(userRider);
 
             // Dummy rider movement
             //rider.position.lat = rider.position.lat + 0.0001;
             //rider.position.lng = rider.position.lng + 0.0001;
             // Add the new rider marker to the map
-            view.addMarker(rider, 35, 35, false);
+            view.addMarker(userRider, 35, 35, false);
             // Refresh the search radius to center the rider
             view.refreshRadius();
 
-            if (driver !== null) {
+            if (driver !== null && driver !== undefined) {
                 view.updateDriverPos();
             }
         }, 500);
@@ -505,6 +604,30 @@ function SearchMap() {
             document.getElementById("sliderVal").innerHTML = view.logSlider(document.getElementById("radiusSlider").value).toFixed(2).toString() + "m";
             view.refreshRadius();
         };
+    };
+
+    this.beginMapUpdaterDriver = function () {
+        ticker = setInterval(function () {
+            // Remove rider from map
+            userDriver.marker.setMap(null);
+            // Update rider position
+            view.setPosDevice(userDriver);
+
+            // Dummy rider movement
+            //rider.position.lat = rider.position.lat + 0.0001;
+            //rider.position.lng = rider.position.lng + 0.0001;
+            // Add the new rider marker to the map
+            view.addMarker(userDriver, 35, 20, false);
+            // Refresh the search radius to center the rider
+
+            // if (driver !== null && driver !== undefined) {
+            //     view.updateDriverPos();
+            // }
+        }, 500);
+        // document.getElementById("radiusSlider").onchange = function () {
+        //     document.getElementById("sliderVal").innerHTML = view.logSlider(document.getElementById("radiusSlider").value).toFixed(2).toString() + "m";
+        //     view.refreshRadius();
+        // };
     };
 
     this.updateDriverPos = function () {
@@ -532,11 +655,11 @@ function SearchMap() {
         window.console.log(response);
         window.console.log(driver);
         driver.marker.setMap(null);
-       // driver.route = response;
-       // var tempLoc = new google.maps.LatLng({lat: parseFloat(response[3]).toFixed(4), lng: parseFloat(response[4]).toFixed(4)});
+        // driver.route = response;
+        // var tempLoc = new google.maps.LatLng({lat: parseFloat(response[3]).toFixed(4), lng: parseFloat(response[4]).toFixed(4)});
         driver.route[3] = parseFloat(response[3]);
         driver.route[4] = parseFloat(response[4]);
-        driver.position = {lat: driver.route[3], lng:driver.route[4]};
+        driver.position = {lat: driver.route[3], lng: driver.route[4]};
         view.addMarker(driver, 35, 20, true);
     };
 
@@ -557,23 +680,23 @@ function SearchMap() {
     };
 
     this.refreshRadius = function () {
-        if (rider.searchRadius === null) {
-            rider.searchRadius = new google.maps.Circle({
+        if (userRider.searchRadius === null) {
+            userRider.searchRadius = new google.maps.Circle({
                 map: map,
                 radius: 1000,
                 fillColor: '#4ca7aa',
                 strokeWeight: 1
             });
-            rider.searchRadius.bindTo('center', rider.marker, 'position');
+            userRider.searchRadius.bindTo('center', userRider.marker, 'position');
         } else {
-            rider.searchRadius.setMap(null);
-            rider.searchRadius = new google.maps.Circle({
+            userRider.searchRadius.setMap(null);
+            userRider.searchRadius = new google.maps.Circle({
                 map: map,
                 radius: this.logSlider(parseInt(document.getElementById("radiusSlider").value)),
                 fillColor: '#4ca7aa',
                 strokeWeight: 1
             });
-            rider.searchRadius.bindTo('center', rider.marker, 'position');
+            userRider.searchRadius.bindTo('center', userRider.marker, 'position');
         }
 
     };
@@ -584,17 +707,17 @@ function SearchMap() {
             map: map,
             icon: {url: marker.icon, scaledSize: new google.maps.Size(size1, size2)}
         });
-        if (isDriver) {
-            marker.marker.addListener('click', function () {
-                // var profile = document.createElement("img");
-                // img.setAttribute("id", "loading");
-                // img.setAttribute("src", "https://www.hotelnumberfour.com/wp-content/uploads/2017/09/loading.gif")
-                // document.getElementById("searchDiv").appendChild(img);
-                // document.getElementById("searchDiv").removeChild(document.getElementById("searchButton"));
-                // view.getDrivers();
-                infowindow.open(map, marker.marker);
-            });
-        }
+        // if (isDriver) {
+        //     marker.marker.addListener('click', function () {
+        //         // var profile = document.createElement("img");
+        //         // img.setAttribute("id", "loading");
+        //         // img.setAttribute("src", "https://www.hotelnumberfour.com/wp-content/uploads/2017/09/loading.gif")
+        //         // document.getElementById("searchDiv").appendChild(img);
+        //         // document.getElementById("searchDiv").removeChild(document.getElementById("searchButton"));
+        //         // view.getDrivers();
+        //         infowindow.open(map, marker.marker);
+        //     });
+        // }
     };
 
     this.setPosDevice = function (marker) {

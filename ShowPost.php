@@ -16,20 +16,21 @@ function connectOrDie(){
     return $mysqli;
 }
 
-function getPosts($currentUser, $user2){
-    $showChats = dbconn()->prepare("SELECT msg FROM Messages where user1=? AND user2=?");
-    $showChats->bind_param("ss", $currentUser, $user2);
+function getPosts($currentUser, $user2,$msgID){
+    $dbconn = dbconn();
+    $showChats = $dbconn->prepare("SELECT msgID,msg,user1,user2 FROM Messages where ((user1=? AND user2=?) OR (user1=? AND user2=?)) AND msgID > ?");
+    $showChats->bind_param("ssssi", $currentUser, $user2,$user2,$currentUser,$msgID);
     if($showChats->execute()) {
         $result = $showChats->get_result();
         if ($result->num_rows > 0) {
             $comments = array();
-            while ($row = $result->fetch_assoc()["msg"]) {
+            while ($row = $result->fetch_assoc()) {
                 $comments[] = $row;
             }
             $result->close();
-            return $comments;
+            echo json_encode($comments);
         } else{
-            die("Query failed: %s ". $showChats->error);
+            die("Query failed no messages");
         }
     }else{
         die("Query failed: %s ". $showChats->error);
@@ -43,13 +44,12 @@ header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
 
 
 if (loggedIn()){
-    //$currentUser = $_COOKIE["email"];
-    //$secondUser =  connectOrDie()->real_escape_string($_GET["secondUser"]);
-    $currentUser = "chloe@hotmail.com";
-    $secondUser = "kyle@yahoo.com";
-    //$firstID = isset($_GET["startID"]) ? $mysqli->real_escape_string($_GET["startID"]) : 0;
-    $lines = getPosts($currentUser, $secondUser);
-    foreach($lines as $line){
-        echo json_encode($line)."\n";
+    if(validToken()) {
+        //$currentUser = $_COOKIE["email"];
+        //$secondUser =  connectOrDie()->real_escape_string($_GET["secondUser"]);
+        $currentUser = $_SESSION["email"];
+        $secondUser = $_GET["otherEmail"];
+        //$firstID = isset($_GET["startID"]) ? $mysqli->real_escape_string($_GET["startID"]) : 0;
+        getPosts($currentUser, $secondUser, $_GET["msgID"]);
     }
 }

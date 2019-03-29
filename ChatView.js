@@ -11,9 +11,14 @@ function ChatView(){
         postTextField.focus();
     };
 
-    this.addMessage = function(message){
+    this.addMessage = function(message,left){
       var chatHistoryDiv = document.getElementById("chatHistoryDiv");
-      chatHistoryDiv.innerHTML = chatHistoryDiv.innerHTML + "<p>" + message + "</p>";
+      if(left==1){
+          chatHistoryDiv.innerHTML = chatHistoryDiv.innerHTML + "<h3>" + message + "</h3>";
+      }
+      else{
+          chatHistoryDiv.innerHTML = chatHistoryDiv.innerHTML + "<p>" + message + "</p>";
+      }
     };
 
     this.setCallbackForMessagePost = function(callback){

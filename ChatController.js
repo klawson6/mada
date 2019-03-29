@@ -10,8 +10,8 @@ function ChatController() {
         model.init();
         view.init();
 
-        model.setShowNewPostCallBack(function(message){
-           view.addMessage(message);
+        model.setShowNewPostCallBack(function(message,left){
+           view.addMessage(message,left);
         });
 
         view.setCallbackForMessagePost(model.post);
