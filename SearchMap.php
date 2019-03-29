@@ -53,7 +53,7 @@ if(isset($_GET["type"])){
                         <span class="glyphicon glyphicon-home icon_style"></span>
                     </button>
                 </form>
-                <label id="nav_center"><h3>Find a Driver</h3></label>
+                <label id="nav_center"><h3 id="nav_center2">Find a Driver</h3></label>
                 <form action="ViewProfile.php">
                     <button id="nav_right" class="borderlessButtons">
                         <span class="glyphicon  glyphicon-user icon_style"></span>
