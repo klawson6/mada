@@ -3,7 +3,7 @@
 /*global view*/
 var view = null;
 
-try{
+try {
     CoRideApp.requestGPS();
 }
 catch (e) {
@@ -52,6 +52,12 @@ function SearchMap() {
 
     var infowindow = null;
 
+    var isRequested = false;
+
+    var hasAccepted = false;
+
+    var hasRequested = false;
+
     var userRider = {
         marker: null,
         position: {lat: 0, lng: 0},
@@ -80,6 +86,8 @@ function SearchMap() {
     };
 
     var driver = null;
+
+    var rider = null;
 
     var last = false;
 
@@ -155,7 +163,7 @@ function SearchMap() {
 
     this.editUserType = function (type) {
         var xmlhttp = new XMLHttpRequest();
-        xmlhttp.open("GET", "EditUserType.php?type="+type);
+        xmlhttp.open("GET", "EditUserType.php?type=" + type);
         xmlhttp.onreadystatechange = function () {
             if (xmlhttp.readyState === 4) {
                 if (xmlhttp.status === 200) {
@@ -215,7 +223,7 @@ function SearchMap() {
 
     this.postRide = function (origin, dest, time) {
         var xmlhttp = new XMLHttpRequest();
-        xmlhttp.open("GET", "PostRide.php?from="+origin+"&to="+dest+"&tod="+time);
+        xmlhttp.open("GET", "PostRide.php?from=" + origin + "&to=" + dest + "&tod=" + time);
         xmlhttp.onreadystatechange = function () {
             if (xmlhttp.readyState === 4) {
                 if (xmlhttp.status === 200) {
@@ -525,22 +533,45 @@ function SearchMap() {
     this.addBugFixListener = function (thing, info) {
         window.console.log(info);
         thing.addEventListener('click', function () {
-            view.beginJourney(info);
+            view.sendRequest(info);
         });
     };
 
-    this.beginJourney = function (user) {
-        window.console.log(user);
-        document.getElementById("map_home").removeChild(document.getElementById("driverList"));
+    this.sendRequest = function (info) {
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.open("GET", "modifyRide.php?drEmail=" + info.email + "&request=request&clear=noclear&response=none&begin=nobegin");
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState === 4) {
+                if (xmlhttp.status === 200) {
+                    window.console.log(xmlhttp.responseText);
+                    document.getElementById("map_home").removeChild(document.getElementById("driverList"));
+                    hasRequested = true;
+                    driver = info;
+                    view.sendLoc(driver.email, userRider);
+                    var img = document.createElement("img");
+                    img.setAttribute("id", "loading");
+                    img.setAttribute("src", "https://www.hotelnumberfour.com/wp-content/uploads/2017/09/loading.gif")
+                    document.getElementById("searchDiv").appendChild(img);
+                    document.getElementById("searchDiv").removeChild(document.getElementById("searchButton"));
+                } else {
+                    window.console.log("Error " + xmlhttp.status);
+                }
+            }
+        };
+        xmlhttp.send(null);
+    };
+
+    this.beginJourney = function () {
+        view.sendStart(driver.email);
         var directionsService = new google.maps.DirectionsService();
         var directionsDisplay = new google.maps.DirectionsRenderer({
             preserveViewport: true,
-            markerOptions: {label: {color: "white", text: user.route[5] + " " + user.route[6]}}
+            markerOptions: {label: {color: "white", text: driver.route[5] + " " + driver.route[6]}}
         });
         directionsDisplay.setMap(map);
         var path = {
-            origin: user.route[0],
-            destination: user.route[1],
+            origin: driver.route[0],
+            destination: driver.route[1],
             travelMode: 'DRIVING'
         };
         directionsService.route(path, function (result, status) {
@@ -549,10 +580,9 @@ function SearchMap() {
                 directionsDisplay.setDirections(result);
             }
         });
-        window.console.log("driver set to " + user);
-        driver = user;
+        window.console.log("driver set to " + driver);
         view.addMarker(driver, 35, 20, true);
-        document.getElementById("searchDiv").removeChild(document.getElementById("searchButton"));
+        document.getElementById("searchDiv").removeChild(document.getElementById("loading"));
         var button = document.createElement("button");
         button.setAttribute("id", "searchButton");
         button.innerHTML = "End Co-Ride";
@@ -563,18 +593,45 @@ function SearchMap() {
             button2.setAttribute("id", "searchButton");
             button2.innerHTML = "Find Co-Ride";
             document.getElementById("searchDiv").appendChild(button2);
-            // document.getElementById("searchButton").addEventListener('click', function () {
-            //     var img = document.createElement("img");
-            //     img.setAttribute("id", "loading");
-            //     img.setAttribute("src", "https://www.hotelnumberfour.com/wp-content/uploads/2017/09/loading.gif")
-            //     document.getElementById("searchDiv").appendChild(img);
-            //     document.getElementById("searchDiv").removeChild(document.getElementById("searchButton"));
-            //     view.getDrivers();
-            // });
+            directionsDisplay.setMap(null);
+            driver.marker.setMap(null);
+            view.endRide(driver.email);
+            driver = null;
+            hasAccepted = false;
             view.review();
             window.console.log("driver set to null");
-            view.init();
+            clearInterval(ticker);
         });
+    };
+
+    this.sendStart = function (anEmail) {
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.open("GET", "modifyRide.php?drEmail="+anEmail+"&request=norequest&clear=noclear&response=none&begin=begin");
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState === 4) {
+                if (xmlhttp.status === 200) {
+                    window.console.log(xmlhttp.responseText);
+                } else {
+                    window.console.log("Error " + xmlhttp.status);
+                }
+            }
+        };
+        xmlhttp.send(null);
+    };
+
+    this.endRide = function (anEmail) {
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.open("GET", "modifyRide.php?drEmail="+anEmail+"&request=norequest&clear=clear&response=none&begin=nobegin");
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState === 4) {
+                if (xmlhttp.status === 200) {
+                    window.console.log(xmlhttp.responseText);
+                } else {
+                    window.console.log("Error " + xmlhttp.status);
+                }
+            }
+        };
+        xmlhttp.send(null);
     };
 
     this.review = function () {
@@ -596,14 +653,97 @@ function SearchMap() {
             // Refresh the search radius to center the rider
             view.refreshRadius();
 
-            if (driver !== null && driver !== undefined) {
+            if (hasRequested && !hasAccepted) {
+                var result = view.checkRequest();
+                switch (result) {
+                    case 0:
+                        view.beginJourney();
+                        hasAccepted = true;
+                        break;
+                    case 1:
+                        window.console.log("Waiting for accept or deny.");
+                        break;
+                    case 2:
+                        document.getElementById("searchDiv").removeChild(document.getElementById("loading"));
+                        var button2 = document.createElement("button");
+                        button2.setAttribute("id", "searchButton");
+                        button2.innerHTML = "Find Co-Ride";
+                        document.getElementById("searchDiv").appendChild(button2);
+                        document.getElementById("searchButton").addEventListener('click', function () {
+                            var img = document.createElement("img");
+                            img.setAttribute("id", "loading");
+                            img.setAttribute("src", "https://www.hotelnumberfour.com/wp-content/uploads/2017/09/loading.gif")
+                            document.getElementById("searchDiv").appendChild(img);
+                            document.getElementById("searchDiv").removeChild(document.getElementById("searchButton"));
+                            view.getDrivers();
+                        });
+                        hasRequested = false;
+                        break;
+                    case 3:
+                        window.console.log("Didn't do the check...");
+                        break;
+                    default:
+                        window.console.log("BAD RESPONSE FROM checkRequest()");
+                        break;
+                }
+            }
+            if (driver !== null && driver !== undefined && hasAccepted) {
                 view.updateDriverPos();
+                view.sendLoc(driver.email, userRider);
             }
         }, 500);
         document.getElementById("radiusSlider").onchange = function () {
             document.getElementById("sliderVal").innerHTML = view.logSlider(document.getElementById("radiusSlider").value).toFixed(2).toString() + "m";
             view.refreshRadius();
         };
+    };
+
+    this.sendLoc = function (anEmail, thing) {
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.open("GET", "sendLoc.php?email="+anEmail+"&lat="+thing.position.lat+"&lng="+thing.position.lng);
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState === 4) {
+                if (xmlhttp.status === 200) {
+                    window.console.log(xmlhttp.responseText);
+                } else {
+                    window.console.log("Error " + xmlhttp.status);
+                }
+            }
+        };
+        xmlhttp.send(null);
+    };
+
+    this.checkRequest = function () {
+        var xmlhttp = new XMLHttpRequest();
+        window.console.log("Driver email at this point is: "+driver.email);
+        xmlhttp.open("GET", "GetDriverRoute.php?email="+driver.email,false);
+        var returnVal = 3;
+        var response;
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState === 4) {
+                if (xmlhttp.status === 200) {
+                    response = JSON.parse(xmlhttp.responseText);
+                    if (parseInt(response[10]) === 1){
+                        returnVal = 0;
+                    } else if (parseInt(response[10]) === 0 && response[7] !== ""){
+                        returnVal = 1;
+                    } else if (response[7] === ""){
+                        returnVal = 2;
+                    } else {
+                        window.console.log("Something weird happened...");
+                    }
+                    // return (response[7] !== "");
+                    // if (view.testRoute(response, index, email)) {
+                    //     continueAdding(response[0], index, email);
+                    // }
+                    // view.testRoute(response, index, email);
+                } else {
+                    window.console.log("Error " + xmlhttp.status);
+                }
+            }
+        };
+        xmlhttp.send(null);
+        return returnVal;
     };
 
     this.beginMapUpdaterDriver = function () {
@@ -618,6 +758,64 @@ function SearchMap() {
             //rider.position.lng = rider.position.lng + 0.0001;
             // Add the new rider marker to the map
             view.addMarker(userDriver, 35, 20, false);
+            if (!isRequested) {
+                var response;
+                var xmlhttp = new XMLHttpRequest();
+                xmlhttp.open("GET", "GetDriverRoute.php?email=SELF");
+                xmlhttp.onreadystatechange = function () {
+                    if (xmlhttp.readyState === 4) {
+                        if (xmlhttp.status === 200) {
+                            window.console.log(xmlhttp.responseText);
+                            response = JSON.parse(xmlhttp.responseText);
+                            if (response[7] !== "") {
+                                view.respondToOffer(response);
+                                isRequested = true;
+                            }
+                            // return (response[7] !== "");
+                            // if (view.testRoute(response, index, email)) {
+                            //     continueAdding(response[0], index, email);
+                            // }
+                            // view.testRoute(response, index, email);
+                        } else {
+                            window.console.log("Error " + xmlhttp.status);
+                        }
+                    }
+                };
+                xmlhttp.send(null);
+            } else {
+                var response2;
+                var xmlhttp2 = new XMLHttpRequest();
+                xmlhttp2.open("GET", "GetDriverRoute.php?email=SELF");
+                xmlhttp2.onreadystatechange = function () {
+                    if (xmlhttp2.readyState === 4) {
+                        if (xmlhttp2.status === 200) {
+                            if (rider === null || rider === undefined) {
+                                window.console.log("Made a new rider for the map");
+                                rider = {
+                                    position: {lat: parseFloat(response2[8]), lng: parseFloat(response2[9])},
+                                    marker: null,
+                                    icon: "https://i.imgur.com/VWIWNii.png"
+                                };
+                                view.addMarker(rider, 35, 35, false);
+                            } else {
+                                window.console.log("Rider pos refreshed");
+                                rider.marker.setMap(null);
+                                window.console.log(xmlhttp2.responseText);
+                                response2 = JSON.parse(xmlhttp2.responseText);
+                                rider.position.lat = parseFloat(response2[8]);
+                                rider.position.lng = parseFloat(response2[9]);
+                                view.addMarker(rider, 35, 35, false);
+                            }
+                        } else {
+                            window.console.log("Error " + xmlhttp2.status);
+                        }
+                    }
+                };
+                xmlhttp2.send(null);
+            } if (hasAccepted){
+                view.sendLoc("", userDriver);
+            }
+
             // Refresh the search radius to center the rider
 
             // if (driver !== null && driver !== undefined) {
@@ -628,6 +826,141 @@ function SearchMap() {
         //     document.getElementById("sliderVal").innerHTML = view.logSlider(document.getElementById("radiusSlider").value).toFixed(2).toString() + "m";
         //     view.refreshRadius();
         // };
+    };
+
+    this.respondToOffer = function (response) {
+
+        rider = {
+            position: {lat: parseFloat(response[8]), lng: parseFloat(response[9])},
+            icon: "https://i.imgur.com/VWIWNii.png",
+            marker: null
+        };
+        view.addMarker(rider, 35, 35, false);
+        var requestInfoDiv = document.createElement("div");
+        requestInfoDiv.setAttribute("id", "requestInfoDiv");
+        document.getElementById("nonNav").appendChild(requestInfoDiv);
+
+        var requestInfo = document.createElement("span");
+        requestInfo.innerHTML = "You have a Co-Ride Request!";
+        requestInfo.setAttribute("id", "requestInfo");
+        requestInfoDiv.appendChild(requestInfo);
+
+        var profileSumDiv = document.createElement("div");
+        profileSumDiv.setAttribute("id", "profileSumDiv");
+        requestInfoDiv.appendChild(profileSumDiv);
+
+        var requestInfoImgDiv = document.createElement("div");
+        requestInfoImgDiv.setAttribute("id", "requestInfoImgDiv");
+        profileSumDiv.appendChild(requestInfoImgDiv);
+
+        var requestInfoImg = document.createElement("img");
+        requestInfoImg.setAttribute("src", "img/woman.jpeg");
+        requestInfoImg.setAttribute("id", "requestInfoImg");
+        requestInfoImgDiv.appendChild(requestInfoImg);
+
+        var requestInfoRatingsDiv = document.createElement("div");
+        requestInfoRatingsDiv.setAttribute("id", "requestInfoRatingsDiv");
+        profileSumDiv.appendChild(requestInfoRatingsDiv);
+
+        var requestInfoRatings = document.createElement("img");
+        requestInfoRatings.setAttribute("src", "img/star.png");
+        requestInfoRatings.setAttribute("id", "requestInfoRatings");
+        requestInfoRatingsDiv.appendChild(requestInfoRatings);
+
+        var requestInfoLoc = document.createElement("span");
+        requestInfoLoc.innerHTML = "Rider at location : Lat: " + response[8] + " Lng: " + response[9];
+        requestInfoLoc.setAttribute("id", "requestInfoLoc");
+        requestInfoDiv.appendChild(requestInfoLoc);
+
+        var buttonsDiv = document.createElement("div");
+        buttonsDiv.setAttribute("id", "buttonsDiv");
+        requestInfoDiv.appendChild(buttonsDiv);
+
+        var button1 = document.createElement("button");
+        button1.setAttribute("class", "requestButton");
+        button1.innerHTML = "Accept";
+        // document.getElementById("nonNav").appendChild(button1);
+        buttonsDiv.appendChild(button1);
+        button1.addEventListener('click', function () {
+            view.acceptRider();
+            document.getElementById("nonNav").removeChild(requestInfoDiv);
+            var endButton = document.createElement("button");
+            endButton.setAttribute("id", "endButton");
+            endButton.innerHTML = "End Co-Ride";
+            document.getElementById("nonNav").appendChild(endButton);
+            endButton.addEventListener('click', function () {
+                document.getElementById("nonNav").removeChild(endButton);
+                hasAccepted = false;
+                if (rider !== null && rider !== undefined) {
+                    rider.marker.setMap(null);
+                    rider = null;
+                }
+                view.removeRide();
+                view.review();
+                clearInterval(ticker); // TODO delete dis kyle
+            });
+        });
+
+        var button2 = document.createElement("button");
+        button2.setAttribute("class", "requestButton");
+        button2.innerHTML = "Decline";
+        // document.getElementById("nonNav").appendChild(button2);
+        buttonsDiv.appendChild(button2);
+        button2.addEventListener('click', function () {
+            if (rider !== null && rider !== undefined) {
+                rider.marker.setMap(null);
+                rider = null;
+            }
+            view.declineRider();
+            isRequested = false;
+            document.getElementById("nonNav").removeChild(requestInfoDiv);
+        });
+    };
+
+    this.removeRide = function () {
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.open("GET", "modifyRide.php?drEmail=&request=norequest&clear=clear&response=none&begin=nobegin");
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState === 4) {
+                if (xmlhttp.status === 200) {
+                    window.console.log(xmlhttp.responseText);
+                } else {
+                    window.console.log("Error " + xmlhttp.status);
+                }
+            }
+        };
+        xmlhttp.send(null);
+    };
+
+    this.declineRider = function () {
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.open("GET", "modifyRide.php?drEmail=&request=norequest&clear=noclear&response=decline&begin=nobegin");
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState === 4) {
+                if (xmlhttp.status === 200) {
+                    window.console.log(xmlhttp.responseText);
+                } else {
+                    window.console.log("Error " + xmlhttp.status);
+                }
+            }
+        };
+        xmlhttp.send(null);
+    };
+
+    this.acceptRider = function () {
+        hasAccepted = true;
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.open("GET", "modifyRide.php?drEmail=&request=norequest&clear=noclear&response=accept&begin=nobegin");
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState === 4) {
+                if (xmlhttp.status === 200) {
+                    window.console.log(xmlhttp.responseText);
+                } else {
+                    window.console.log("Error " + xmlhttp.status);
+                }
+            }
+        };
+        xmlhttp.send(null);
     };
 
     this.updateDriverPos = function () {

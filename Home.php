@@ -42,7 +42,7 @@ include "HomeUtilities.php"
         button1.setAttribute("class", "choiceButton");
         button1.innerHTML = "Rider";
         options.appendChild(button1);
-        button1.addEventListener('click', function () { window.location.href = "SearchMap.php?type=rider"; });
+        button1.addEventListener('click', function () { window.location.href = "SearchMap.php?type=rider&email"});
 
         var button2 = document.createElement("button");
         button2.setAttribute("class", "choiceButton");

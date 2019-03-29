@@ -1,7 +1,20 @@
 <?php
+include "utilities.php";
 
 if (isset($_GET["email"])) {
     $email = $_GET["email"];
+    if ($email === "SELF"){
+        if (!loggedIn()) {
+            header("Location: Index.php");
+            die();
+        }
+        if (!validToken()) {
+            header("Location: Logout.php?token=invalid");
+            die();
+        }
+
+        $email = $_SESSION["email"];
+    }
 } else {
     die("User email not given");
 }
@@ -39,6 +52,12 @@ if ($result->num_rows > 0) {
             $pos[4] = $row["CurrentLng"];
             $pos[5] = $row["Forename"];
             $pos[6] = $row["Surname"];
+            $pos[7] = $row["RiderEmail"];
+            $pos[8] = $row["RiderLat"];
+            $pos[9] = $row["RiderLng"];
+            $pos[10] = $row["Accepted"];
+            $pos[11] = $row["Begin"];
+
             echo json_encode($pos);
         }
     }

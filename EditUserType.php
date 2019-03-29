@@ -39,7 +39,7 @@ if ($type == "Rider"){
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) { // For each row in the links table
             if ($row["email"] == $email) { // If the users email is in this row
-                $sql = "UPDATE UserInfo SET $type = 1";
+                $sql = "UPDATE UserInfo SET $type = 1 WHERE email = '$email'";
                 if ($conn->query($sql) === TRUE) {
                     echo "Rider field changed successfully";
                 } else {
@@ -54,14 +54,14 @@ if ($type == "Rider"){
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) { // For each row in the links table
             if ($row["email"] == $email) { // If the users email is in this row
-                $sql = "UPDATE UserInfo SET $type = 1";
+                $sql = "UPDATE UserInfo SET $type = 1 WHERE email = '$email'";
                 if ($conn->query($sql) === TRUE) {
                     echo "Driver field changed successfully";
                 } else {
                     echo "Error: " . $sql . "<br>" . $conn->error;
                 }
 
-                $sql = $sql = "UPDATE UserInfo SET OfferingRides = 1";
+                $sql = "UPDATE UserInfo SET OfferingRides = 1 WHERE email = '$email'";
                 if ($conn->query($sql) === TRUE) {
                     echo "OfferingRides field changed successfully";
                 } else {
