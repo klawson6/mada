@@ -5,8 +5,6 @@ include "utilities.php";
 
 $choice = "rider";
 
-
-
 if(!loggedIn()){
     header("Location: Index.php", true, 301);
     exit();
@@ -18,8 +16,8 @@ if(!validToken()){
 
 if(isset($_POST['unset'])){
 
-    session_unset();
-    session_destroy();
+    //session_unset();
+    //session_destroy();
 }
 
 

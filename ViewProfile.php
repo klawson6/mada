@@ -28,7 +28,6 @@ if ($result->num_rows > 0){
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -50,60 +49,81 @@ if ($result->num_rows > 0){
 <body class="body">
     <h1><?php echo $name ?></h1>
     <br>
-            <h2>Profile Images</h2>
-            <div id = "profileImages">
-                <?php
-                $img = $conn->query("SELECT * FROM Photo WHERE email = '$email'");
-                if ($img->num_rows > 0){
-                    while ($imgRow = $img->fetch_assoc()){
-                        ?>
-                        <img class='profile_img' src="<?php echo "data:image;base64,".base64_encode($imgRow['photo']) ?>">
-                        <?php
-                    }
-                }
+    <h2>Profile Images</h2>
+    <div id = "profileImages">
+        <?php
+        $img = $conn->query("SELECT * FROM Photo WHERE email = '$email'");
+        if ($img->num_rows > 0){
+            while ($imgRow = $img->fetch_assoc()){
                 ?>
-            </div>
-    <div id="bio">
-        <h2>Bio</h2>
-        <?php echo $bio ?>
+                <img class='profile_img' src="<?php echo "data:image;base64,".base64_encode($imgRow['photo']) ?>">
+                <?php
+            }
+        }
+        ?>
     </div>
-    <h2>E-Mail:</h2>
-            <?php echo $email?>
 
-    <h2>Phone Number:</h2>
-    <?php echo $phone ?>
-        <div id = "AddressWrapper">
-            <label>Address:</label>
-            <?php
-                $addressResult = $conn->query("SELECT * FROM UserAddresses WHERE email = '$email'");
-                if ($addressResult->num_rows > 0){
-                    while($addressRow = $addressResult->fetch_assoc()){
-                        ?>
-                        <button onclick=showAndHide(<?php echo $addressRow['address_id'] ?>)><?php echo $addressRow['address_name'] ?></button>
+    <div id="bio" class="bioSeg">
+        <?php
+            if($bio!=null){
+                ?>
+                <h3>Bio</h3>
+                <?php echo $bio ?>
+                <?php
+            }else{
+                ?>
+                <h3>No Set Bio</h3>
+                <?php
+            }
 
-            <br>
-                        <div style="display: none" id=<?php echo $addressRow['address_id'] ?>>
-            <label>Town:</label>
-                        <div><?php echo $addressRow['town'] ?></div>
-            <br>
-            <label>Country:</label>
-                        <div><?php echo $addressRow['country'] ?></div>
-            <label>Postcode:</label>
-                        <div><?php echo $addressRow['postcode'] ?></div>
-            <br><br>
-                        </div>
-                    <?php
-                    }
-                }
-            ?>
-        </div>
-   </div>
+        ?>
+
+    </div>
+    <br>
+    <div id = "email" class="bioSeg">
+        <h3>E-Mail:</h3>
+        <h4><?php echo $email?></h4>
+    </div>
+    <br>
+    <div id = "phone" class="bioSeg">
+    <h4>Phone Number:</h4>
+    <h4><?php echo $phone ?></h4>
+    </div>
+    <br>
+    <div id = "AddressWrapper" class="bioSeg">
+        <h3><label>Address:</label></h3>
+        <?php
+        $addressResult = $conn->query("SELECT * FROM UserAddresses WHERE email = '$email'");
+        if ($addressResult->num_rows > 0){
+            while($addressRow = $addressResult->fetch_assoc()){
+                ?>
+                <button class="addr_button" onclick=showAndHide(<?php echo $addressRow['address_id'] ?>)><?php echo $addressRow['address_name'] ?></button>
+                <br>
+                <div style="display: none" id=<?php echo $addressRow['address_id'] ?>>
+                    <h4><label>Town:</label></h4>
+                    <div>
+                        <h5><?php echo $addressRow['town'] ?></h5>
+                    </div>
+                <br>
+                    <h4><label>Country:</label></h4>
+                    <div><h5><?php echo $addressRow['country'] ?></h5></div>
+                    <h4> <label>Postcode:</label></h4>
+                    <div><h5><?php echo $addressRow['postcode'] ?></h5></div>
+                <br><br>
+                </div>
+                <?php
+            }
+        }
+        ?>
+    </div>
    <br>
     <button id="editProfileButton" class="btn btn-lg btn-inverse btn-block back_button" onclick="location.href = 'Edit2.php';">Edit</button>
+    <br>
     <form action="Home.php">
        <button id = "back_home" class="btn btn-lg btn-inverse btn-block back_button" type="submit">Back</button>
    </form>
 </body>
+
 <script>
     function showAndHide(id) {
         var x = document.getElementById(id);

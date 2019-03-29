@@ -43,6 +43,8 @@ function swipe(evt) {
             document.getElementById('card_moreDetails')
         );
 
+        document.getElementById("status_bar").style.display = "none";
+        document.getElementById("logout").style.display = "none";
         moreDetailsCard.style.display = "block";
         frontCard.style.display = "none";
         acceptCard.style.display = "none";
@@ -98,6 +100,9 @@ function revertChanges(){
     frontCard.style.transform = "translate(.3rem) rotate(0deg)";
     acceptCard.style.transform = "translate(.3rem) rotate(0deg)";
     rejectCard.style.transform = "translate(.3rem) rotate(0deg)";
+    document.getElementById("status_bar").style.display = "block";
+    document.getElementById("logout").style.display = "block";
+
     updateData("yes");
 };
 
@@ -317,6 +322,9 @@ function closePopUp(){
     frontCard.style.display = "block";
     acceptCard.style.display = "block";
     rejectCard.style.display = "block";
+    document.getElementById("status_bar").style.display = "block";
+    document.getElementById("logout").style.display = "block";
+
     popUP = false;
 }
 

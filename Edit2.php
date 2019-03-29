@@ -559,6 +559,9 @@ if($uImage = $userImages->fetch_assoc()){
         <input type="hidden" name="action" value="updateInformation">
     </form>
     <br>
+    <button id = "back_home" class="btn btn-lg btn-inverse btn-block back_button" type="submit" onclick=" window.location.replace('Home.php');">Back</button>
+
+    <br>
 </div>
 
 </body>

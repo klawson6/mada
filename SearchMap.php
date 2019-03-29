@@ -54,7 +54,7 @@ if(isset($_GET["type"])){
                     </button>
                 </form>
                 <label id="nav_center"><h3>Find a Driver</h3></label>
-                <form action="EditProfile.html">
+                <form action="Edit2.php">
                     <button id="nav_right" class="borderlessButtons">
                         <span class="glyphicon  glyphicon-user icon_style"></span>
                     </button>

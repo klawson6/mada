@@ -121,6 +121,16 @@ input{
 /*----------------------------------------------------------------------------------------------------------------*/
 /*                                                home page styling                                               */
 
+.logout{
+    margin: 0 auto;
+    position: relative;
+    border-radius: 30%;
+    width: 10pc;
+    height: 2pc;
+    background-color: #11141b;
+    border-color: #030307;
+
+}
 #bodyDiv{
     z-index: 0;
     position: absolute;
@@ -405,7 +415,8 @@ body.viewport-lg {
 
 .closeButton{
     width: 90%;
-    background-color: #8fb3ef;
+    background-color: #283142;
+    border-color: #283142;
     border-radius: 25px;
     height: 2em;
 }
@@ -594,5 +605,21 @@ body.viewport-lg {
     height: 10%;
 }
 
+/*----------------------------------------------------------------------------------------------------------------*/
+/*                                                view profile                                                   */
+.bioSeg{
+    width: 80%;
+    background-color: rgb(41, 52, 69);
+    border-radius: 3%;
+    margin: 0 auto;
+    padding: .5em;
+}
 
-
+.addr_button{
+    width: 80%;
+    background-color:  rgb(47, 60, 79);
+    border-color: rgb(47, 60, 79);
+    border-radius: 3%;
+    margin: 0 auto;
+    padding: .5em;
+}
