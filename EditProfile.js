@@ -485,7 +485,6 @@ document.body.onload = function(){
         }
 
         if (response !== "") {
-            window.alert(response);
             return false;
         }
 
@@ -541,7 +540,6 @@ document.body.onload = function(){
         }
 
         if (response !== "") {
-            window.alert(response);
             return false;
         }
 
@@ -621,7 +619,6 @@ document.body.onload = function(){
         }
 
         if (response !== "") {
-            window.alert(response);
             return false;
         }
 
