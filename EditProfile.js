@@ -1,4 +1,3 @@
-
 var addresses = [];
 
 var forename;
