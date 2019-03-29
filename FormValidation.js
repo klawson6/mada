@@ -1,5 +1,25 @@
 "use strict";
 
+document.getElementById("new_profile_image").onclick = function(){
+    var image_input = document.getElementById("new_profile_pic_input");
+    image_input.click();
+};
+
+document.getElementById("new_profile_pic_input").onchange = function(event){
+    var selectedFile = event.target.files[0];
+    var reader = new FileReader();
+
+    var profile_image = document.getElementById("new_profile_image");
+    profile_image.title = selectedFile.name;
+
+    reader.onload = function (event) {
+        profile_image.src = event.target.result;
+    };
+
+    reader.readAsDataURL(selectedFile);
+};
+
+
 var forename = document.getElementById("first_name_input");
 forename.onclick = function(){
     forename.style.backgroundColor = "white";
@@ -81,8 +101,15 @@ function ValidateRegisterFormData(){
     var country = document.getElementById("country_input").value.trim();
     var postcode = document.getElementById("postcode_input").value.trim();
     var terms = document.getElementById("agreeTerms").checked;
+    var image = document.getElementById("new_profile_pic_input").value;
     var response = "";
 
+    //image validation
+    var im = document.getElementById("new_profile_image");
+    if(image === ""){
+        im.src = "img/redBlank.jpg";
+        response += "IMAGE REQUIRED\n";
+    }
     //forename validation
     var fn = document.getElementById("first_name_input");
     if(forename === ""){

@@ -1,8 +1,17 @@
 <?php
 include "utilities.php";
 
+if(!loggedIn()){
+    header("Location: Index.php");
+    die();
+}
+if(!validToken()){
+    header("Location: Logout.php?token=invalid");
+    die();
+}
+
 $dbconn = dbconn();
-$email = "chrstphrwthrs@googlemail.com";
+$email = $_SESSION["email"];
 
 $userInfoSTMT = $dbconn->prepare("SELECT * FROM UserInfo WHERE email=?;");
 $userInfoSTMT->bind_param("s", $email);
@@ -15,11 +24,36 @@ $userAddressesSTMT->bind_param("s", $email);
 $userAddressesSTMT->execute();
 $userAddresses = $userAddressesSTMT->get_result();
 
-$userImagesSTMT = $dbconn->prepare("SELECT * FROM UserPhotos WHERE email=?");
+$userImagesSTMT = $dbconn->prepare("SELECT * FROM Photo WHERE email=?");
 $userImagesSTMT->bind_param("s", $email);
 $userImagesSTMT->execute();
 $userImages = $userImagesSTMT->get_result();
 $numImages = $userImages->num_rows;
+
+$isDriver = $userInfo['Driver'];
+$isRider = $userInfo['Rider'];
+
+
+if(isset($_POST['driver'])){
+    $conn = dbconn();
+    $sql = "UPDATE UserInfo SET Driver = ? WHERE email = ?";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ss",$_POST['driver'], $email);
+
+    $stmt->execute();
+}
+
+if(isset($_POST['rider'])){
+    $conn = dbconn();
+    $sql = "UPDATE UserInfo SET Rider = ? WHERE email = ?";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ss",$_POST['rider'], $email);
+
+    $stmt->execute();
+}
+
 
 if(isset($_POST["action"]) && $_POST["action"] == "updatePassword") {
 
@@ -30,8 +64,7 @@ if(isset($_POST["action"]) && $_POST["action"] == "updatePassword") {
     $passwordChangeSTMT = $dbconn->prepare("UPDATE UserInfo SET password=? WHERE email=?;");
     $passwordChangeSTMT->bind_param("ss", $hash, $user_email);
     $passwordChangeSTMT->execute();
-    header("Location:Edit2.php");
-
+    die();
 
 }
 else if(isset($_POST["action"]) && $_POST["action"] == "updateAddress"){
@@ -74,8 +107,8 @@ else if(isset($_POST["action"]) && $_POST["action"] == "updateInformation"){
     $passwordChangeSTMT->bind_param("sssss", $forename, $surname, $mobile_number, $bio,  $user_email);
     $passwordChangeSTMT->execute();
 
+    die();
 
-    header("Location:Edit2.php");
 
 }
 else if(isset($_POST["action"]) && $_POST["action"] == "deleteAddress"){
@@ -95,12 +128,12 @@ else if(isset($_POST["action"]) && $_POST["action"] == "updateImage"){
         $image = file_get_contents($_FILES['profile_pic_input']['tmp_name']);
         $user_email = $_POST["user_email"];
         if($id != null){
-            $addPicSTMT = $dbconn->prepare("UPDATE UserPhotos SET photo=? WHERE photo_id=?;");
+            $addPicSTMT = $dbconn->prepare("UPDATE Photo SET photo=? WHERE photoID=?;");
             $addPicSTMT->bind_param("ss", $image, $id);
             $addPicSTMT->execute();
         }
         else{
-            $addPicSTMT = $dbconn->prepare("INSERT INTO UserPhotos (email, photo) VALUES (?,?);");
+            $addPicSTMT = $dbconn->prepare("INSERT INTO Photo (email, photo) VALUES (?,?);");
             $addPicSTMT->bind_param("ss", $user_email, $image);
             $addPicSTMT->execute();
         }
@@ -110,15 +143,12 @@ else if(isset($_POST["action"]) && $_POST["action"] == "updateImage"){
 else if(isset($_POST["action"]) && $_POST["action"] == "deleteImage"){
     $profile_pic_id = $_POST["profile_pic_id"];
 
-    $addPicSTMT = $dbconn->prepare("DELETE FROM UserPhotos WHERE photo_id=?;");
+    $addPicSTMT = $dbconn->prepare("DELETE FROM Photo WHERE photoID=?;");
     $addPicSTMT->bind_param("s", $profile_pic_id);
     $addPicSTMT->execute();
 
     header("Location:Edit2.php");
-
 }
-
-
 ?>
 
 <!DOCTYPE html>
@@ -138,8 +168,6 @@ else if(isset($_POST["action"]) && $_POST["action"] == "deleteImage"){
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="Normalize.css"/>
     <link rel="stylesheet" type="text/css" href="myStyle.css"/>
-
-
 
 </head>
 
@@ -162,19 +190,19 @@ $profile_image_4_id = null;
 
 if($uImage = $userImages->fetch_assoc()){
     $profile_image_1_src = $uImage['photo'];
-    $profile_image_1_id = $uImage['photo_id'];
+    $profile_image_1_id = $uImage['photoID'];
 }
 if($uImage = $userImages->fetch_assoc()) {
     $profile_image_2_src = $uImage['photo'];
-    $profile_image_2_id = $uImage['photo_id'];
+    $profile_image_2_id = $uImage['photoID'];
 }
 if($uImage = $userImages->fetch_assoc()){
     $profile_image_3_src = $uImage['photo'];
-    $profile_image_3_id = $uImage['photo_id'];
+    $profile_image_3_id = $uImage['photoID'];
 }
 if($uImage = $userImages->fetch_assoc()){
     $profile_image_4_src = $uImage['photo'];
-    $profile_image_4_id = $uImage['photo_id'];
+    $profile_image_4_id = $uImage['photoID'];
 }
 
 ?>
@@ -183,8 +211,8 @@ if($uImage = $userImages->fetch_assoc()){
     <?php
     if($numImages > 0){
         ?>
-        <form name="deleteImage1" method="post" enctype="multipart/form-data">
-            <input type="hidden" name="profile_pic_id"  value="<?php echo $profile_image_1_id; ?>">
+        <form id="deleteImage1" name="deleteImage1" method="post" enctype="multipart/form-data">
+            <input type="hidden" id = "profile_pic_id_1" name="profile_pic_id"  value="<?php echo $profile_image_1_id; ?>">
             <input type="hidden" name="action" value="deleteImage">
             <button id="delete_image_1" class="btn btn-lg btn-inverse btn-block pop_up_button">Delete Image 1</button>
         </form>
@@ -194,7 +222,7 @@ if($uImage = $userImages->fetch_assoc()){
     if($numImages > 1){
         ?>
         <form name="deleteImage2" method="post" enctype="multipart/form-data">
-            <input type="hidden" name="profile_pic_id"  value="<?php echo $profile_image_2_id; ?>">
+            <input type="hidden" id = "profile_pic_id_2" name="profile_pic_id"  value="<?php echo $profile_image_2_id; ?>">
             <input type="hidden" name="action" value="deleteImage">
             <button id="delete_image_2" class="btn btn-lg btn-inverse btn-block pop_up_button">Delete Image 2</button>
         </form>
@@ -204,7 +232,7 @@ if($uImage = $userImages->fetch_assoc()){
     if($numImages > 2){
         ?>
         <form name="deleteImage3" method="post" enctype="multipart/form-data">
-            <input type="hidden" name="profile_pic_id"  value="<?php echo $profile_image_3_id; ?>">
+            <input type="hidden" id = "profile_pic_id_3" name="profile_pic_id" style="visibility: hidden" value="<?php echo $profile_image_3_id; ?>">
             <input type="hidden" name="action" value="deleteImage">
             <button id="delete_image_3" class="btn btn-lg btn-inverse btn-block pop_up_button">Delete Image 3</button>
         </form>
@@ -214,7 +242,7 @@ if($uImage = $userImages->fetch_assoc()){
     if($numImages > 3){
         ?>
         <form name="deleteImage4" method="post" enctype="multipart/form-data">
-            <input type="hidden" name="profile_pic_id"  value="<?php echo $profile_image_4_id; ?>">
+            <input type="hidden" id = "profile_pic_id_4" name="profile_pic_id"  value="<?php echo $profile_image_4_id; ?>">
             <input type="hidden" name="action" value="deleteImage">
             <button id="delete_image_4" class="btn btn-lg btn-inverse btn-block pop_up_button">Delete Image 4</button>
         </form>
@@ -226,7 +254,7 @@ if($uImage = $userImages->fetch_assoc()){
 </div>
 
 <div id ="editAddress" class="pop_up">
-    <form name="editAddress" method="post" enctype="multipart/form-data" onsubmit="return validateEditAddressData()">
+    <form name="editAddress" id="editAddress" method="post" enctype="multipart/form-data" onsubmit="return validateEditAddressData()">
         <h4>Edit Address</h4>
         <div id="address_input_wrapper" class="inputWrapper">
             <label>Name:</label>
@@ -260,7 +288,7 @@ if($uImage = $userImages->fetch_assoc()){
 </div>
 
 <div id="changePassword" class="pop_up">
-    <form name="editPassword" method="post" enctype="multipart/form-data" onsubmit="return validateChangePasswordData()">
+    <form name="editPassword" id="editPassword" method="post" enctype="multipart/form-data">
         <h4>Change Password</h4>
         <br>
         <div id="password_input_wrapper" class="inputWrapper">
@@ -277,7 +305,7 @@ if($uImage = $userImages->fetch_assoc()){
     <button id="close_change_password" class="btn btn-lg btn-inverse btn-block pop_up_button">Close</button>
 </div>
 
-<div id="editInfo" class="editProfileWrapper">
+<div id="editInfo" class="editProfileWrapper" style="display: none">
 
     <label>Profile Images</label>
     <div class="profileImages">
@@ -296,41 +324,193 @@ if($uImage = $userImages->fetch_assoc()){
     </div>
     <br>
 
-    <form name="changeImage1" method="post" enctype="multipart/form-data">
+    <form name="changeImage1" id="changeImage1" method="post" enctype="multipart/form-data">
         <input type="hidden" name="profile_pic_id" id="profile_pic_1_id" value="<?php if($profile_image_1_id != null){echo $profile_image_1_id;} ?>">
-        <input name="profile_pic_input" type="file" accept="image/jpeg, image/gif, image/x-png" id="image_input_1" style="display: none;">
+        <input name="profile_pic_input" type="file" accept="image/" id="image_input_1" style="display: none;">
         <input type="hidden" name="action" value="updateImage">
         <input type="hidden" name="user_email" id="user_email4" value="<?php echo $userInfo['email']; ?>">
-        <button id="submit_image_1" style="display:none;">Submit</button>
+        <button id="submit_image_1" style="display:none;"></button>
     </form>
 
-    <form name="changeImage2" method="post" enctype="multipart/form-data">
+    <form name="changeImage2" id="changeImage2" method="post" enctype="multipart/form-data">
         <input type="hidden" name="profile_pic_id" id="profile_pic_2_id" value="<?php if($profile_image_2_id != null){echo $profile_image_2_id;} ?>">
-        <input name="profile_pic_input" type="file" accept="image/jpeg, image/gif, image/x-png" id="image_input_2" style="display: none;">
+        <input name="profile_pic_input" type="file" accept="image/" id="image_input_2" style="display: none;">
         <input type="hidden" name="action" value="updateImage">
         <input type="hidden" name="user_email" id="user_email5" value="<?php echo $userInfo['email']; ?>">
         <button id="submit_image_2" style="display:none;"></button>
     </form>
 
-    <form name="changeImage3" method="post" enctype="multipart/form-data">
+    <form name="changeImage3" id="changeImage3" method="post" enctype="multipart/form-data">
         <input type="hidden" name="profile_pic_id" id="profile_pic_3_id" value="<?php if($profile_image_3_id != null){echo $profile_image_3_id;} ?>">
-        <input name="profile_pic_input" type="file" accept="image/jpeg, image/gif, image/x-png" id="image_input_3" style="display: none;">
+        <input name="profile_pic_input" type="file" accept="image/" id="image_input_3" style="display: none;">
         <input type="hidden" name="action" value="updateImage">
         <input type="hidden" name="user_email" id="user_email6" value="<?php echo $userInfo['email']; ?>">
         <button id="submit_image_3" style="display:none;"></button>
     </form>
 
-    <form name="changeImage4" method="post" enctype="multipart/form-data">
+    <form name="changeImage4" id="changeImage4" method="post" enctype="multipart/form-data">
         <input type="hidden" name="profile_pic_id" id="profile_pic_4_id" value="<?php if($profile_image_4_id != null){echo $profile_image_4_id;} ?>">
-        <input name="profile_pic_input" type="file" accept="image/jpeg, image/gif, image/x-png" id="image_input_4" style="display: none;">
+        <input name="profile_pic_input" type="file" accept="image/" id="image_input_4" style="display: none;">
         <input type="hidden" name="action" value="updateImage">
         <input type="hidden" name="user_email" id="user_email7" value="<?php echo $userInfo['email']; ?>">
         <button id="submit_image_4" style="display:none;"></button>
     </form>
 
-    <form name="editInfo" method="post" enctype="multipart/form-data" onsubmit="return validateUpdateInfoData()">
+    <form name="editInfo" id="editInfo" method="post" enctype="multipart/form-data" onsubmit="validateUpdateInfoData()">
         <button id="delete_pic_button" type="button" class="btn btn-lg btn-inverse btn-block back_button">Delete Profile Picture</button>
         <br>
+
+
+
+       <div style="  margin:0px auto; left: 2em;   overflow-y: auto; margin-top: .1em;">
+            <h5>Driver</h5>
+            <div id = "driver_container"
+                <?php
+                if($isDriver == 1){//false
+                    ?>
+                     style="
+                        width: 10em;
+                        height: 3em;
+                        overflow: hidden;
+                        background: rgb(98, 9, 95);
+                        font-size: 70%;
+                        color: azure;
+                        display: block;
+                        margin-top: .7em;
+                        margin:0px auto;
+                        border-radius: 18%;
+                        "
+                    <?php
+                }else{
+                    ?>
+                        style="
+                            width: 10em;
+                            height: 3em;
+                            overflow: hidden;
+                            background: rgb(14, 70, 45);
+                            font-size: 70%;
+                            color: azure;
+                            display: block;
+                            margin-top: .7em;
+                            margin:0px auto;
+                            border-radius: 18%;
+                            "
+                        <?php
+                }
+                ?>
+                >
+
+                <button id="isDriverSlider"
+                    <?php
+                    if($isDriver == 1){//false
+                    ?>
+                        style="
+                            width: 4em;
+                            height: 4em;
+                            overflow: hidden;
+                            background: rgb(131, 12, 127);
+                            font-size: 70%;
+                            color: azure;
+                            margin: 0 auto;
+                            border-radius: 50%;
+                            border-color: rgb(106, 10, 103) ;
+                            float:right;
+                            padding:1em;"
+                        <?php
+                    }else{
+                        ?>
+                        style="
+                            width: 4em;
+                            height: 4em;
+                            overflow: hidden;
+                            background: rgb(31, 138, 82);
+                            font-size: 70%;
+                            color: azure;
+                            margin: 0 auto;
+                            border-radius: 50%;
+                            border-color: rgb(25, 112, 66) ;
+                            float:left;
+                            padding:1em;"
+                        <?php
+                    }
+                    ?>
+                >  </button>
+            </div>
+        </div>
+        <h5>Rider</h5>
+        <div id = "rider_container"
+            <?php
+            if($isRider == 1){//false
+                ?>
+                style="
+                        width: 10em;
+                        height: 3em;
+                        overflow: hidden;
+                        background: rgb(98, 9, 95);
+                        font-size: 70%;
+                        color: azure;
+                        display: block;
+                        margin-top: .7em;
+                        margin:0px auto;
+                        border-radius: 18%;
+                        "
+                <?php
+            }else{
+                ?>
+                style="
+                            width: 10em;
+                            height: 3em;
+                            overflow: hidden;
+                            background: rgb(14, 70, 45);
+                            font-size: 70%;
+                            color: azure;
+                            display: block;
+                            margin-top: .7em;
+                            margin:0px auto;
+                            border-radius: 18%;
+                            "
+                <?php
+            }
+            ?>
+        >
+            <button id="isRiderSlider"
+                <?php
+                if($isRider == 1){//false
+                    ?>
+                    style="
+                            width: 4em;
+                            height: 4em;
+                            overflow: hidden;
+                            background: rgb(131, 12, 127);
+                            font-size: 70%;
+                            color: azure;
+                            margin: 0 auto;
+                            border-radius: 50%;
+                            border-color: rgb(106, 10, 103) ;
+                            float:right;
+                            padding:1em;"
+                    <?php
+                }else{
+                    ?>
+                    style="
+                            width: 4em;
+                            height: 4em;
+                            overflow: hidden;
+                            background: rgb(31, 138, 82);
+                            font-size: 70%;
+                            color: azure;
+                            margin: 0 auto;
+                            border-radius: 50%;
+                            border-color: rgb(25, 112, 66) ;
+                            float:left;
+                            padding:1em;"
+                    <?php
+                }
+                ?>
+            >  </button>
+        </div>
+        <br>
+
 
         <label>Name:</label>
         <input id='forename_change' name="forename_change" type='text' class='form-control' placeholder='Forename' value="<?php echo $userInfo['forename']; ?>" maxlength="25">
@@ -385,7 +565,7 @@ if($uImage = $userImages->fetch_assoc()){
 
 <footer>
     <!-- JQuery Plugins -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <!-- Our own Plugins -->
@@ -407,10 +587,7 @@ if($userAddresses->num_rows > 0){
         echo 'addAddress(array);';
         echo '</script>';
     }
-
 }
-
-
 ?>
 
 </html>

@@ -150,7 +150,9 @@ include "HomeUtilities.php"
         <input type="submit">
     </form>
 </div>
-
+<form action="Logout.php">
+    <input type="submit" class="btn btn-lg btn-inverse btn-block back_button" value="Logout">
+</form>
 </body>
 
 <footer>

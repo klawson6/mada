@@ -1,0 +1,44 @@
+html, body{
+    border: 0;
+    padding: 0;
+}
+/*TODO message divs*/
+
+/*TODO maybe main height?*/
+
+#chatHistoryDiv{
+    height: calc(100% - 4rem);
+    overflow-y: auto;
+}
+#chatHistoryDiv p{
+    background-color: #77aaa9; /*todo CHANGE*/
+    border: 1px solid burlywood;
+    padding: 0.2rem;
+    margin: 0.2rem;
+}
+
+#messageText{
+    left: 1em;
+    color: black;
+    width: calc(100% - 10rem);
+    text-align: left;
+    bottom: 1.45em;
+    position: fixed;
+    float: left;
+}
+
+#postButton{
+    background-color: darkslategray;
+    color: white;
+    border: none;
+    padding: 1rem;
+    width: 6rem;
+    cursor: pointer;
+    float: right;
+    right: 1em;
+    margin: 0 auto;
+    bottom: 1em;
+    position: fixed;
+    justify-content: right;
+}
+

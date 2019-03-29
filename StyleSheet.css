@@ -38,7 +38,7 @@ body{
 
 .intro_styling_login{
     width:100%;
-    height: 100%;
+    /*height: 100%;*/
     padding: 15%;
 }
 
@@ -68,6 +68,7 @@ body{
 /*                                                    FORM STYLING                                                     */
 #sign_up > h1{
     font-size: x-large;
+
 }
 
 #sign_up_button{
@@ -96,7 +97,7 @@ body{
     color: azure;
     padding: 20px;
     width:  70%;
-    height: 92vh;
+    height: 50vh;
     display: block;
     text-align: center;
     position: fixed;
@@ -368,7 +369,8 @@ body.viewport-lg {
 }
 
 #card_moreDetails{
-    position: sticky;
+    position: absolute;
+    width: 100%;
     display: none;
     border-radius: 25px;
     padding: 1em;
@@ -416,7 +418,6 @@ body.viewport-lg {
     font-size: 70%;
     color: azure;
     display: block;
-    pasdding:1em;
     margin-top: .7em;
     margin:0px auto;
     border-radius: 18%;
@@ -428,12 +429,12 @@ body.viewport-lg {
     background: rgb(31, 138, 82);
     font-size: 70%;
     color: azure;
-    margin-top: 1em;
+    margin-top: .1em;
     margin: 0 auto;
     border-radius: 50%;
     border-color: rgb(25, 112, 66) ;
     float:left;
-    pasdding:2em;
+   /* padding:2em;*/
 }
 
 /*----------------------------------------------------------------------------------------------------------------*/
@@ -592,3 +593,6 @@ body.viewport-lg {
     width: 10%;
     height: 10%;
 }
+
+
+

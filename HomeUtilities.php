@@ -75,12 +75,9 @@ class User{
     public $personality;
     public $timeliness;
     public $drivingAbility;
-    };
-
-
+};
 
 function addLinkedUser($user,$email){
-
     $conn = dbconn();
     $sql = "INSERT INTO LinkedUsers (Email1, Email2) VALUES (?,?)";
 
@@ -90,7 +87,6 @@ function addLinkedUser($user,$email){
     $stmt->execute();
 }
 
-
 function getAllUsers($choice,$email){
     $dbconn = dbconn();
 
@@ -98,7 +94,6 @@ function getAllUsers($choice,$email){
     $innersql2 = "email NOT IN (SELECT Email2 FROM LinkedUsers WHERE '". $email."' = Email2)";
 
     $sql = "SELECT * FROM UserInfo WHERE Rider = 1 AND email <> '" .$email ."' AND ". $innersql1 . " AND " . $innersql2;
-
 
     if($choice == "driver"){
         $sql = "SELECT * FROM UserInfo WHERE Driver = 1 AND email <> '" .$email ."' AND ". $innersql1 . " AND " . $innersql2;
@@ -131,65 +126,12 @@ function getAllUsers($choice,$email){
 
 function getReviews($user){
 
-    $conn = dbconn();
+    $email = $user->email;
 
-            $avgCleanlinessRider = 0;
-            $avgPersonalityRider = 0;
-            $avgTimelinessRider = 0;
-
-            $avgPersonalityDriver = 0;
-            $avgCleanlinessDriver = 0;
-            $avgTimelinessDriver = 0;
-
-            //-----------
-            //connect to get reviews
-            $reviewDriver = $conn->query("SELECT * FROM reviewsAboutDrivers WHERE revieweeEmail = '" . $user->email . "'");
-            if ($reviewDriver->num_rows > 0) {
-                $totalPersonalityDriving = 0;
-                $totalCleanlinessDriving = 0;
-                $totalTimelinessDriving = 0;
-                $totalDrivingAbility = 0;
-                $i = 0;
-
-                while ($reviewRow = $reviewDriver->fetch_assoc()) {
-                    $totalPersonalityDriving += $reviewRow['personality'];
-                    $totalCleanlinessDriving += $reviewRow['cleanliness'];
-                    $totalDrivingAbility += $reviewRow['drivingAbility'];
-                    $totalTimelinessDriving += $reviewRow['timeliness'];
-                    $i++;
-                }
-                $avgPersonalityDriver = $totalPersonalityDriving / $i;
-                $avgCleanlinessDriver = $totalCleanlinessDriving / $i;
-                $avgTimelinessDriver = $totalTimelinessDriving / $i;
-                $avgDrivingAbiityDriver = $totalDrivingAbility / $i;
-                $user->drivingAbility = round($avgDrivingAbiityDriver);
-            }
-
-            $reviewRider = $conn->query("SELECT * FROM reviewsAboutRiders WHERE revieweeEmail = '" . $user->email . "'");
-            if ($reviewRider->num_rows > 0) {
-                $totalPersonalityRiding = 0;
-                $totalCleanlinessRiding = 0;
-                $totalTimelinessRiding = 0;
-                $j = 0;
-                while ($riderReviewRow = $reviewRider->fetch_assoc()) {
-                    $totalPersonalityRiding += $riderReviewRow['personality'];
-                    $totalCleanlinessRiding += $riderReviewRow['cleanliness'];
-                    $totalTimelinessRiding += $riderReviewRow['timeliness'];
-                    $j++;
-                }
-                $avgCleanlinessRider = $totalPersonalityRiding / $j;
-                $avgPersonalityRider = $totalPersonalityRiding / $j;
-                $avgTimelinessRider = $totalTimelinessRiding / $j;
-            }
-
-            $finalAvgClean = ($avgCleanlinessDriver + $avgCleanlinessRider) / 2;
-            $user->cleanliness = round($finalAvgClean);
-
-            $finalAvgPerson = ($avgPersonalityDriver + $avgPersonalityRider) / 2;
-            $user->personality = round($finalAvgPerson);
-
-            $finalAvgTime = ($avgTimelinessDriver + $avgTimelinessRider) / 2;
-            $user->timeliness = round($finalAvgTime);
+    $user->cleanliness = getReviewAvg($email, "cleanliness");
+    $user->timeliness =  getReviewAvg($email, "timeliness");
+    $user->drivingAbility = getReviewAvg($email, "drivingAbility");
+    $user->personality = getReviewAvg($email, "personality");
 
     return $user;
 }
