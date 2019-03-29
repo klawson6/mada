@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by IntelliJ IDEA.
- * User: nellieoliver
- * Date: 2019-03-27
- * Time: 11:59
- */
+
 session_start();
 include "utilities.php";
 
@@ -15,26 +10,69 @@ if(!loggedIn()){
     exit();
 }
 if(!validToken()){
-    header("Location: Logout.php",true,301);
+    header("Location: Logout.php?token=invalid",true,301);
     die();
 }
 
 if(isset($_POST['unset'])){
-    session_unset();
-    session_destroy();
+
 }
 
 
+class User{
+    public $email;
+    public $name;
+    public $age;
+    public $coverImg;
+    public $photo1;
+    public $photo2;
+    public $photo3;
+    public $photo4;
+    public $bio;
+    public $cleanliness;
+    public $personality;
+    public $timeliness;
+    public $drivingAbility;
+};
+
+
 if(isset($_POST['update'])){
-    if($_POST['update']==="yes"){
-        $_SESSION["previous"] = $_SESSION["current"];
-    }
-    else if($_POST['update'] === "reset"){
-        unset($_SESSION['previous']);
+
+    if(isset( $_SESSION['swipe_number'] )) {
+        $_SESSION['swipe_number'] = $_SESSION['swipe_number'] + 1;
+    }else{
+        $_SESSION['swipe_number'] = 0;
     }
 
-    $user =selectUser($choice,$_SESSION["email"]);
-    echo $user;
+   if($_SESSION['swipe_number'] == 3){
+        $_SESSION['swipe_number'] = 0;
+
+
+        $conn = dbconn();
+        $ads = $conn->query("SELECT * FROM Advertisements");
+        if($ads->num_rows > 0) {
+            $all_ads = array();
+            while ($row = $ads->fetch_assoc()) {
+                 $a = new User();
+                 $a->name ="advertisement";
+                 $a->bio = $row["Name"];
+                 $a->coverImg = "data:image/jpg;base64, ".base64_encode($row['Photo']);
+                array_push($all_ads,$a);
+            }
+        }
+        $index = floor(rand(0,sizeof($all_ads)-1));
+        $ad = $all_ads[$index];
+        echo json_encode($ad);
+    }else {
+        if ($_POST['update'] === "yes") {
+            $_SESSION["previous"] = $_SESSION["current"];
+        } else if ($_POST['update'] === "reset") {
+            unset($_SESSION['previous']);
+        }
+
+        $user = selectUser($choice, $_SESSION["email"]);
+        echo $user;
+    }
 }
 
 if(isset($_POST['rewind'])){
@@ -60,22 +98,6 @@ if(isset($_POST['change'])){
         $choice = "rider";
     }
 }
-
-class User{
-    public $email;
-    public $name;
-    public $age;
-    public $coverImg;
-    public $photo1;
-    public $photo2;
-    public $photo3;
-    public $photo4;
-    public $bio;
-    public $cleanliness;
-    public $personality;
-    public $timeliness;
-    public $drivingAbility;
-};
 
 function addLinkedUser($user,$email){
     $conn = dbconn();

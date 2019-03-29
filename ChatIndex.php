@@ -8,10 +8,14 @@ if(!validToken()){
     header("Location: Logout.php?token=invalid");
     die();
 }
-echo("<script>var otherEmail = '" . $_GET["otherEmail"] . "'</script>");
-echo("<script>var currentUserEmail = '" . $_SESSION["email"] . "'</script>");
+if (isset($_GET["otherEmail"]) && user_exists($_GET["otherEmail"])) {
 
-?><!DOCTYPE html>
+    $name = getUserName($_GET["otherEmail"]);
+
+    echo("<script>var otherEmail = '" . $_GET["otherEmail"] . "'</script>");
+    echo("<script>var currentUserEmail = '" . $_SESSION["email"] . "'</script>");
+    ?>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -31,8 +35,22 @@ echo("<script>var currentUserEmail = '" . $_SESSION["email"] . "'</script>");
     <link rel="stylesheet" type="text/css" href="Chat.css"/>
 
 </head>
+<nav id="my_navbar" class="nav_buttons">
+    <div id="nav_container">
+        <table>
+            <form action="ChatInbox.php">
+                <button id="nav_left" class="borderlessButtons">
+                    <span class="glyphicon glyphicon-chevron-left icon_style"></span>
+                </button>
+            </form>
+            <h2> <h4 id = "name">Chat with <?php echo $name; ?></h4></h2>
+
+        </table>
+    </div>
+</nav>
+<br>
 <body>
-    <h1>Chat</h1>
+
     <main>
         <div id="chatHistoryDiv"></div>
         <div id="chatFormDiv">
@@ -55,3 +73,35 @@ echo("<script>var currentUserEmail = '" . $_SESSION["email"] . "'</script>");
     </footer>
 </body>
 </html>
+<?php}
+else{
+    ?>
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+
+    <title>Co-Rider</title>
+
+    <link rel="icon" sizes="192x192" href="img/car.png" />
+    <link rel="apple-touch-icon" href="img/car.png" />
+    <link rel="shortcut icon" href="img/car.png" type="image/x-icon" />
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="Normalize.css"/>
+    <link rel="stylesheet" type="text/css" href="StyleSheet.css"/>
+    <link rel="stylesheet" type="text/css" href="Chat.css"/>
+
+</head>
+
+
+
+<body>
+    <h1 id = "fail">Sorry, something went wrong</h1>
+</body>
+</html>
+<?php
+}?>

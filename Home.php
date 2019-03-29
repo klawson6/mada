@@ -1,5 +1,7 @@
 <?php
-include "HomeUtilities.php"
+include "HomeUtilities.php";
+$_SESSION['swipe_number'] = 0;
+
 ?>
 
 <!DOCTYPE html>
@@ -19,6 +21,7 @@ include "HomeUtilities.php"
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="Normalize.css"/>
     <link rel="stylesheet" type="text/css" href="StyleSheet.css"/>
+    <link rel="stylesheet" type="text/css" href="SearchMapStyleSheet.css"/>
 
 </head>
 
@@ -89,7 +92,7 @@ include "HomeUtilities.php"
                     </button>
                 </form>
                 <label id="nav_center"><h3 id="headder">Select a Rider</h3></label>
-                <form action="EditProfile.html">
+                <form action="ViewProfile.php">
                     <button id="nav_right" class="borderlessButtons">
                         <span class="glyphicon  glyphicon-user icon_style"></span>
                     </button>
@@ -146,14 +149,11 @@ include "HomeUtilities.php"
             </tr>
         </table>
     </div>
-    <form action="Logout.php">
-        <input type="submit">
+    <form action="Logout.php" id = "logout">
+        <input type="submit" value="Logout" class="logout">
     </form>
 </div>
-<form action="Logout.php">
-    <input type="submit" class="btn btn-lg btn-inverse btn-block back_button" value="Logout">
-</form>
-</body>
+<br>
 
 <footer>
     <!-- Our own Plugins -->

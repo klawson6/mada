@@ -555,9 +555,13 @@ if($uImage = $userImages->fetch_assoc()){
         <textarea id="bio_change" name="bio_change" rows="8" cols="25" style="color: black; text-align: left;" placeholder="Biography" maxlength="255"><?php echo $userInfo['bio']; ?> </textarea>
         <br><br>
 
+        <button id="return" class="btn btn-lg btn-inverse btn-block back_button" onclick="location.href = 'ViewProfile.php';">Return without changes</button>
         <button id="submit_change_info" type="submit" class="btn btn-lg btn-inverse btn-block back_button">Submit Changes</button>
         <input type="hidden" name="action" value="updateInformation">
     </form>
+    <br>
+   <!-- <button id = "back_home" class="btn btn-lg btn-inverse btn-block back_button" type="submit" onclick=" window.location.replace('Home.php');">Back</button>
+-->
     <br>
 </div>
 

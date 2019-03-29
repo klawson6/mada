@@ -13,11 +13,13 @@ function ChatView(){
 
     this.addMessage = function(message,left){
       var chatHistoryDiv = document.getElementById("chatHistoryDiv");
-      if(left==1){
-          chatHistoryDiv.innerHTML = chatHistoryDiv.innerHTML + "<h3>" + message + "</h3>";
+      if(left===1){
+          chatHistoryDiv.innerHTML = chatHistoryDiv.innerHTML + "<div class='parent'><div class = 'leftU'><p>" + message + "</p></div></div><br>";
+        //  chatHistoryDiv.innerHTML.sty.cssFloat = "left";
       }
       else{
-          chatHistoryDiv.innerHTML = chatHistoryDiv.innerHTML + "<p>" + message + "</p>";
+          chatHistoryDiv.innerHTML = chatHistoryDiv.innerHTML + "<div class='parent'><div class = 'rightU'><p>" + message + "</p></div></div><br>";
+          //chatHistoryDiv.style.cssFloat = "right";
       }
     };
 

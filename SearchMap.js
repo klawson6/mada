@@ -144,6 +144,8 @@ function SearchMap() {
 
     var loadedDrivers = [];
 
+    var info = [];
+
     var map,
         ticker;
 
@@ -450,23 +452,33 @@ function SearchMap() {
         var driveCount = 0;
         for (var i = 0; i < loadedDrivers.length; i++) {
             if (loadedDrivers[i] !== null && loadedDrivers[i] !== undefined) {
+
+                    info = getUserInfo(loadedDrivers[i].email);
+
+                window.console.log(info);
+
                 var driverDiv = document.createElement("div");
                 driverDiv.setAttribute("class", "driverDiv");
                 document.getElementById("driverList").appendChild(driverDiv);
                 window.console.log(loadedDrivers[i]);
                 view.addBugFixListener(driverDiv, loadedDrivers[i]);
+
                 var name = document.createElement("span");
                 name.setAttribute("class", "driverName");
                 name.innerHTML = loadedDrivers[i].route[5] + " " + loadedDrivers[i].route[6];
                 driverDiv.appendChild(name);
+
                 var imgDiv = document.createElement("div");
                 imgDiv.setAttribute("class", "driverPicDiv");
                 driverDiv.appendChild(imgDiv);
+
                 var img = document.createElement("img");
                 img.setAttribute("id", "driverPic" + driveCount);
                 img.setAttribute("class", "driverPic");
-                img.setAttribute("src", "img/woman.jpeg");
+                var imageTemp = info[2];
+                img.setAttribute("src", "data:image/png;base64," + imageTemp);
                 imgDiv.appendChild(img);
+
                 var ratingsDiv = document.createElement("div");
                 ratingsDiv.setAttribute("class", "ratingsDiv");
                 driverDiv.appendChild(ratingsDiv);
@@ -474,7 +486,6 @@ function SearchMap() {
                 var ratingsDiv1 = document.createElement("div");
                 ratingsDiv1.setAttribute("class", "ratingsDivInner");
                 ratingsDiv.appendChild(ratingsDiv1);
-
                 var ratingsDiv1text = document.createElement("div");
                 ratingsDiv1text.setAttribute("class", "ratingsDivInner");
                 ratingsDiv1text.innerHTML = "Personality";
@@ -483,7 +494,6 @@ function SearchMap() {
                 var ratingsDiv2 = document.createElement("div");
                 ratingsDiv2.setAttribute("class", "ratingsDivInner");
                 ratingsDiv.appendChild(ratingsDiv2);
-
                 var ratingsDiv2text = document.createElement("div");
                 ratingsDiv2text.setAttribute("class", "ratingsDivInner");
                 ratingsDiv2text.innerHTML = "Driving Ability";
@@ -492,13 +502,23 @@ function SearchMap() {
                 var ratingsDiv3 = document.createElement("div");
                 ratingsDiv3.setAttribute("class", "ratingsDivInner");
                 ratingsDiv.appendChild(ratingsDiv3);
-
                 var ratingsDiv3text = document.createElement("div");
                 ratingsDiv3text.setAttribute("class", "ratingsDivInner");
                 ratingsDiv3text.innerHTML = "Cleanliness";
                 ratingsDiv.appendChild(ratingsDiv3text);
 
-                for (var j = 0; j < 5; j++) {
+                var ratingsDiv4 = document.createElement("div");
+                ratingsDiv4.setAttribute("class", "ratingsDivInner");
+                ratingsDiv.appendChild(ratingsDiv4);
+                var ratingsDiv4text = document.createElement("div");
+                ratingsDiv4text.setAttribute("class", "ratingsDivInner");
+                ratingsDiv4text.innerHTML = "Timeliness";
+                ratingsDiv.appendChild(ratingsDiv4text);
+
+
+                console.log(info[3]);
+
+                for (var j = 0; j < info[3]; j++) {
                     var picDiv = document.createElement("div");
                     picDiv.setAttribute("class", "ratingPicDiv");
                     ratingsDiv1.appendChild(picDiv);
@@ -507,7 +527,7 @@ function SearchMap() {
                     star1.setAttribute("src", "img/star.png");
                     picDiv.appendChild(star1);
                 }
-                for (var k = 0; k < 5; k++) {
+                for (var k = 0; k < info[6]; k++) {
                     var picDiv2 = document.createElement("div");
                     picDiv2.setAttribute("class", "ratingPicDiv");
                     ratingsDiv2.appendChild(picDiv2);
@@ -516,7 +536,7 @@ function SearchMap() {
                     star2.setAttribute("src", "img/star.png");
                     picDiv2.appendChild(star2);
                 }
-                for (var l = 0; l < 5; l++) {
+                for (var l = 0; l < info[4]; l++) {
                     var picDiv3 = document.createElement("div");
                     picDiv3.setAttribute("class", "ratingPicDiv");
                     ratingsDiv3.appendChild(picDiv3);
@@ -525,7 +545,18 @@ function SearchMap() {
                     star3.setAttribute("src", "img/star.png");
                     picDiv3.appendChild(star3);
                 }
+                for (var m = 0; m < info[5]; m++) {
+                    var picDiv4 = document.createElement("div");
+                    picDiv4.setAttribute("class", "ratingPicDiv");
+                    ratingsDiv4.appendChild(picDiv4);
+                    var star4 = document.createElement("img");
+                    star4.setAttribute("class", "ratingPic");
+                    star4.setAttribute("src", "img/star.png");
+                    picDiv4.appendChild(star4);
+                }
                 driveCount++;
+                dri
+                document.createElement("br");
             }
         }
     };
@@ -982,6 +1013,33 @@ function SearchMap() {
             }
         };
         xmlhttp.send(null);
+    };
+
+    function getUserInfo(email){
+        var xmlhttp = new XMLHttpRequest();
+
+        var temp = null;
+
+        xmlhttp.open("GET", "GetUserInfo.php?email=".concat(email),false);
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState === 4) {
+                if (xmlhttp.status === 200) {
+                    var response = JSON.parse(xmlhttp.responseText);
+                    window.console.log(response);
+                    // if (view.testRoute(response, index, email)) {
+                    //     continueAdding(response[0], index, email);
+                    // }
+                    temp = response;
+                    // view.testRoute(response, index, email);
+                } else {
+                    window.console.log("Error " + xmlhttp.status);
+                }
+            }
+        };
+        xmlhttp.send(null);
+        return temp;
+
+
     };
 
     this.continueUpdateDriverPos = function (response) {

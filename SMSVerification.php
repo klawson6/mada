@@ -98,7 +98,7 @@ if(isset($_GET["action"]) && $_GET["action"]=="sendCode"){
     <source src="img/video2.mp4" type="video/mp4">
 </video>
 
-<div id = "sign_up">
+<div id = "smsVeri">
     <form method="post" id="sign_up_form" class="form-horizontal" action="Index.php?action=logIn">
         <h1>Enter Phonenumber</h1><br>
         <div class="col-xs-12 col-sm-12">
@@ -107,7 +107,7 @@ if(isset($_GET["action"]) && $_GET["action"]=="sendCode"){
             </div>
         </div>
         <div style="display:none" id="invalid" class="alert alert-warning"></div>
-        <input type="submit" style="color: rgb(31, 39, 52)" class="btn btn-lg btn-inverse btn-block back_button" id="numberSubmit" value="Request SMS Code">
+        <input type="submit" style="background-color: rgb(31, 39, 52); color: azure" class="btn btn-lg btn-inverse btn-block back_button" id="numberSubmit" value="Request SMS Code">
     </form>
     <div id="sendCodeForm" style="display:none">
     <form method="post" id="sendCode" class="form-horizontal" action="Index.php?action=logIn">
@@ -118,7 +118,7 @@ if(isset($_GET["action"]) && $_GET["action"]=="sendCode"){
             </div>
         </div>
         <div style="display:none" id="invalidCode" class="alert alert-warning"></div>
-        <input type="submit" style="color: rgb(31, 39, 52)" class="btn btn-lg btn-inverse btn-block back_button" id="codeSubmit" value="Request SMS Code">
+        <input type="submit" style="background-color: rgb(31, 39, 52); color: azure;" class="btn btn-lg btn-inverse btn-block back_button" id="codeSubmit" value="Submit SMS Code">
     </form>
     </div>
 </div>

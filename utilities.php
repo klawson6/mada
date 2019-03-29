@@ -5,7 +5,6 @@ $servername = "devweb2018.cis.strath.ac.uk";
 $username = "cs317mada";
 $password = "lu3Eengaewis";
 $db = "cs317mada";
-
 // Create connection
 $conn = new mysqli($servername, $username, $password, $db);
 
@@ -31,6 +30,21 @@ function authentication($email,$password){
     }
     return 0;
 }
+
+function getUserName($email){
+    $dbconn = dbconn();
+    $stmt = $dbconn->prepare("SELECT forename, surname FROM UserInfo WHERE email = ?");
+    $stmt->bind_param("s",$email);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if($result->num_rows > 0){
+        $row = $result->fetch_assoc();
+        return $row["forename"] . " " . $row["surname"];
+    }
+    $dbconn->close();
+    return null;
+}
+
 function user_exists($email){
     $dbconn = dbconn();
     $stmt = $dbconn->prepare("SELECT email FROM UserInfo WHERE email = ?");

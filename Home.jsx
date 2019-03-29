@@ -8,7 +8,7 @@ let moreDetailsCard = document.getElementById("card_moreDetails");
 let slider = document.getElementById("slider_container");
 let choice = null;
 let startTime = null;
-
+let isAd = false;
 
 
 /* get first touch location*/
@@ -34,8 +34,7 @@ function swipe(evt) {
     const xSwipe = xFirst - xSecond,
           ySwipe = yFirst - ySecond;
 
-
-    if(ySwipe >= 0 && ySwipe <= 100 && xSwipe >= 0 && xSwipe <= 100  && currTime >= 200){
+    if( isAd === false && ySwipe >= 0 && ySwipe <= 100 && xSwipe >= 0 && xSwipe <= 100  && currTime >= 200){
          /*we are holding */
 
         popUP = true;
@@ -44,6 +43,8 @@ function swipe(evt) {
             document.getElementById('card_moreDetails')
         );
 
+        document.getElementById("status_bar").style.display = "none";
+        document.getElementById("logout").style.display = "none";
         moreDetailsCard.style.display = "block";
         frontCard.style.display = "none";
         acceptCard.style.display = "none";
@@ -99,6 +100,10 @@ function revertChanges(){
     frontCard.style.transform = "translate(.3rem) rotate(0deg)";
     acceptCard.style.transform = "translate(.3rem) rotate(0deg)";
     rejectCard.style.transform = "translate(.3rem) rotate(0deg)";
+
+    document.getElementById("status_bar").style.display = "block";
+    document.getElementById("logout").style.display = "block";
+
     updateData("yes");
 };
 
@@ -112,28 +117,40 @@ function getData(needToSavePrevious) {
                 dataType: 'json',
                 data: {"update": needToSavePrevious},
                 success: function (response) {
+                        if(response.name!=="advertisement") {
+                            isAd = false;
+                            let user = response;
+                            data = user.name + " | " + user.age;
+                            alt = user.name;
+                            coverImg = user.coverImg;
+                            bio = user.bio;
+                            photo1 = user.photo1;
+                            photo2 = user.photo2;
+                            photo3 = user.photo3;
+                            photo4 = user.photo4;
+                            personality = user.personality;
+                            driving = user.drivingAbility;
+                            cleanliness = user.cleanliness;
+                            timeliness = user.timeliness;
 
-                   // console.log(response);
-                    let user = response;
-                    data = user.name + " | " + user.age;
-                    alt = user.name;
-                    coverImg = user.coverImg;
-                    bio = user.bio;
-                    photo1 = user.photo1;
-                    photo2 = user.photo2;
-                    photo3 = user.photo3;
-                    photo4 = user.photo4;
-                    personality = user.personality;
-                    driving = user.drivingAbility;
-                    cleanliness = user.cleanliness;
-                    timeliness = user.timeliness;
+                            email = user.email;
 
-                    email = user.email;
+                            ReactDOM.render(
+                                <UserProfilePage link={coverImg} alt={alt} data={data}/>,
+                                document.getElementById("frontCard")
+                            );
+                        }else{
+                            isAd = true;
+                            let u = response;
+                            data = u.bio;
+                            alt = u.name;
+                            coverImg = u.coverImg;
 
-                    ReactDOM.render(
-                        <UserProfilePage link={coverImg} alt={alt} data={data}/>,
-                        document.getElementById("frontCard")
-                    );
+                            ReactDOM.render(
+                                <UserProfilePage link={coverImg} alt={alt} data={data}/>,
+                                document.getElementById("frontCard")
+                            );
+                        }
                 },
                 error: function (e) {
                     console.log('error');
@@ -306,6 +323,9 @@ function closePopUp(){
     frontCard.style.display = "block";
     acceptCard.style.display = "block";
     rejectCard.style.display = "block";
+    document.getElementById("status_bar").style.display = "block";
+    document.getElementById("logout").style.display = "block";
+
     popUP = false;
 }
 
@@ -321,13 +341,15 @@ function postChange(change){
 
 
 function postLiked(likedEmail){
-    jQuery.ajax(
-        {
-            type: "post",
-            url: "HomeUtilities.php",
-            dataType: 'json',
-            data: {"liked": likedEmail}
-        });
+    if(!isAd) {
+        jQuery.ajax(
+            {
+                type: "post",
+                url: "HomeUtilities.php",
+                dataType: 'json',
+                data: {"liked": likedEmail}
+            });
+    }
 }
 
 let yes_button = document.getElementById("cirlce_yes");
@@ -344,6 +366,14 @@ document.addEventListener("touchstart", startTouchEvent, false);
 document.addEventListener("touchmove", swipe, false);
 
 document.addEventListener("touchend",function () {
+    if(popUP){
+        document.getElementById("status_bar").style.display = "none";
+        document.getElementById("logout").style.display = "none";
+        moreDetailsCard.style.display = "block";
+        frontCard.style.display = "none";
+        acceptCard.style.display = "none";
+        rejectCard.style.display = "none";
+    }
     if(animating) {
         if (!choice) return;
         /*display choice*/
@@ -358,6 +388,7 @@ document.addEventListener("touchend",function () {
 
         }
         revertChanges();
+
         animating = false;
         choice = null;
         xFirst = null;
@@ -370,7 +401,7 @@ document.addEventListener("touchend",function () {
 slider.addEventListener("click", function () {
 
     let button = document.getElementById("isDriverSlider");
-    let title = document.getElementById("header");
+    let title = document.getElementById("headder");
 
     if(button.style.cssFloat == "left"){
         button.style.cssFloat = "right";
@@ -446,44 +477,43 @@ no_button.addEventListener("click", function () {
             rejectCard.style.backgroundImage="url('img/reject.png')";
         }
     },200)
-
-
 });
 
 redo_button.addEventListener("click", function () {
-    jQuery.ajax(
-        {
-            type: "post",
-            url: "HomeUtilities.php",
-            dataType: 'json',
-            data: {"rewind": "1"},
-            success: function (response) {
-                console.log(response);
-                if(response.name != "no") {
+    if(!isAd) {
+        jQuery.ajax(
+            {
+                type: "post",
+                url: "HomeUtilities.php",
+                dataType: 'json',
+                data: {"rewind": "1"},
+                success: function (response) {
+                    console.log(response);
+                    if (response.name !== "no") {
+                        let user = response;
+                        data = user.name + " | " + user.age;
+                        alt = user.name;
+                        coverImg = user.coverImg;
+                        bio = user.bio;
+                        photo1 = user.photo1;
+                        photo2 = user.photo2;
+                        photo3 = user.photo3;
+                        photo4 = user.photo4;
 
-                    let user = response;
-                    data = user.name + " | " + user.age;
-                    alt = user.name;
-                    coverImg = user.coverImg;
-                    bio = user.bio;
-                    photo1 = user.photo1;
-                    photo2 = user.photo2;
-                    photo3 = user.photo3;
-                    photo4 = user.photo4;
+                        email = user.email;
 
-                    email = user.email;
-
-                    ReactDOM.render(
-                        <UserProfilePage link={coverImg} alt={alt} data={data}/>,
-                        document.getElementById("frontCard")
-                    );
+                        ReactDOM.render(
+                            <UserProfilePage link={coverImg} alt={alt} data={data}/>,
+                            document.getElementById("frontCard")
+                        );
+                    }
+                },
+                error: function (e) {
+                    console.log('error');
+                    console.log(e);
                 }
-            },
-            error: function (e) {
-                console.log('error');
-                console.log(e);
-            }
-        });
+            });
+    }
 });
 
 window.onbeforeunload = function(){

@@ -23,7 +23,6 @@ input, input:before, input:after {
     -webkit-user-select: none;
     -khtml-user-select: none;
     -moz-user-select: -moz-none;
-    -ms-overflow-style: none;
     -o-user-select: none;
 }
 
@@ -31,6 +30,7 @@ body{
     background-color: rgb(31, 39, 52);
     height: 100%;
     color: azure;
+    overflow-y: scroll;
 }
 
 /*----------------------------------------------------------------------------------------------------------------*/
@@ -121,12 +121,23 @@ input{
 /*----------------------------------------------------------------------------------------------------------------*/
 /*                                                home page styling                                               */
 
+.logout{
+    margin: 0 auto;
+    position: relative;
+    border-radius: 30%;
+    width: 10pc;
+    height: 2pc;
+    background-color: #11141b;
+    border-color: #030307;
+
+}
 #bodyDiv{
     z-index: 0;
     position: absolute;
     text-align: center;
     height: 100%;
     width: 100%;
+    overflow-y: auto;
 }
 
 #typeChooserDiv{
@@ -405,7 +416,8 @@ body.viewport-lg {
 
 .closeButton{
     width: 90%;
-    background-color: #8fb3ef;
+    background-color: #283142;
+    border-color: #283142;
     border-radius: 25px;
     height: 2em;
 }
@@ -594,5 +606,41 @@ body.viewport-lg {
     height: 10%;
 }
 
+/*----------------------------------------------------------------------------------------------------------------*/
+/*                                                view profile                                                   */
+.bioSeg{
+    width: 80%;
+    background-color: rgb(41, 52, 69);
+    border-radius: 3%;
+    margin: 0 auto;
+    padding: .5em;
+}
+
+.addr_button{
+    width: 80%;
+    background-color:  rgb(47, 60, 79);
+    border-color: rgb(47, 60, 79);
+    border-radius: 3%;
+    margin: 0 auto;
+    padding: .5em;
+}
 
 
+
+#smsVeri{
+    background-color: rgb(31, 39, 52);
+    font-size: small;
+    color: azure;
+    padding: 20px;
+    width:  70%;
+    height: 70vh;
+    display: block;
+    text-align: center;
+    position: fixed;
+    border-radius: 25px;
+}
+
+#smsVeri > h1{
+    font-size: x-large;
+
+}
