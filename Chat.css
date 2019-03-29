@@ -11,8 +11,6 @@ html, body{
     overflow-y: auto;
 }
 #chatHistoryDiv p{
-    background-color: #77aaa9; /*todo CHANGE*/
-    border: 1px solid burlywood;
     padding: 0.2rem;
     margin: 0.2rem;
 }
@@ -42,3 +40,42 @@ html, body{
     justify-content: right;
 }
 
+#parent_chat{
+    margin: 0 auto;
+    width: 90%;
+    padding: 1em;
+    overflow-y: scroll;
+}
+
+.matches{
+    height: 4em;
+    width: 100%;
+    border-color: #2d384b;
+    background: #2d384b;
+    margin: 1em;
+    border-radius: 25em;
+}
+
+.chatB{
+
+}
+
+.leftU{
+    float: left;
+    width: 60%;
+    background-color: #186d41;
+    border-color: #16623a;
+    border-radius: 2%;
+}
+.rightU{
+    float: right;
+    width: 60%;
+    background-color: #6a0a67;
+    border-color: #630761;
+    border-radius: 2%;
+    right: .7em;
+}
+
+.parent{
+    width: 100%;
+}

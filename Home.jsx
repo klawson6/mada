@@ -100,6 +100,7 @@ function revertChanges(){
     frontCard.style.transform = "translate(.3rem) rotate(0deg)";
     acceptCard.style.transform = "translate(.3rem) rotate(0deg)";
     rejectCard.style.transform = "translate(.3rem) rotate(0deg)";
+
     document.getElementById("status_bar").style.display = "block";
     document.getElementById("logout").style.display = "block";
 
@@ -365,6 +366,14 @@ document.addEventListener("touchstart", startTouchEvent, false);
 document.addEventListener("touchmove", swipe, false);
 
 document.addEventListener("touchend",function () {
+    if(popUP){
+        document.getElementById("status_bar").style.display = "none";
+        document.getElementById("logout").style.display = "none";
+        moreDetailsCard.style.display = "block";
+        frontCard.style.display = "none";
+        acceptCard.style.display = "none";
+        rejectCard.style.display = "none";
+    }
     if(animating) {
         if (!choice) return;
         /*display choice*/
@@ -379,6 +388,7 @@ document.addEventListener("touchend",function () {
 
         }
         revertChanges();
+
         animating = false;
         choice = null;
         xFirst = null;

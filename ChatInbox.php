@@ -55,22 +55,33 @@ if($showChats->execute()) {
 </head>
 <body>
 <h1>Matched Contacts</h1>
-
 <main>
+    <div id = "parent_chat">
+        <?php
+        if(sizeof($connectedUsers)>0){
+            foreach($connectedUsers as $user){
+                echo("
+                <div class = 'matches'>
+                <a href='ChatIndex.php?otherEmail=" . $user["email"] . "'>
+                <h3>
+                " . $user["forename"] . " " .  $user["surname"] . "
+                </h3>
+                </a>
+                </div>");
+            }
+        }else{
+            echo("
+                <div class = 'matches'>
+                <h3>
+                No Matches
+                </h3>
+              
+                </div>");
+        }
 
 
-<?php
-
-if(sizeof($connectedUsers)>0){
-    foreach($connectedUsers as $user){
-        echo("<a href='ChatIndex.php?otherEmail=" . $user["email"] . "'><h3>" . $user["forename"] . " " .  $user["surname"] . "</h3></a>");
-    }
-}
-
-
-?>
-
-
+        ?>
+    </div>
 
 </main>
 <footer>

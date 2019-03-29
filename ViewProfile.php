@@ -46,7 +46,7 @@ if ($result->num_rows > 0){
 
 </head>
 
-<body class="body">
+<body class="body" style="overflow: scroll;">
     <h1><?php echo $name ?></h1>
     <br>
     <h2>Profile Images</h2>
@@ -117,11 +117,10 @@ if ($result->num_rows > 0){
         ?>
     </div>
    <br>
-    <button id="editProfileButton" class="btn btn-lg btn-inverse btn-block back_button" onclick="location.href = 'Edit2.php';">Edit</button>
+    <button id="editProfileButton" class="btn btn-lg btn-inverse btn-block back_button" type="submit" onclick="location.href = 'Edit2.php';">Edit</button>
     <br>
-    <form action="Home.php">
-       <button id = "back_home" class="btn btn-lg btn-inverse btn-block back_button" type="submit">Back</button>
-   </form>
+    <button id = "back_home"       class="btn btn-lg btn-inverse btn-block back_button" type="submit" onclick="location.href = 'Home.php';">Back</button>
+
 </body>
 
 <script>

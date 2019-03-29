@@ -98,7 +98,7 @@ if(isset($_GET["action"]) && $_GET["action"]=="sendCode"){
     <source src="img/video2.mp4" type="video/mp4">
 </video>
 
-<div id = "sign_up">
+<div id = "smsVeri">
     <form method="post" id="sign_up_form" class="form-horizontal" action="Index.php?action=logIn">
         <h1>Enter Phonenumber</h1><br>
         <div class="col-xs-12 col-sm-12">
