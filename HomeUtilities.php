@@ -10,14 +10,12 @@ if(!loggedIn()){
     exit();
 }
 if(!validToken()){
-    header("Location: Logout.php",true,301);
+    header("Location: Logout.php?token=invalid",true,301);
     die();
 }
 
 if(isset($_POST['unset'])){
 
-    //session_unset();
-    //session_destroy();
 }
 
 

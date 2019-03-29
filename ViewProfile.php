@@ -46,7 +46,24 @@ if ($result->num_rows > 0){
 
 </head>
 
-<body class="body">
+<nav id="my_navbar" class="nav_buttons">
+    <div id="nav_container">
+        <table>
+            <form action="Home.php">
+                <button id="nav_left" class="borderlessButtons">
+                    <span class="glyphicon glyphicon-home icon_style"></span>
+                </button>
+            </form>
+            <form action="ChatInbox.php">
+                <button id="nav_right" class="borderlessButtons">
+                    <span class="glyphicon glyphicon-envelope icon_style"></span>
+                </button>
+            </form>
+        </table>
+    </div>
+</nav>
+
+<body class="body" style="overflow: auto;">
     <h1><?php echo $name ?></h1>
     <br>
     <h2>Profile Images</h2>
@@ -117,11 +134,8 @@ if ($result->num_rows > 0){
         ?>
     </div>
    <br>
-    <button id="editProfileButton" class="btn btn-lg btn-inverse btn-block back_button" onclick="location.href = 'Edit2.php';">Edit</button>
-    <br>
-    <form action="Home.php">
-       <button id = "back_home" class="btn btn-lg btn-inverse btn-block back_button" type="submit">Back</button>
-   </form>
+    <button id="editProfileButton" class="btn btn-lg btn-inverse btn-block back_button" type="submit" onclick="location.href = 'Edit2.php';">Edit</button>
+
 </body>
 
 <script>

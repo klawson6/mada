@@ -23,7 +23,6 @@ input, input:before, input:after {
     -webkit-user-select: none;
     -khtml-user-select: none;
     -moz-user-select: -moz-none;
-    -ms-overflow-style: none;
     -o-user-select: none;
 }
 
@@ -31,6 +30,7 @@ body{
     background-color: rgb(31, 39, 52);
     height: 100%;
     color: azure;
+    overflow-y: scroll;
 }
 
 /*----------------------------------------------------------------------------------------------------------------*/
@@ -137,6 +137,7 @@ input{
     text-align: center;
     height: 100%;
     width: 100%;
+    overflow-y: auto;
 }
 
 #typeChooserDiv{
@@ -623,3 +624,24 @@ body.viewport-lg {
     margin: 0 auto;
     padding: .5em;
 }
+
+
+
+#smsVeri{
+    background-color: rgb(31, 39, 52);
+    font-size: small;
+    color: azure;
+    padding: 20px;
+    width:  70%;
+    height: 70vh;
+    display: block;
+    text-align: center;
+    position: fixed;
+    border-radius: 25px;
+}
+
+#smsVeri > h1{
+    font-size: x-large;
+
+}
+
