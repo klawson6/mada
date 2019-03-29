@@ -120,6 +120,82 @@ input{
 /*----------------------------------------------------------------------------------------------------------------*/
 /*                                                home page styling                                               */
 
+#bodyDiv{
+    z-index: 0;
+    position: absolute;
+    text-align: center;
+    height: 100%;
+    width: 100%;
+}
+
+#typeChooserDiv{
+    z-index: 1000;
+    position: absolute;
+    width: 80%;
+    height: 80%;
+    margin-top: 10%;
+    margin-right: 10%;
+    margin-left: 10%;
+    margin-bottom: 0;
+    overflow: scroll;
+    overflow-x: hidden;
+    border-radius: 2em;
+    background: #3A4860;
+    border-style: solid;
+    border-color: #4ca7aa;
+    border-width: 0.5em;
+}
+
+.choiceButton{
+    height: 10%;
+    width: 40%;
+    margin: 10% 30%;
+    border-radius: 2em;
+    background: #4ca7aa;
+    border-style: solid;
+}
+
+#choiceInfoDiv{
+    width: 80%;
+    height: 20%;
+    margin: 5% 10%;
+    text-align: center;
+}
+
+#choiceInfo{
+    font-size: x-large;
+}
+
+.choiceButton:focus {
+    outline: 0;
+}
+
+.choiceButton:active {
+    background: #77aaa9;
+}
+
+#routeInfoDiv{
+    height: 30%;
+    width: 80%;
+    margin: 5% 10%;
+}
+
+.driverInfoText{
+    height: 30%;
+    width: 80%;
+    margin: 0 auto;
+    border-radius: 2em;
+    background: #4ca7aa;
+    border-style: solid;
+    border-width: 0.15em;
+    border-color: #e6e6e6;
+    color: white;
+}
+
+.driverInfoText:focus{
+    outline: 0;
+}
+
 .home{
     color: azure;
     overflow: hidden;
