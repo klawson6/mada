@@ -77,11 +77,24 @@ if($showChats->execute()) {
             foreach($connectedUsers as $user){
                 echo("
                 <div class = 'matches'>
+                <table>
+                <tr>
+                <td>
+                <div>
+                    <button class='borderlessButtons'  onclick= 'window.location.href =\"review.php\"; ' >
+                        <span class='glyphicon glyphicon-star-empty icon_style'> </span>
+                    </button>
+                </div>
+                </td>
+                <td>
                 <a href='ChatIndex.php?otherEmail=" . $user["email"] . "'>
                 <h3>
                 " . $user["forename"] . " " .  $user["surname"] . "
                 </h3>
                 </a>
+                </td>
+                </tr>
+                </table>
                 </div>");
             }
         }else{
