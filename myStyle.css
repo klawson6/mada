@@ -171,3 +171,31 @@
 #address_list::-webkit-scrollbar {
     display: none;
 }
+
+#slider_container{
+    width: 10em;
+    height: 3em;
+    overflow: hidden;
+    background: rgb(14, 70, 45);
+    font-size: 70%;
+    color: azure;
+    display: block;
+    padding:1em;
+    margin-top: .7em;
+    margin:0px auto;
+    border-radius: 18%;
+}
+#isDriverSlider{
+    width: 4em;
+    height: 4em;
+    overflow: hidden;
+    background: rgb(31, 138, 82);
+    font-size: 70%;
+    color: azure;
+    margin-top: 1em;
+    margin: 0 auto;
+    border-radius: 50%;
+    border-color: rgb(25, 112, 66) ;
+    float:left;
+    padding:2em;
+}

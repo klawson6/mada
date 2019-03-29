@@ -31,7 +31,7 @@ include "HomeUtilities.php"
             </button>
         </form>
             <label id = "nav_center"><h3 id = "headder">Select a Rider</h3></label>
-        <form action="EditProfile.html">
+        <form action="Edit2.php">
             <button id = "nav_right"  class="borderlessButtons">
                 <span class="glyphicon  glyphicon-user icon_style"></span>
             </button>
@@ -89,7 +89,7 @@ include "HomeUtilities.php"
     </table>
 </div>
 <form action="Logout.php">
-    <input type="submit">
+    <input type="submit" class="btn btn-lg btn-inverse btn-block back_button" value="Logout">
 </form>
 </body>
 

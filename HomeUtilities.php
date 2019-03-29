@@ -78,7 +78,6 @@ class User{
 };
 
 function addLinkedUser($user,$email){
-
     $conn = dbconn();
     $sql = "INSERT INTO LinkedUsers (Email1, Email2) VALUES (?,?)";
 

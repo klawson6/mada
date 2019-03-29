@@ -130,6 +130,8 @@ if(isset($_POST["action"]) && $_POST["action"] == "submit") {
             <br>
             <label for="agreeTerms">Accept Conditions: </label>
             <input type="checkbox" class="form-control" id="agreeTerms" name="agreeTerms" />
+            <br>
+            <Label style="font-size: smaller"><a href="Conditions.pdf" download="Conditions">View Conditions</a></Label>
             <br><br>
             <div>
                 <button id="create_account_button" class="btn btn-lg btn-inverse btn-block create_account_button" type="submit">Create Account</button>
