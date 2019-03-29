@@ -665,3 +665,59 @@ var postcode;
     document.getElementById("submit_image_4").onclick = function(){
         document.getElementById("changeImage4").submit();
     };
+
+    function changeDriver(change) {
+        jQuery.ajax(
+            {
+                type: "post",
+                url: "Edit2.php",
+                data: {"driver": change}
+            });
+    };
+
+    function changeRider(change) {
+        jQuery.ajax(
+            {
+                type: "post",
+                url: "Edit2.php",
+                data: {"rider": change}
+            });
+    };
+
+
+function slider(btn,sldr){
+        let button = document.getElementById(btn);
+        let slider =  document.getElementById(sldr);
+        if(button.style.cssFloat == "left"){
+            button.style.cssFloat = "right";
+
+            button.style.backgroundColor = "rgb(131, 12, 127)";
+            slider.style.backgroundColor = "rgb(98, 9, 95)";
+            button.style.borderColor = "rgb(106, 10, 103)";
+        }else{
+            button.style.cssFloat = "left";
+            /*green*/
+            button.style.backgroundColor = "rgb(31, 138, 82)";
+            slider.style.backgroundColor = "rgb(14, 70, 45)";
+            button.style.borderColor = "rgb(25, 112, 66)";
+        }
+    };
+
+    document.getElementById("driver_container").onclick = function(){
+        slider("isDriverSlider", "driver_container");
+        let change = 1;
+        if(document.getElementById("isDriverSlider").style.cssFloat == "left"){
+            change = 0;
+        }
+        changeDriver(change)
+    };
+
+    document.getElementById("rider_container").onclick = function(){
+        slider("isRiderSlider","rider_container");
+        let change = 1;
+        if(document.getElementById("isRiderSlider").style.cssFloat == "left"){
+            change = 0;
+        }
+        changeRider(change)
+    };
+
