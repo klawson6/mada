@@ -1,4 +1,3 @@
-
 var addresses = [];
 
 var forename;
@@ -16,6 +15,19 @@ var address_line_2;
 var town;
 var country;
 var postcode;
+
+var cHeight = window.innerHeight;
+var cWidth = window.innerWidth;
+
+window.onresize = function(){
+
+    window.innerHeight = cHeight;
+    window.innerWidth = cWidth;
+};
+
+document.body.onload = function(){
+    document.getElementById("editInfo").style.display = "block";
+};
 
     $("#editInfo").on("submit", function (event) {
         event.preventDefault();
@@ -51,27 +63,6 @@ var postcode;
             xhttp.open("POST", "Edit2.php", true);
             xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             xhttp.send("action=updatePassword&edit_password=" + password + "&user_email=" + email);
-        }
-    });
-
-    $("#editAddress").on("submit", function (event) {
-        event.preventDefault();
-        if (validateEditAddressData()) {
-            var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
-                    document.getElementById("address_name_input").value = address_name;
-                    document.getElementById("address_line1_input").value = address_line_1;
-                    document.getElementById("address_line2_input").value = address_line_2;
-                    document.getElementById("town_input").value = town;
-                    document.getElementById("country_input").value = country;
-                    document.getElementById("postcode_input").value = postcode;
-                    document.getElementById("address_id").value = address_id;
-                }
-            };
-            xhttp.open("POST", "Edit2.php", true);
-            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xhttp.send("action=updateAddress&address_id=" + address_id + "&address_name_input=" + address_name + "& address_line1_input=" + address_line_1 + "&address_line2_input=" + address_line_2 + "&town_input=" + town + "&country_input=" + country + "&postcode_input=" + postcode);
         }
     });
 
@@ -421,9 +412,6 @@ var postcode;
 
         reader.onload = function (event) {
             profile_image_3.src = event.target.result;
-            image = profile_image_3.src;
-            image_id = document.getElementById("profile_pic_3_id");
-            email = document.getElementById("user_email6");
         };
 
         reader.readAsDataURL(selectedFile);
